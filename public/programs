@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content="Programs – Sankalp Digital Pathshala | Foundation to Future Skills">
+    <meta name="description" content="Explore comprehensive programs from Class 6 to 12, JEE/NEET coaching, and future-ready skills like AI, Robotics, and Coding. Designed for every stage of a student's journey.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Programs – Sankalp Digital Pathshala">
+    <meta property="og:description" content="Tailored academic paths: Foundation, Academic Excellence, Senior Secondary, Competitive Exams, and Future Skills. AI-powered, expert-led.">
+    <meta property="og:image" content="https://sankalp-digital-pathshala.vercel.app/assets/og-programs.jpg">
+    <meta property="og:url" content="https://sankalp-digital-pathshala.vercel.app/programs">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://sankalp-digital-pathshala.vercel.app/programs">
+    <title>Programs – Sankalp Digital Pathshala</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+</head>
+<body>
+    <!-- Premium Sticky Glass Navbar -->
+    <nav class="navbar glass" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="/" class="logo" aria-label="Sankalp Digital Pathshala Home">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 80' fill='none'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2338BDF8'/%3E%3Cstop offset='100%25' stop-color='%234F46E5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x='10' y='55' font-family='Arial, sans-serif' font-weight='900' font-size='40' fill='url(%23grad)' letter-spacing='3'%3ESDP%3C/text%3E%3Ctext x='10' y='75' font-family='Arial, sans-serif' font-weight='600' font-size='14' fill='%2338BDF8' letter-spacing='5'%3EDIGITAL PATHSHALA%3C/text%3E%3C/svg%3E"
+                     alt="Sankalp Digital Pathshala – AI-Powered Learning" width="160" height="50">
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/programs" class="active">Programs</a></li>
+                <li><a href="/ai-learning">AI Learning</a></li>
+                <li><a href="/results">Results</a></li>
+                <li><a href="/gallery">Gallery</a></li>
+                <li><a href="/events">Events</a></li>
+                <li><a href="/sankalp-sathi">Sankalp Sathi</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+            <a href="https://wa.me/91XXXXXXXXXX?text=Hi%20Sankalp%20Digital%20Pathshala!" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+                <span class="whatsapp-icon">💬</span> Chat on WhatsApp
+            </a>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">&#9776;</button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Programs Hero Section -->
+        <section class="page-hero programs-hero">
+            <div class="container">
+                <div class="page-hero-content glass">
+                    <h1 class="gradient-text">Programs That Build <br>Brilliant Minds</h1>
+                    <p class="hero-subtitle">From middle school foundations to competitive exam mastery and futuristic tech skills – every path is designed with AI precision and teacher warmth.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Program Categories – dynamically populated but with static fallback structure -->
+        <section class="programs-list section-padding">
+            <div class="container">
+                <!-- Category: Foundation -->
+                <div class="program-category" id="category-foundation">
+                    <div class="category-header glass">
+                        <span class="category-icon">🏫</span>
+                        <h2>Foundation Program <span class="gradient-text">(Class 6–8)</span></h2>
+                        <p>Building strong conceptual roots in Maths, Science, English, and Computer Basics. Our AI‑powered diagnostic tests identify gaps and personalise learning paths from day one.</p>
+                    </div>
+                    <div class="program-cards" data-category="Foundation">
+                        <!-- Populated by app.js -->
+                    </div>
+                </div>
+
+                <!-- Category: Academic Excellence -->
+                <div class="program-category" id="category-academic">
+                    <div class="category-header glass">
+                        <span class="category-icon">📖</span>
+                        <h2>Academic Excellence <span class="gradient-text">(Class 9–10)</span></h2>
+                        <p>Board exam preparation with advanced problem‑solving techniques. Every chapter includes AI‑generated practice tests, step‑by‑step solutions, and real‑time progress tracking.</p>
+                    </div>
+                    <div class="program-cards" data-category="Academic Excellence">
+                        <!-- Populated -->
+                    </div>
+                </div>
+
+                <!-- Category: Senior Secondary -->
+                <div class="program-category" id="category-senior">
+                    <div class="category-header glass">
+                        <span class="category-icon">🎓</span>
+                        <h2>Senior Secondary <span class="gradient-text">(Class 11–12)</span></h2>
+                        <p>Stream‑specific coaching (PCM, PCB, Commerce, Humanities) with expert faculty. Our AI mentor monitors performance and suggests targeted revision to maximise board and entrance scores.</p>
+                    </div>
+                    <div class="program-cards" data-category="Senior Secondary">
+                        <!-- Populated -->
+                    </div>
+                </div>
+
+                <!-- Category: Competitive Exams -->
+                <div class="program-category" id="category-competitive">
+                    <div class="category-header glass">
+                        <span class="category-icon">🏆</span>
+                        <h2>Competitive Exam Coaching <span class="gradient-text">(JEE / NEET)</span></h2>
+                        <p>Rigorous preparation with a proven track record. Includes AI‑driven mock tests, detailed analytics, doubt‑solving chatbots, and one‑on‑one mentorship from top rankers.</p>
+                    </div>
+                    <div class="program-cards" data-category="Competitive">
+                        <!-- Populated -->
+                    </div>
+                </div>
+
+                <!-- Category: Future Skills -->
+                <div class="program-category" id="category-future">
+                    <div class="category-header glass">
+                        <span class="category-icon">🚀</span>
+                        <h2>Future Skills Programs</h2>
+                        <p>Prepare your child for the careers of 2035 and beyond. Hands‑on, project‑based learning in emerging technologies – no prior experience needed.</p>
+                    </div>
+                    <div class="program-cards" data-category="Future Skills">
+                        <!-- Populated -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Our Programs Excel -->
+        <section class="programs-usps section-padding">
+            <div class="container">
+                <div class="section-header">
+                    <h2>What Makes Our Programs <span class="gradient-text">Different</span></h2>
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-card glass">
+                        <div class="card-icon">🧠</div>
+                        <h3>AI Personalisation</h3>
+                        <p>Every student gets a unique learning plan based on their strengths and weaknesses – adjusted in real time.</p>
+                    </div>
+                    <div class="feature-card glass">
+                        <div class="card-icon">📊</div>
+                        <h3>Data‑Driven Insights</h3>
+                        <p>Parents receive weekly AI‑generated reports on attendance, concept mastery, and predicted scores.</p>
+                    </div>
+                    <div class="feature-card glass">
+                        <div class="card-icon">👥</div>
+                        <h3>Small Batch Sizes</h3>
+                        <p>Maximum 25 students per class ensures every doubt is addressed, every voice heard.</p>
+                    </div>
+                    <div class="feature-card glass">
+                        <div class="card-icon">🎯</div>
+                        <h3>Exam Simulation</h3>
+                        <p>AI replicates real exam conditions, including time pressure and difficulty variation, to build confidence.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="contact-cta section-padding">
+            <div class="container">
+                <div class="cta-content glass">
+                    <h2>Find the Perfect Program for Your Child</h2>
+                    <p>Not sure where to start? Our academic counsellors will guide you – free of charge.</p>
+                    <a href="/contact" class="btn-primary">Talk to a Counsellor</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Premium Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 80' fill='none'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2338BDF8'/%3E%3Cstop offset='100%25' stop-color='%234F46E5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x='10' y='55' font-family='Arial, sans-serif' font-weight='900' font-size='40' fill='url(%23grad)' letter-spacing='3'%3ESDP%3C/text%3E%3Ctext x='10' y='75' font-family='Arial, sans-serif' font-weight='600' font-size='14' fill='%2338BDF8' letter-spacing='5'%3EDIGITAL PATHSHALA%3C/text%3E%3C/svg%3E"
+                         alt="Sankalp Digital Pathshala" width="160" height="50" style="filter: brightness(1.2);">
+                    <p class="footer-tagline">Empowering learners through AI and excellence.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/programs">Programs</a></li>
+                        <li><a href="/ai-learning">AI Learning</a></li>
+                        <li><a href="/results">Results</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>More</h4>
+                    <ul>
+                        <li><a href="/gallery">Gallery</a></li>
+                        <li><a href="/events">Events</a></li>
+                        <li><a href="/sankalp-sathi">Sankalp Sathi</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="https://wa.me/91XXXXXXXXXX" target="_blank">WhatsApp</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>Connect</h4>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook">📘</a>
+                        <a href="#" aria-label="YouTube">▶️</a>
+                        <a href="#" aria-label="Instagram">📷</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Sankalp Digital Pathshala. All rights reserved. Built with ❤️ using AI.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/assets/app.js"></script>
+</body>
+</html>
