@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content="Result Checker – Sankalp Digital Pathshala | Instant Marksheet">
+    <meta name="description" content="Check your official Sankalp Digital Pathshala exam results instantly. Just enter your Registration Number and Date of Birth – no login, no OTP.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Result Checker – Sankalp Digital Pathshala">
+    <meta property="og:description" content="Access your verified marksheet with a single click. Secure, private, and always up‑to‑date.">
+    <meta property="og:image" content="https://sankalp-digital-pathshala.vercel.app/assets/og-results.jpg">
+    <meta property="og:url" content="https://sankalp-digital-pathshala.vercel.app/results">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://sankalp-digital-pathshala.vercel.app/results">
+    <title>Result Checker – Sankalp Digital Pathshala</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+</head>
+<body>
+    <!-- Premium Sticky Glass Navbar -->
+    <nav class="navbar glass" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <!-- Logo placeholder – replace src with your actual logo URL -->
+            <a href="/" class="logo" aria-label="Sankalp Digital Pathshala Home">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 80' fill='none'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2338BDF8'/%3E%3Cstop offset='100%25' stop-color='%234F46E5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x='10' y='55' font-family='Arial, sans-serif' font-weight='900' font-size='40' fill='url(%23grad)' letter-spacing='3'%3ESDP%3C/text%3E%3Ctext x='10' y='75' font-family='Arial, sans-serif' font-weight='600' font-size='14' fill='%2338BDF8' letter-spacing='5'%3EDIGITAL PATHSHALA%3C/text%3E%3C/svg%3E"
+                     alt="Sankalp Digital Pathshala – AI-Powered Learning" width="160" height="50">
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/programs">Programs</a></li>
+                <li><a href="/ai-learning">AI Learning</a></li>
+                <li><a href="/results" class="active">Results</a></li>
+                <li><a href="/gallery">Gallery</a></li>
+                <li><a href="/events">Events</a></li>
+                <li><a href="/sankalp-sathi">Sankalp Sathi</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+            <a href="https://wa.me/91XXXXXXXXXX?text=Hi%20Sankalp%20Digital%20Pathshala!" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+                <span class="whatsapp-icon">💬</span> Chat on WhatsApp
+            </a>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">&#9776;</button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Result Checker Hero -->
+        <section class="page-hero results-hero">
+            <div class="container">
+                <div class="page-hero-content glass">
+                    <h1 class="gradient-text">Your Official Result,<br>One Click Away</h1>
+                    <p class="hero-subtitle">No login, no password. Just your Registration Number and Date of Birth. Instant, secure, and verified.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Result Check Form -->
+        <section class="result-checker section-padding" id="resultFormSection">
+            <div class="container">
+                <div class="checker-card glass">
+                    <h2>Check Your Result</h2>
+                    <form id="resultCheckForm" class="result-form">
+                        <div class="form-group">
+                            <label for="regNumber">Registration Number</label>
+                            <input type="text" id="regNumber" placeholder="e.g., SDP26001" required autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="dob">Date of Birth</label>
+                            <input type="date" id="dob" required>
+                        </div>
+                        <button type="submit" class="btn-primary">View Marksheet</button>
+                    </form>
+                    <div class="form-error hidden" id="formError"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Marksheet Display (Hidden by default) -->
+        <section class="marksheet-section section-padding" id="marksheetSection" style="display:none;">
+            <div class="container">
+                <div class="marksheet-card glass" id="marksheetContent">
+                    <!-- Premium Certified Marksheet Design -->
+                    <div class="marksheet-header">
+                        <div class="marksheet-brand">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 80' fill='none'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2338BDF8'/%3E%3Cstop offset='100%25' stop-color='%234F46E5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x='10' y='55' font-family='Arial, sans-serif' font-weight='900' font-size='40' fill='url(%23grad)' letter-spacing='3'%3ESDP%3C/text%3E%3Ctext x='10' y='75' font-family='Arial, sans-serif' font-weight='600' font-size='14' fill='%2338BDF8' letter-spacing='5'%3EDIGITAL PATHSHALA%3C/text%3E%3C/svg%3E"
+                                 alt="Sankalp Logo" width="160" height="50">
+                            <h1>Academic Marksheet</h1>
+                            <span class="verified-badge">✔️ Verified &amp; Authentic</span>
+                        </div>
+                        <div class="marksheet-details">
+                            <div class="detail-row"><strong>Student Name:</strong> <span id="ms-studentName"></span></div>
+                            <div class="detail-row"><strong>Father's Name:</strong> <span id="ms-fatherName"></span></div>
+                            <div class="detail-row"><strong>Registration No:</strong> <span id="ms-regNumber"></span></div>
+                            <div class="detail-row"><strong>Date of Birth:</strong> <span id="ms-dob"></span></div>
+                            <div class="detail-row"><strong>Class:</strong> <span id="ms-class"></span></div>
+                            <div class="detail-row"><strong>Session:</strong> <span id="ms-session"></span></div>
+                            <div class="detail-row"><strong>Issue Date:</strong> <span id="ms-issueDate"></span></div>
+                        </div>
+                    </div>
+
+                    <div class="marksheet-table-wrapper">
+                        <table class="marksheet-table">
+                            <thead>
+                                <tr>
+                                    <th>Subject</th>
+                                    <th>Marks Obtained</th>
+                                    <th>Max Marks</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ms-subjects"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="marksheet-summary">
+                        <div class="summary-item">
+                            <span class="summary-label">Percentage</span>
+                            <span class="summary-value" id="ms-percentage"></span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Grade</span>
+                            <span class="summary-value" id="ms-grade"></span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Remarks</span>
+                            <span class="summary-value" id="ms-remarks"></span>
+                        </div>
+                    </div>
+
+                    <div class="marksheet-actions">
+                        <button class="btn-primary" id="downloadPdfBtn">📥 Download PDF</button>
+                        <button class="btn-secondary" id="printResultBtn">🖨️ Print Result</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ / Help Section -->
+        <section class="faq section-padding">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Frequently <span class="gradient-text">Asked Questions</span></h2>
+                </div>
+                <div class="faq-grid">
+                    <div class="faq-item glass">
+                        <h3>Where can I find my Registration Number?</h3>
+                        <p>Your registration number is printed on your admit card and fee receipt. It typically starts with "SDP" followed by a 5‑digit code.</p>
+                    </div>
+                    <div class="faq-item glass">
+                        <h3>Is my data secure?</h3>
+                        <p>Yes. We validate only the registration number and date of birth. No personal data is stored or shared during the check.</p>
+                    </div>
+                    <div class="faq-item glass">
+                        <h3>The result is not showing up. What should I do?</h3>
+                        <p>Ensure you entered the correct registration number and date of birth exactly as per your records. If the problem persists, contact our help desk via WhatsApp.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Premium Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 80' fill='none'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2338BDF8'/%3E%3Cstop offset='100%25' stop-color='%234F46E5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x='10' y='55' font-family='Arial, sans-serif' font-weight='900' font-size='40' fill='url(%23grad)' letter-spacing='3'%3ESDP%3C/text%3E%3Ctext x='10' y='75' font-family='Arial, sans-serif' font-weight='600' font-size='14' fill='%2338BDF8' letter-spacing='5'%3EDIGITAL PATHSHALA%3C/text%3E%3C/svg%3E"
+                         alt="Sankalp Digital Pathshala" width="160" height="50" style="filter: brightness(1.2);">
+                    <p class="footer-tagline">Empowering learners through AI and excellence.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/programs">Programs</a></li>
+                        <li><a href="/ai-learning">AI Learning</a></li>
+                        <li><a href="/results">Results</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>More</h4>
+                    <ul>
+                        <li><a href="/gallery">Gallery</a></li>
+                        <li><a href="/events">Events</a></li>
+                        <li><a href="/sankalp-sathi">Sankalp Sathi</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="https://wa.me/91XXXXXXXXXX" target="_blank">WhatsApp</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>Connect</h4>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook">📘</a>
+                        <a href="#" aria-label="YouTube">▶️</a>
+                        <a href="#" aria-label="Instagram">📷</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Sankalp Digital Pathshala. All rights reserved. Built with ❤️ using AI.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/assets/app.js"></script>
+</body>
+</html>
