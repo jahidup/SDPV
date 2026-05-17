@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content="AI Learning – Sankalp Digital Pathshala | Instant AI Question Solver">
+    <meta name="description" content="Solve any academic question with AI. Type, snap a photo, or upload a PDF. Get step-by-step explanations in Hindi, English, or Hinglish. No login required.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="AI Learning – Sankalp Digital Pathshala">
+    <meta property="og:description" content="Ask any question – text, image, or PDF. Our Gemini-powered AI explains every step, in your language.">
+    <meta property="og:image" content="https://sankalp-digital-pathshala.vercel.app/assets/og-ai-learning.jpg">
+    <meta property="og:url" content="https://sankalp-digital-pathshala.vercel.app/ai-learning">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://sankalp-digital-pathshala.vercel.app/ai-learning">
+    <title>AI Learning – Sankalp Digital Pathshala</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+</head>
+<body>
+    <!-- Premium Sticky Glass Navbar -->
+    <nav class="navbar glass" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <!-- Logo placeholder – replace src with your actual logo URL -->
+            <a href="/" class="logo" aria-label="Sankalp Digital Pathshala Home">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 80' fill='none'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2338BDF8'/%3E%3Cstop offset='100%25' stop-color='%234F46E5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x='10' y='55' font-family='Arial, sans-serif' font-weight='900' font-size='40' fill='url(%23grad)' letter-spacing='3'%3ESDP%3C/text%3E%3Ctext x='10' y='75' font-family='Arial, sans-serif' font-weight='600' font-size='14' fill='%2338BDF8' letter-spacing='5'%3EDIGITAL PATHSHALA%3C/text%3E%3C/svg%3E"
+                     alt="Sankalp Digital Pathshala – AI-Powered Learning" width="160" height="50">
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/programs">Programs</a></li>
+                <li><a href="/ai-learning" class="active">AI Learning</a></li>
+                <li><a href="/results">Results</a></li>
+                <li><a href="/gallery">Gallery</a></li>
+                <li><a href="/events">Events</a></li>
+                <li><a href="/sankalp-sathi">Sankalp Sathi</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+            <a href="https://wa.me/91XXXXXXXXXX?text=Hi%20Sankalp%20Digital%20Pathshala!" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+                <span class="whatsapp-icon">💬</span> Chat on WhatsApp
+            </a>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">&#9776;</button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- AI Learning Hero -->
+        <section class="page-hero ai-hero">
+            <div class="container">
+                <div class="page-hero-content glass">
+                    <h1 class="gradient-text">Your Personal AI Tutor,<br>Always Ready</h1>
+                    <p class="hero-subtitle">Type any academic question, snap a photo of a problem, or upload a PDF. Our Gemini‑powered solver understands Hindi, English, and Hinglish – and explains every step like a mentor.</p>
+                    <div class="hero-quick-stats">
+                        <span>✅ 24/7 Availability</span>
+                        <span>🧠 Gemini 2.5 Flash</span>
+                        <span>🌐 Multi‑language</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Solver Tool -->
+        <section class="ai-solver-section section-padding">
+            <div class="container">
+                <div class="solver-card glass">
+                    <!-- Input Type Tabs -->
+                    <div class="input-tabs">
+                        <button class="tab-btn active" data-tab="text">📝 Text</button>
+                        <button class="tab-btn" data-tab="image">📷 Image</button>
+                        <button class="tab-btn" data-tab="pdf">📄 PDF</button>
+                    </div>
+
+                    <!-- Text Input -->
+                    <div class="input-area" id="input-text">
+                        <textarea id="questionText" placeholder="Type your question here... (e.g., 'Solve the quadratic equation 2x² - 4x - 6 = 0')" rows="4"></textarea>
+                        <div class="action-row">
+                            <button id="submitText" class="btn-primary">Get Solution</button>
+                        </div>
+                    </div>
+
+                    <!-- Image Input -->
+                    <div class="input-area hidden" id="input-image">
+                        <div class="file-upload-zone" id="imageDropZone">
+                            <span class="upload-icon">🖼️</span>
+                            <p>Drag &amp; drop an image here, or click to browse</p>
+                            <input type="file" id="imageFileInput" accept="image/*" hidden>
+                            <button id="pickImageBtn" class="btn-secondary">Choose Image</button>
+                        </div>
+                        <div class="preview-area" id="imagePreview" style="display:none;">
+                            <img id="imagePreviewImg" src="" alt="Preview" style="max-height:200px; border-radius:12px;">
+                            <button id="removeImageBtn" class="btn-small">✕</button>
+                        </div>
+                        <button id="submitImage" class="btn-primary" style="margin-top:1rem;">Solve from Image</button>
+                    </div>
+
+                    <!-- PDF Input -->
+                    <div class="input-area hidden" id="input-pdf">
+                        <div class="file-upload-zone" id="pdfDropZone">
+                            <span class="upload-icon">📑</span>
+                            <p>Drop a PDF here or click to select (scanned PDFs supported)</p>
+                            <input type="file" id="pdfFileInput" accept=".pdf,application/pdf" hidden>
+                            <button id="pickPdfBtn" class="btn-secondary">Choose PDF</button>
+                        </div>
+                        <div class="preview-area" id="pdfPreview" style="display:none;">
+                            <span id="pdfFileName" class="file-name-display"></span>
+                            <button id="removePdfBtn" class="btn-small">✕</button>
+                        </div>
+                        <button id="submitPdf" class="btn-primary" style="margin-top:1rem;">Solve from PDF</button>
+                    </div>
+
+                    <!-- Loading & Response -->
+                    <div class="response-area" id="responseArea">
+                        <div class="loading-indicator hidden" id="loadingIndicator">
+                            <span class="typing-dots">AI is thinking<span>.</span><span>.</span><span>.</span></span>
+                        </div>
+                        <div class="answer-box" id="answerBox" style="display:none;">
+                            <h3>Solution</h3>
+                            <div class="answer-content" id="answerContent"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Examples -->
+                <div class="quick-examples glass">
+                    <h3>Try these quick examples</h3>
+                    <div class="example-chips">
+                        <button class="example-chip">What is the Pythagorean theorem?</button>
+                        <button class="example-chip">Balance this equation: Fe + Cl₂ → FeCl₃</button>
+                        <button class="example-chip">Explain Newton's second law in simple Hindi</button>
+                        <button class="example-chip">∫ x² dx from 0 to 2</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="contact-cta section-padding">
+            <div class="container">
+                <div class="cta-content glass">
+                    <h2>Need More Help? Talk to Sankalp Sathi</h2>
+                    <p>Our AI mentor can guide you through admissions, course selection, and personalised study plans.</p>
+                    <a href="/sankalp-sathi" class="btn-primary">Chat with Sathi →</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Premium Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 80' fill='none'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2338BDF8'/%3E%3Cstop offset='100%25' stop-color='%234F46E5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x='10' y='55' font-family='Arial, sans-serif' font-weight='900' font-size='40' fill='url(%23grad)' letter-spacing='3'%3ESDP%3C/text%3E%3Ctext x='10' y='75' font-family='Arial, sans-serif' font-weight='600' font-size='14' fill='%2338BDF8' letter-spacing='5'%3EDIGITAL PATHSHALA%3C/text%3E%3C/svg%3E"
+                         alt="Sankalp Digital Pathshala" width="160" height="50" style="filter: brightness(1.2);">
+                    <p class="footer-tagline">Empowering learners through AI and excellence.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/programs">Programs</a></li>
+                        <li><a href="/ai-learning">AI Learning</a></li>
+                        <li><a href="/results">Results</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>More</h4>
+                    <ul>
+                        <li><a href="/gallery">Gallery</a></li>
+                        <li><a href="/events">Events</a></li>
+                        <li><a href="/sankalp-sathi">Sankalp Sathi</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="https://wa.me/91XXXXXXXXXX" target="_blank">WhatsApp</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>Connect</h4>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook">📘</a>
+                        <a href="#" aria-label="YouTube">▶️</a>
+                        <a href="#" aria-label="Instagram">📷</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Sankalp Digital Pathshala. All rights reserved. Built with ❤️ using AI.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/assets/app.js"></script>
+</body>
+</html>
