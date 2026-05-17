@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin Dashboard – Sankalp Digital Pathshala</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚙️</text></svg>">
+    <style>
+        /* Dashboard specific styles – all within style.css but reinforcing here */
+        .dashboard-layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background: rgba(15,23,42,0.8); backdrop-filter: blur(12px); border-right: 1px solid rgba(56,189,248,0.2); padding: 1.5rem 1rem; display: flex; flex-direction: column; }
+        .sidebar-logo { text-align: center; margin-bottom: 2rem; }
+        .sidebar-menu { list-style: none; padding: 0; margin: 0; flex: 1; }
+        .sidebar-menu li { margin-bottom: 0.5rem; }
+        .sidebar-menu li a { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: 12px; color: #cbd5e1; text-decoration: none; transition: all 0.2s; }
+        .sidebar-menu li a:hover, .sidebar-menu li a.active { background: rgba(56,189,248,0.15); color: #38BDF8; }
+        .sidebar-footer { margin-top: auto; }
+        .main-content { flex: 1; padding: 2rem; overflow-y: auto; background: radial-gradient(circle at top right, #0F172A, #020617); }
+        .dashboard-tab { display: none; }
+        .dashboard-tab.active { display: block; }
+        .stat-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-card { padding: 1.5rem; border-radius: 20px; background: rgba(15,23,42,0.6); backdrop-filter: blur(10px); border: 1px solid rgba(56,189,248,0.2); }
+        .stat-card h3 { font-size: 0.9rem; color: #94a3b8; margin-bottom: 0.5rem; }
+        .stat-card .stat-value { font-size: 2rem; font-weight: 700; color: #38BDF8; }
+        .data-table { width: 100%; border-collapse: collapse; background: rgba(15,23,42,0.5); border-radius: 16px; overflow: hidden; }
+        .data-table th { background: rgba(56,189,248,0.1); color: #38BDF8; padding: 0.75rem; text-align: left; }
+        .data-table td { padding: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.05); color: #e2e8f0; }
+        .btn-small { padding: 0.4rem 0.8rem; font-size: 0.8rem; border-radius: 8px; cursor: pointer; background: rgba(56,189,248,0.2); border: none; color: #38BDF8; }
+        .btn-small.danger { background: rgba(239,68,68,0.2); color: #ef4444; }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); align-items: center; justify-content: center; z-index: 1000; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: rgba(15,23,42,0.95); backdrop-filter: blur(20px); border: 1px solid rgba(56,189,248,0.4); border-radius: 24px; padding: 2rem; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; }
+        .modal h2 { margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <a href="/" class="logo">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 80' fill='none'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2338BDF8'/%3E%3Cstop offset='100%25' stop-color='%234F46E5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x='10' y='55' font-family='Arial, sans-serif' font-weight='900' font-size='40' fill='url(%23grad)' letter-spacing='3'%3ESDP%3C/text%3E%3Ctext x='10' y='75' font-family='Arial, sans-serif' font-weight='600' font-size='14' fill='%2338BDF8' letter-spacing='5'%3EDIGITAL PATHSHALA%3C/text%3E%3C/svg%3E"
+                     alt="Sankalp Logo" width="140" height="45">
+            </a>
+        </div>
+        <ul class="sidebar-menu" id="sidebarMenu">
+            <li><a href="#dashboardTab" class="active" data-tab="dashboardTab">📊 Dashboard</a></li>
+            <li><a href="#leadsTab" data-tab="leadsTab">👥 Leads</a></li>
+            <li><a href="#inquiriesTab" data-tab="inquiriesTab">📬 Inquiries</a></li>
+            <li><a href="#resultsTab" data-tab="resultsTab">📋 Results</a></li>
+            <li><a href="#galleryTab" data-tab="galleryTab">🖼️ Gallery</a></li>
+            <li><a href="#eventsTab" data-tab="eventsTab">📅 Events</a></li>
+            <li><a href="#programsTab" data-tab="programsTab">🎓 Programs</a></li>
+            <li><a href="#analyticsTab" data-tab="analyticsTab">📈 Analytics</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <button id="logoutBtn" class="btn-small" style="width:100%;">🔒 Logout</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="dashboardMain">
+        <!-- Dashboard Tab -->
+        <section class="dashboard-tab active" id="dashboardTab">
+            <h2 class="gradient-text">Admin Dashboard Overview</h2>
+            <div class="stat-cards" id="dashboardStats">
+                <!-- filled by JS -->
+            </div>
+        </section>
+
+        <!-- Leads Tab -->
+        <section class="dashboard-tab" id="leadsTab">
+            <h2 class="gradient-text">Lead CRM</h2>
+            <div class="filter-bar" style="margin-bottom:1rem;">
+                <select id="leadStatusFilter">
+                    <option value="all">All Statuses</option>
+                    <option value="pending">Pending</option>
+                    <option value="contacted">Contacted</option>
+                    <option value="converted">Converted</option>
+                </select>
+            </div>
+            <table class="data-table" id="leadsTable">
+                <thead><tr><th>Name</th><th>Class</th><th>Interest</th><th>Phone</th><th>Lead Score</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <!-- Inquiries Tab -->
+        <section class="dashboard-tab" id="inquiriesTab">
+            <h2 class="gradient-text">Contact Inquiries</h2>
+            <div class="filter-bar">
+                <select id="inquiryStatusFilter">
+                    <option value="all">All</option>
+                    <option value="new">New</option>
+                    <option value="contacted">Contacted</option>
+                    <option value="closed">Closed</option>
+                </select>
+            </div>
+            <table class="data-table" id="inquiriesTable">
+                <thead><tr><th>Name</th><th>Email</th><th>Subject</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <!-- Results Tab -->
+        <section class="dashboard-tab" id="resultsTab">
+            <h2 class="gradient-text">Result Manager</h2>
+            <button id="addResultBtn" class="btn-primary" style="margin-bottom:1rem;">+ Add New Result</button>
+            <table class="data-table" id="resultsTable">
+                <thead><tr><th>Reg No</th><th>Student</th><th>Class</th><th>Percentage</th><th>Published</th><th>Actions</th></tr></thead>
+                <tbody></tbody>
+            </table>
+            <!-- Modal for Add/Edit Result -->
+            <div class="modal-overlay" id="resultModalOverlay">
+                <div class="modal" id="resultModal">
+                    <h2 id="resultModalTitle">Add Result</h2>
+                    <form id="resultForm">
+                        <input type="hidden" id="resultId">
+                        <div class="form-group"><label>Registration No</label><input id="resRegNo" required></div>
+                        <div class="form-group"><label>Student Name</label><input id="resStudentName" required></div>
+                        <div class="form-group"><label>Father's Name</label><input id="resFatherName" required></div>
+                        <div class="form-group"><label>DOB</label><input type="date" id="resDob" required></div>
+                        <div class="form-group"><label>Class</label><input id="resClass" required></div>
+                        <div class="form-group"><label>Session</label><input id="resSession" required></div>
+                        <div class="form-group"><label>Subjects (JSON array: [{"subject":"Maths","marksObtained":90,"maxMarks":100}])</label><textarea id="resSubjects" rows="3" required></textarea></div>
+                        <div class="form-group"><label>Percentage</label><input type="number" id="resPercentage" step="0.01" required></div>
+                        <div class="form-group"><label>Grade</label><input id="resGrade" required></div>
+                        <div class="form-group"><label>Remarks</label><input id="resRemarks"></div>
+                        <div class="form-group"><label>Published</label><input type="checkbox" id="resPublished"></div>
+                        <div class="form-group"><label>Issue Date</label><input type="date" id="resIssueDate"></div>
+                        <button type="submit" class="btn-primary">Save</button>
+                        <button type="button" class="btn-small close-modal">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Tab -->
+        <section class="dashboard-tab" id="galleryTab">
+            <h2 class="gradient-text">Gallery Manager</h2>
+            <form id="galleryUploadForm" class="glass" style="padding:1rem; margin-bottom:1rem;">
+                <input type="file" id="galleryImageInput" accept="image/*" required>
+                <input type="text" id="galleryCaption" placeholder="Caption" style="margin:0 1rem;">
+                <button type="submit" class="btn-primary">Upload</button>
+            </form>
+            <div class="gallery-grid" id="adminGalleryGrid"></div>
+        </section>
+
+        <!-- Events Tab -->
+        <section class="dashboard-tab" id="eventsTab">
+            <h2 class="gradient-text">Events Manager</h2>
+            <button id="addEventBtn" class="btn-primary">+ Add Event</button>
+            <div id="eventsList" style="margin-top:1rem;"></div>
+            <div class="modal-overlay" id="eventModalOverlay">
+                <div class="modal">
+                    <h2 id="eventModalTitle">Add Event</h2>
+                    <form id="eventForm">
+                        <input type="hidden" id="eventId">
+                        <div class="form-group"><label>Title</label><input id="evTitle" required></div>
+                        <div class="form-group"><label>Description</label><textarea id="evDesc" rows="3"></textarea></div>
+                        <div class="form-group"><label>Date</label><input type="date" id="evDate" required></div>
+                        <div class="form-group"><label>Image</label><input type="file" id="evImage" accept="image/*"></div>
+                        <button type="submit" class="btn-primary">Save</button>
+                        <button type="button" class="btn-small close-modal">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Programs Tab -->
+        <section class="dashboard-tab" id="programsTab">
+            <h2 class="gradient-text">Programs Manager</h2>
+            <button id="addProgramBtn" class="btn-primary">+ Add Program</button>
+            <div id="programsList" style="margin-top:1rem;"></div>
+            <div class="modal-overlay" id="programModalOverlay">
+                <div class="modal">
+                    <h2 id="programModalTitle">Add Program</h2>
+                    <form id="programForm">
+                        <input type="hidden" id="programId">
+                        <div class="form-group"><label>Title</label><input id="progTitle" required></div>
+                        <div class="form-group"><label>Category</label><select id="progCategory"><option>Foundation</option><option>Academic Excellence</option><option>Senior Secondary</option><option>Competitive</option><option>Future Skills</option></select></div>
+                        <div class="form-group"><label>Description</label><textarea id="progDesc" rows="3"></textarea></div>
+                        <div class="form-group"><label>Features (comma separated)</label><input id="progFeatures"></div>
+                        <div class="form-group"><label>Image URL</label><input id="progImage"></div>
+                        <button type="submit" class="btn-primary">Save</button>
+                        <button type="button" class="btn-small close-modal">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Tab -->
+        <section class="dashboard-tab" id="analyticsTab">
+            <h2 class="gradient-text">AI Analytics</h2>
+            <div class="glass" style="padding:2rem; text-align:center;">
+                <p>Advanced analytics will be displayed here. (Coming soon)</p>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="/assets/app.js"></script>
+</body>
+</html>
