@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const hamburger = document.getElementById('hamburger');
   const navLinks = document.getElementById('navLinks');
   if (hamburger && navLinks) {
-    // Remove any existing listeners to avoid duplicates
+    // Remove any existing listeners by replacing the element
     const newHamburger = hamburger.cloneNode(true);
     hamburger.parentNode.replaceChild(newHamburger, hamburger);
     newHamburger.addEventListener('click', function(e) {
@@ -333,7 +333,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // ---------- SANKALP SATHI CHATBOT (now powered by OpenRouter on backend) ----------
+  // ---------- SANKALP SATHI CHATBOT (now powered by backend) ----------
   const chatMessages = document.getElementById('chatMessages');
   const chatInput = document.getElementById('chatInput');
   const sendBtn = document.getElementById('sendMessageBtn');
@@ -591,12 +591,313 @@ document.addEventListener('DOMContentLoaded', function () {
       } catch (err) { console.error(err); }
     }
 
-    // Inquiries, Leads, Results, Gallery, Events, Programs admin CRUD (full implementations kept from previous)
-    // ... (all previous admin functions remain unchanged and fully working)
-    // (I'll include them for completeness, but they are large; I'll include the full code in final answer)
+    // --- INQUIRIES ---
+    async function loadInquiries() {
+      const tbody = document.querySelector('#inquiriesTable tbody');
+      const filter = document.getElementById('inquiryStatusFilter').value;
+      const res = await fetch('/api/admin/inquiries');
+      let inquiries = await res.json();
+      if (filter !== 'all') inquiries = inquiries.filter(i => i.status === filter);
+      tbody.innerHTML = inquiries.map(i => `
+        <tr>
+          <td>${i.fullName}</td><td>${i.email}</td><td>${i.subject}</td>
+          <td>${i.status}</td><td>${formatDate(i.createdAt)}</td>
+          <td>
+            <select class="status-select" data-id="${i._id}">
+              <option ${i.status==='new'?'selected':''}>new</option>
+              <option ${i.status==='contacted'?'selected':''}>contacted</option>
+              <option ${i.status==='closed'?'selected':''}>closed</option>
+            </select>
+            <button class="btn-sm btn-danger delete-inquiry" data-id="${i._id}">🗑️</button>
+          </td>
+        </tr>
+      `).join('');
+      document.querySelectorAll('.status-select').forEach(select => {
+        select.addEventListener('change', async () => {
+          await fetch(`/api/admin/inquiries/${select.dataset.id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: select.value })
+          });
+          loadInquiries();
+        });
+      });
+      document.querySelectorAll('.delete-inquiry').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          if (confirm('Delete?')) {
+            await fetch(`/api/admin/inquiries/${btn.dataset.id}`, { method: 'DELETE' });
+            loadInquiries();
+          }
+        });
+      });
+    }
+    document.getElementById('inquiryStatusFilter')?.addEventListener('change', loadInquiries);
+
+    // --- LEADS ---
+    async function loadLeads() {
+      const tbody = document.querySelector('#leadsTable tbody');
+      const filter = document.getElementById('leadStatusFilter').value;
+      const res = await fetch('/api/admin/leads');
+      if (!res.ok) { tbody.innerHTML = '<tr><td colspan="7">No lead data</td></tr>'; return; }
+      let leads = await res.json();
+      if (filter !== 'all') leads = leads.filter(l => l.status === filter);
+      tbody.innerHTML = leads.map(l => `
+        <tr>
+          <td>${l.firstName}</td><td>${l.class}</td><td>${l.interest}</td>
+          <td>${l.phone}</td><td>${l.leadScore}</td><td>${l.status}</td>
+          <td>
+            <select class="lead-status-select" data-id="${l._id}">
+              <option ${l.status==='pending'?'selected':''}>pending</option>
+              <option ${l.status==='contacted'?'selected':''}>contacted</option>
+              <option ${l.status==='converted'?'selected':''}>converted</option>
+            </select>
+            <button class="btn-sm btn-danger delete-lead" data-id="${l._id}">🗑️</button>
+          </td>
+        </tr>
+      `).join('');
+      document.querySelectorAll('.lead-status-select').forEach(select => {
+        select.addEventListener('change', async () => {
+          await fetch(`/api/admin/leads/${select.dataset.id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: select.value })
+          });
+          loadLeads();
+        });
+      });
+      document.querySelectorAll('.delete-lead').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          if (confirm('Delete?')) {
+            await fetch(`/api/admin/leads/${btn.dataset.id}`, { method: 'DELETE' });
+            loadLeads();
+          }
+        });
+      });
+    }
+    document.getElementById('leadStatusFilter')?.addEventListener('change', loadLeads);
+
+    // --- RESULTS CRUD ---
+    async function loadResults() {
+      const tbody = document.querySelector('#resultsTable tbody');
+      const res = await fetch('/api/admin/results');
+      const results = await res.json();
+      tbody.innerHTML = results.map(r => `
+        <tr>
+          <td>${r.registrationNumber}</td><td>${r.studentName}</td><td>${r.class}</td>
+          <td>${r.percentage}%</td><td>${r.published ? '✅' : '❌'}</td>
+          <td>
+            <button class="btn-sm btn-edit edit-result" data-id="${r._id}">✏️</button>
+            <button class="btn-sm btn-danger delete-result" data-id="${r._id}">🗑️</button>
+          </td>
+        </tr>
+      `).join('');
+      document.querySelectorAll('.edit-result').forEach(btn => btn.addEventListener('click', () => editResult(btn.dataset.id)));
+      document.querySelectorAll('.delete-result').forEach(btn => btn.addEventListener('click', () => {
+        if (confirm('Delete?')) {
+          fetch(`/api/admin/results/${btn.dataset.id}`, { method: 'DELETE' }).then(loadResults);
+        }
+      }));
+    }
+    document.getElementById('addResultBtn')?.addEventListener('click', () => {
+      document.getElementById('resultModalTitle').textContent = 'Add Result';
+      document.getElementById('resultId').value = '';
+      document.getElementById('resultForm').reset();
+      document.getElementById('resultModalOverlay').classList.add('active');
+    });
+    document.getElementById('resultForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('resultId').value;
+      const data = {
+        registrationNumber: document.getElementById('resRegNo').value,
+        studentName: document.getElementById('resStudentName').value,
+        fatherName: document.getElementById('resFatherName').value,
+        dob: document.getElementById('resDob').value,
+        class: document.getElementById('resClass').value,
+        session: document.getElementById('resSession').value,
+        subjects: JSON.parse(document.getElementById('resSubjects').value),
+        percentage: parseFloat(document.getElementById('resPercentage').value),
+        grade: document.getElementById('resGrade').value,
+        remarks: document.getElementById('resRemarks').value,
+        published: document.getElementById('resPublished').checked,
+        issueDate: document.getElementById('resIssueDate').value || new Date().toISOString().split('T')[0]
+      };
+      const method = id ? 'PUT' : 'POST';
+      const url = id ? `/api/admin/results/${id}` : '/api/admin/results';
+      await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      document.getElementById('resultModalOverlay').classList.remove('active');
+      loadResults();
+    });
+    document.querySelectorAll('.close-modal').forEach(btn => btn.addEventListener('click', () => {
+      document.querySelectorAll('.modal-overlay').forEach(o => o.classList.remove('active'));
+    }));
+    async function editResult(id) {
+      const res = await fetch('/api/admin/results');
+      const results = await res.json();
+      const r = results.find(r => r._id === id);
+      if (!r) return;
+      document.getElementById('resultModalTitle').textContent = 'Edit Result';
+      document.getElementById('resultId').value = r._id;
+      document.getElementById('resRegNo').value = r.registrationNumber;
+      document.getElementById('resStudentName').value = r.studentName;
+      document.getElementById('resFatherName').value = r.fatherName;
+      document.getElementById('resDob').value = new Date(r.dob).toISOString().split('T')[0];
+      document.getElementById('resClass').value = r.class;
+      document.getElementById('resSession').value = r.session;
+      document.getElementById('resSubjects').value = JSON.stringify(r.subjects);
+      document.getElementById('resPercentage').value = r.percentage;
+      document.getElementById('resGrade').value = r.grade;
+      document.getElementById('resRemarks').value = r.remarks || '';
+      document.getElementById('resPublished').checked = r.published;
+      document.getElementById('resIssueDate').value = new Date(r.issueDate).toISOString().split('T')[0];
+      document.getElementById('resultModalOverlay').classList.add('active');
+    }
+
+    // --- GALLERY ADMIN ---
+    document.getElementById('galleryUploadForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const file = document.getElementById('galleryImageInput').files[0];
+      const caption = document.getElementById('galleryCaption').value;
+      const formData = new FormData();
+      formData.append('image', file);
+      formData.append('caption', caption);
+      await fetch('/api/admin/gallery', { method: 'POST', body: formData });
+      loadGalleryAdmin();
+    });
+    async function loadGalleryAdmin() {
+      const grid = document.getElementById('adminGalleryGrid');
+      const res = await fetch('/api/admin/gallery');
+      const items = await res.json();
+      grid.innerHTML = items.map(item => `
+        <div class="gallery-admin-item">
+          <img src="${item.imageUrl}" alt="${item.caption}">
+          <button class="delete-btn" data-id="${item._id}">🗑️</button>
+        </div>
+      `).join('');
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          if (confirm('Delete?')) {
+            await fetch(`/api/admin/gallery/${btn.dataset.id}`, { method: 'DELETE' });
+            loadGalleryAdmin();
+          }
+        });
+      });
+    }
+
+    // --- EVENTS ADMIN ---
+    document.getElementById('addEventBtn')?.addEventListener('click', () => {
+      document.getElementById('eventModalTitle').textContent = 'Add Event';
+      document.getElementById('eventId').value = '';
+      document.getElementById('eventForm').reset();
+      document.getElementById('eventModalOverlay').classList.add('active');
+    });
+    document.getElementById('eventForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('eventId').value;
+      const formData = new FormData();
+      formData.append('title', document.getElementById('evTitle').value);
+      formData.append('description', document.getElementById('evDesc').value);
+      formData.append('date', document.getElementById('evDate').value);
+      const imgFile = document.getElementById('evImage').files[0];
+      if (imgFile) formData.append('image', imgFile);
+      const url = id ? `/api/admin/events/${id}` : '/api/admin/events';
+      await fetch(url, { method: id ? 'PUT' : 'POST', body: formData });
+      document.getElementById('eventModalOverlay').classList.remove('active');
+      loadEventsAdmin();
+    });
+    async function loadEventsAdmin() {
+      const list = document.getElementById('eventsList');
+      const res = await fetch('/api/admin/events');
+      const events = await res.json();
+      list.innerHTML = events.map(e => `
+        <div class="card" style="padding:1rem; margin-bottom:0.5rem; display:flex; justify-content:space-between;">
+          <div><strong>${e.title}</strong> - ${formatDate(e.date)}</div>
+          <div>
+            <button class="btn-sm btn-edit edit-event" data-id="${e._id}">✏️</button>
+            <button class="btn-sm btn-danger delete-event" data-id="${e._id}">🗑️</button>
+          </div>
+        </div>
+      `).join('');
+      document.querySelectorAll('.edit-event').forEach(btn => btn.addEventListener('click', async () => {
+        const res = await fetch('/api/admin/events');
+        const events = await res.json();
+        const ev = events.find(e => e._id === btn.dataset.id);
+        document.getElementById('eventModalTitle').textContent = 'Edit Event';
+        document.getElementById('eventId').value = ev._id;
+        document.getElementById('evTitle').value = ev.title;
+        document.getElementById('evDesc').value = ev.description;
+        document.getElementById('evDate').value = new Date(ev.date).toISOString().split('T')[0];
+        document.getElementById('eventModalOverlay').classList.add('active');
+      }));
+      document.querySelectorAll('.delete-event').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          if (confirm('Delete?')) {
+            await fetch(`/api/admin/events/${btn.dataset.id}`, { method: 'DELETE' });
+            loadEventsAdmin();
+          }
+        });
+      });
+    }
+
+    // --- PROGRAMS ADMIN ---
+    document.getElementById('addProgramBtn')?.addEventListener('click', () => {
+      document.getElementById('programModalTitle').textContent = 'Add Program';
+      document.getElementById('programId').value = '';
+      document.getElementById('programForm').reset();
+      document.getElementById('programModalOverlay').classList.add('active');
+    });
+    document.getElementById('programForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('programId').value;
+      const data = {
+        title: document.getElementById('progTitle').value,
+        category: document.getElementById('progCategory').value,
+        description: document.getElementById('progDesc').value,
+        features: document.getElementById('progFeatures').value.split(',').map(s => s.trim()).filter(Boolean),
+        image: document.getElementById('progImage').value
+      };
+      const url = id ? `/api/admin/programs/${id}` : '/api/admin/programs';
+      await fetch(url, { method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      document.getElementById('programModalOverlay').classList.remove('active');
+      loadProgramsAdmin();
+    });
+    async function loadProgramsAdmin() {
+      const list = document.getElementById('programsList');
+      const res = await fetch('/api/admin/programs');
+      const programs = await res.json();
+      list.innerHTML = programs.map(p => `
+        <div class="card" style="padding:1rem; margin-bottom:0.5rem; display:flex; justify-content:space-between;">
+          <div><strong>${p.title}</strong> (${p.category})</div>
+          <div>
+            <button class="btn-sm btn-edit edit-program" data-id="${p._id}">✏️</button>
+            <button class="btn-sm btn-danger delete-program" data-id="${p._id}">🗑️</button>
+          </div>
+        </div>
+      `).join('');
+      document.querySelectorAll('.edit-program').forEach(btn => btn.addEventListener('click', async () => {
+        const res = await fetch('/api/admin/programs');
+        const programs = await res.json();
+        const pr = programs.find(p => p._id === btn.dataset.id);
+        document.getElementById('programModalTitle').textContent = 'Edit Program';
+        document.getElementById('programId').value = pr._id;
+        document.getElementById('progTitle').value = pr.title;
+        document.getElementById('progCategory').value = pr.category;
+        document.getElementById('progDesc').value = pr.description;
+        document.getElementById('progFeatures').value = pr.features.join(', ');
+        document.getElementById('progImage').value = pr.image || '';
+        document.getElementById('programModalOverlay').classList.add('active');
+      }));
+      document.querySelectorAll('.delete-program').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          if (confirm('Delete?')) {
+            await fetch(`/api/admin/programs/${btn.dataset.id}`, { method: 'DELETE' });
+            loadProgramsAdmin();
+          }
+        });
+      });
+    }
   }
 
-  // ---------- PUBLIC GALLERY LIGHTBOX (static version) ----------
+  // ---------- PUBLIC GALLERY LIGHTBOX ----------
   const galleryItems = document.querySelectorAll('#galleryGrid .gallery-item');
   if (galleryItems.length) {
     let currentIndex = 0;
@@ -643,7 +944,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // ---------- PUBLIC EVENTS (dynamic or static) ----------
+  // ---------- PUBLIC EVENTS ----------
   const eventsGrid = document.getElementById('eventsGrid');
   if (eventsGrid) {
     fetch('/api/public/events')
@@ -687,5 +988,4 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
   }
-
 });
