@@ -1,6 +1,4 @@
-/* ======================== app.js – FINAL PREMIUM FRONTEND (v9) ======================== */
-/* Handles all pages, mobile nav, forms, chat, admin, animations, etc. */
-
+/* ======================== app.js – FINAL FIXED VERSION (v10) ======================== */
 document.addEventListener('DOMContentLoaded', function () {
   // ---------- UTILS ----------
   const API_BASE = '';
@@ -29,23 +27,19 @@ document.addEventListener('DOMContentLoaded', function () {
     return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
   }
 
-  // ---------- MOBILE NAV (FIXED) ----------
+  // ---------- MOBILE NAV (FIXED – works on every page) ----------
   const hamburger = document.getElementById('hamburger');
   const navLinks = document.getElementById('navLinks');
+
   if (hamburger && navLinks) {
-    // Remove any existing listeners by replacing the element
-    const newHamburger = hamburger.cloneNode(true);
-    hamburger.parentNode.replaceChild(newHamburger, hamburger);
-    newHamburger.addEventListener('click', function(e) {
+    hamburger.addEventListener('click', function (e) {
       e.stopPropagation();
       navLinks.classList.toggle('active');
     });
-  } else {
-    console.warn('Hamburger or navLinks element missing on this page');
   }
 
   // Close nav when clicking outside
-  document.addEventListener('click', function(e) {
+  document.addEventListener('click', function (e) {
     if (navLinks && !e.target.closest('.navbar')) {
       navLinks.classList.remove('active');
     }
@@ -141,32 +135,25 @@ document.addEventListener('DOMContentLoaded', function () {
     statNumbers.forEach(el => observer.observe(el));
   }
 
-  // Testimonials slider (simple auto rotation)
+  // Testimonials slider
   const carousel = document.getElementById('testimonialCarousel');
   if (carousel) {
     const cards = carousel.querySelectorAll('.testimonial-card');
     if (cards.length > 1) {
       let current = 0;
-      const show = (idx) => {
-        cards.forEach((c, i) => c.style.display = i === idx ? 'block' : 'none');
-      };
+      const show = (idx) => { cards.forEach((c, i) => c.style.display = i === idx ? 'block' : 'none'); };
       show(0);
-      setInterval(() => {
-        current = (current + 1) % cards.length;
-        show(current);
-      }, 4000);
+      setInterval(() => { current = (current + 1) % cards.length; show(current); }, 4000);
     }
   }
 
   // ---------- FAQ ACCORDION ----------
   document.querySelectorAll('.faq-item .faq-question').forEach(btn => {
-    btn.addEventListener('click', function() {
+    btn.addEventListener('click', function () {
       const item = this.closest('.faq-item');
-      const isActive = item.classList.contains('active');
-      // Close all siblings
       const parent = item.parentElement;
       parent.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
-      if (!isActive) item.classList.add('active');
+      if (!item.classList.contains('active')) item.classList.add('active');
     });
   });
 
@@ -187,11 +174,7 @@ document.addEventListener('DOMContentLoaded', function () {
       feedback.textContent = 'Sending...';
       feedback.style.color = 'var(--slate)';
       try {
-        const res = await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
+        const res = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
         const result = await res.json();
         if (result.success) {
           feedback.textContent = 'Thank you! We will get back to you soon.';
@@ -213,13 +196,12 @@ document.addEventListener('DOMContentLoaded', function () {
   if (newsletterForm) {
     newsletterForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const email = newsletterForm.querySelector('input[type="email"]').value;
       showToast('Subscribed successfully!');
       newsletterForm.reset();
     });
   }
 
-  // ---------- AI SOLVER (text, image, PDF) ----------
+  // ---------- AI SOLVER ----------
   const solverTabs = document.querySelectorAll('.solver-tab-btn');
   const inputText = document.getElementById('input-text');
   const inputImage = document.getElementById('input-image');
@@ -240,7 +222,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Image upload handling
   const imageFileInput = document.getElementById('imageFileInput');
   const pickImageBtn = document.getElementById('pickImageBtn');
   const imagePreview = document.getElementById('imagePreview');
@@ -251,20 +232,13 @@ document.addEventListener('DOMContentLoaded', function () {
     imageFileInput.addEventListener('change', (e) => {
       if (e.target.files[0]) {
         const reader = new FileReader();
-        reader.onload = (ev) => {
-          imagePreviewImg.src = ev.target.result;
-          imagePreview.style.display = 'block';
-        };
+        reader.onload = (ev) => { imagePreviewImg.src = ev.target.result; imagePreview.style.display = 'block'; };
         reader.readAsDataURL(e.target.files[0]);
       }
     });
-    removeImageBtn?.addEventListener('click', () => {
-      imageFileInput.value = '';
-      imagePreview.style.display = 'none';
-    });
+    removeImageBtn?.addEventListener('click', () => { imageFileInput.value = ''; imagePreview.style.display = 'none'; });
   }
 
-  // PDF handling
   const pdfFileInput = document.getElementById('pdfFileInput');
   const pickPdfBtn = document.getElementById('pickPdfBtn');
   const pdfPreview = document.getElementById('pdfPreview');
@@ -273,15 +247,9 @@ document.addEventListener('DOMContentLoaded', function () {
   if (pickPdfBtn) {
     pickPdfBtn.addEventListener('click', () => pdfFileInput.click());
     pdfFileInput.addEventListener('change', (e) => {
-      if (e.target.files[0]) {
-        pdfFileName.textContent = e.target.files[0].name;
-        pdfPreview.style.display = 'block';
-      }
+      if (e.target.files[0]) { pdfFileName.textContent = e.target.files[0].name; pdfPreview.style.display = 'block'; }
     });
-    removePdfBtn?.addEventListener('click', () => {
-      pdfFileInput.value = '';
-      pdfPreview.style.display = 'none';
-    });
+    removePdfBtn?.addEventListener('click', () => { pdfFileInput.value = ''; pdfPreview.style.display = 'none'; });
   }
 
   async function solveQuestion(type) {
@@ -316,16 +284,13 @@ document.addEventListener('DOMContentLoaded', function () {
     } catch (err) {
       answerContent.textContent = 'Network error. Please try again.';
       answerBox.style.display = 'block';
-    } finally {
-      loadingIndicator?.classList.add('hidden');
-    }
+    } finally { loadingIndicator?.classList.add('hidden'); }
   }
 
   document.getElementById('submitText')?.addEventListener('click', () => solveQuestion('text'));
   document.getElementById('submitImage')?.addEventListener('click', () => solveQuestion('image'));
   document.getElementById('submitPdf')?.addEventListener('click', () => solveQuestion('pdf'));
 
-  // Quick example chips
   document.querySelectorAll('.example-chip').forEach(chip => {
     chip.addEventListener('click', () => {
       document.getElementById('questionText').value = chip.textContent;
@@ -333,7 +298,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // ---------- SANKALP SATHI CHATBOT (now powered by backend) ----------
+  // ---------- SANKALP SATHI CHATBOT ----------
   const chatMessages = document.getElementById('chatMessages');
   const chatInput = document.getElementById('chatInput');
   const sendBtn = document.getElementById('sendMessageBtn');
@@ -357,18 +322,12 @@ document.addEventListener('DOMContentLoaded', function () {
       chatInput.value = '';
       showTyping();
       try {
-        const res = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: msg })
-        });
+        const res = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg }) });
         const data = await res.json();
         hideTyping();
         addMessage(data.reply || 'Sorry, I did not understand that.', 'bot');
         if (data.reply && (data.reply.includes('share your details') || data.reply.includes('contact you'))) {
-          setTimeout(() => {
-            document.getElementById('leadCaptureCard')?.classList.remove('hidden');
-          }, 2000);
+          setTimeout(() => document.getElementById('leadCaptureCard')?.classList.remove('hidden'), 2000);
         }
       } catch (err) {
         hideTyping();
@@ -379,15 +338,10 @@ document.addEventListener('DOMContentLoaded', function () {
     sendBtn.addEventListener('click', sendMessage);
     chatInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') sendMessage(); });
 
-    // Quick prompts
     document.querySelectorAll('.prompt-chip').forEach(chip => {
-      chip.addEventListener('click', () => {
-        chatInput.value = chip.textContent;
-        sendMessage();
-      });
+      chip.addEventListener('click', () => { chatInput.value = chip.textContent; sendMessage(); });
     });
 
-    // Lead capture form
     const leadForm = document.getElementById('leadCaptureForm');
     if (leadForm) {
       leadForm.addEventListener('submit', async (e) => {
@@ -402,19 +356,13 @@ document.addEventListener('DOMContentLoaded', function () {
           email: document.getElementById('leadEmail').value
         };
         try {
-          const res = await fetch('/api/lead', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-          });
+          const res = await fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
           const result = await res.json();
           if (result.success) {
             document.getElementById('leadFeedback').textContent = 'Thank you! Our team will reach out soon.';
             document.getElementById('leadFeedback').classList.remove('hidden');
             leadForm.reset();
-          } else {
-            alert('Submission failed: ' + (result.error || 'Unknown error'));
-          }
+          } else alert('Submission failed: ' + (result.error || 'Unknown error'));
         } catch (err) { alert('Network error.'); }
       });
     }
@@ -430,11 +378,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const errorDiv = document.getElementById('formError');
       errorDiv.classList.add('hidden');
       try {
-        const res = await fetch('/api/result/check', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ registrationNumber: regNumber, dob })
-        });
+        const res = await fetch('/api/result/check', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ registrationNumber: regNumber, dob }) });
         const data = await res.json();
         if (data.success && data.result) {
           displayMarksheet(data.result);
@@ -471,7 +415,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // ---------- ENROLL FORM ----------
   const enrollForm = document.getElementById('enrollForm');
   if (enrollForm) {
-    enrollForm.addEventListener('submit', async function(e) {
+    enrollForm.addEventListener('submit', async function (e) {
       e.preventDefault();
       const feedback = document.getElementById('enrollFeedback');
       feedback.style.display = 'block';
@@ -485,11 +429,7 @@ document.addEventListener('DOMContentLoaded', function () {
         message: `Class: ${document.getElementById('studentClass').value}\nParent: ${document.getElementById('parentName').value || 'N/A'}\nCity: ${document.getElementById('city').value || 'N/A'}\nAdditional: ${document.getElementById('enrollMessage').value || 'None'}`
       };
       try {
-        const res = await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
+        const res = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
         const result = await res.json();
         if (result.success) {
           feedback.textContent = 'Enrollment submitted! We will contact you within 2-4 hours.';
@@ -515,22 +455,11 @@ document.addEventListener('DOMContentLoaded', function () {
       const password = document.getElementById('adminPassword').value;
       const errorEl = document.getElementById('loginError');
       try {
-        const res = await fetch('/api/admin/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
-        });
+        const res = await fetch('/api/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) });
         const data = await res.json();
-        if (data.success) {
-          window.location.href = '/admin-dashboard';
-        } else {
-          errorEl.textContent = data.error || 'Login failed';
-          errorEl.style.display = 'block';
-        }
-      } catch (err) {
-        errorEl.textContent = 'Network error';
-        errorEl.style.display = 'block';
-      }
+        if (data.success) window.location.href = '/admin-dashboard';
+        else { errorEl.textContent = data.error || 'Login failed'; errorEl.style.display = 'block'; }
+      } catch (err) { errorEl.textContent = 'Network error'; errorEl.style.display = 'block'; }
     });
   }
 
@@ -540,13 +469,10 @@ document.addEventListener('DOMContentLoaded', function () {
     fetch('/api/admin/check-auth')
       .then(res => res.json())
       .then(data => {
-        if (!data.authenticated) {
-          window.location.href = '/admin-login';
-          return;
-        }
+        if (!data.authenticated) { window.location.href = '/admin-login'; return; }
         initDashboard();
       })
-      .catch(() => window.location.href = '/admin-login');
+      .catch(() => { window.location.href = '/admin-login'; });
 
     function initDashboard() {
       const sidebarLinks = document.querySelectorAll('#sidebarMenu a[data-tab]');
@@ -591,112 +517,108 @@ document.addEventListener('DOMContentLoaded', function () {
       } catch (err) { console.error(err); }
     }
 
-    // --- INQUIRIES ---
     async function loadInquiries() {
       const tbody = document.querySelector('#inquiriesTable tbody');
+      if (!tbody) return;
       const filter = document.getElementById('inquiryStatusFilter').value;
-      const res = await fetch('/api/admin/inquiries');
-      let inquiries = await res.json();
-      if (filter !== 'all') inquiries = inquiries.filter(i => i.status === filter);
-      tbody.innerHTML = inquiries.map(i => `
-        <tr>
-          <td>${i.fullName}</td><td>${i.email}</td><td>${i.subject}</td>
-          <td>${i.status}</td><td>${formatDate(i.createdAt)}</td>
-          <td>
-            <select class="status-select" data-id="${i._id}">
-              <option ${i.status==='new'?'selected':''}>new</option>
-              <option ${i.status==='contacted'?'selected':''}>contacted</option>
-              <option ${i.status==='closed'?'selected':''}>closed</option>
-            </select>
-            <button class="btn-sm btn-danger delete-inquiry" data-id="${i._id}">🗑️</button>
-          </td>
-        </tr>
-      `).join('');
-      document.querySelectorAll('.status-select').forEach(select => {
-        select.addEventListener('change', async () => {
-          await fetch(`/api/admin/inquiries/${select.dataset.id}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status: select.value })
-          });
-          loadInquiries();
-        });
-      });
-      document.querySelectorAll('.delete-inquiry').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          if (confirm('Delete?')) {
-            await fetch(`/api/admin/inquiries/${btn.dataset.id}`, { method: 'DELETE' });
+      try {
+        const res = await fetch('/api/admin/inquiries');
+        let inquiries = await res.json();
+        if (filter !== 'all') inquiries = inquiries.filter(i => i.status === filter);
+        if (inquiries.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6">No inquiries found.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = inquiries.map(i => `
+          <tr>
+            <td>${i.fullName}</td><td>${i.email}</td><td>${i.subject}</td>
+            <td>${i.status}</td><td>${formatDate(i.createdAt)}</td>
+            <td>
+              <select class="status-select" data-id="${i._id}">
+                <option ${i.status==='new'?'selected':''}>new</option>
+                <option ${i.status==='contacted'?'selected':''}>contacted</option>
+                <option ${i.status==='closed'?'selected':''}>closed</option>
+              </select>
+              <button class="btn-sm btn-danger delete-inquiry" data-id="${i._id}">🗑️</button>
+            </td>
+          </tr>
+        `).join('');
+        document.querySelectorAll('.status-select').forEach(select => {
+          select.addEventListener('change', async () => {
+            await fetch(`/api/admin/inquiries/${select.dataset.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: select.value }) });
             loadInquiries();
-          }
+          });
         });
-      });
+        document.querySelectorAll('.delete-inquiry').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            if (confirm('Delete?')) { await fetch(`/api/admin/inquiries/${btn.dataset.id}`, { method: 'DELETE' }); loadInquiries(); }
+          });
+        });
+      } catch (err) { console.error(err); }
     }
     document.getElementById('inquiryStatusFilter')?.addEventListener('change', loadInquiries);
 
-    // --- LEADS ---
     async function loadLeads() {
       const tbody = document.querySelector('#leadsTable tbody');
+      if (!tbody) return;
       const filter = document.getElementById('leadStatusFilter').value;
-      const res = await fetch('/api/admin/leads');
-      if (!res.ok) { tbody.innerHTML = '<tr><td colspan="7">No lead data</td></tr>'; return; }
-      let leads = await res.json();
-      if (filter !== 'all') leads = leads.filter(l => l.status === filter);
-      tbody.innerHTML = leads.map(l => `
-        <tr>
-          <td>${l.firstName}</td><td>${l.class}</td><td>${l.interest}</td>
-          <td>${l.phone}</td><td>${l.leadScore}</td><td>${l.status}</td>
-          <td>
-            <select class="lead-status-select" data-id="${l._id}">
-              <option ${l.status==='pending'?'selected':''}>pending</option>
-              <option ${l.status==='contacted'?'selected':''}>contacted</option>
-              <option ${l.status==='converted'?'selected':''}>converted</option>
-            </select>
-            <button class="btn-sm btn-danger delete-lead" data-id="${l._id}">🗑️</button>
-          </td>
-        </tr>
-      `).join('');
-      document.querySelectorAll('.lead-status-select').forEach(select => {
-        select.addEventListener('change', async () => {
-          await fetch(`/api/admin/leads/${select.dataset.id}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status: select.value })
-          });
-          loadLeads();
-        });
-      });
-      document.querySelectorAll('.delete-lead').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          if (confirm('Delete?')) {
-            await fetch(`/api/admin/leads/${btn.dataset.id}`, { method: 'DELETE' });
+      try {
+        const res = await fetch('/api/admin/leads');
+        if (!res.ok) { tbody.innerHTML = '<tr><td colspan="7">Failed to load leads.</td></tr>'; return; }
+        let leads = await res.json();
+        if (filter !== 'all') leads = leads.filter(l => l.status === filter);
+        if (leads.length === 0) { tbody.innerHTML = '<tr><td colspan="7">No leads found.</td></tr>'; return; }
+        tbody.innerHTML = leads.map(l => `
+          <tr>
+            <td>${l.firstName}</td><td>${l.class}</td><td>${l.interest}</td>
+            <td>${l.phone}</td><td>${l.leadScore}</td><td>${l.status}</td>
+            <td>
+              <select class="lead-status-select" data-id="${l._id}">
+                <option ${l.status==='pending'?'selected':''}>pending</option>
+                <option ${l.status==='contacted'?'selected':''}>contacted</option>
+                <option ${l.status==='converted'?'selected':''}>converted</option>
+              </select>
+              <button class="btn-sm btn-danger delete-lead" data-id="${l._id}">🗑️</button>
+            </td>
+          </tr>
+        `).join('');
+        document.querySelectorAll('.lead-status-select').forEach(select => {
+          select.addEventListener('change', async () => {
+            await fetch(`/api/admin/leads/${select.dataset.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: select.value }) });
             loadLeads();
-          }
+          });
         });
-      });
+        document.querySelectorAll('.delete-lead').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            if (confirm('Delete?')) { await fetch(`/api/admin/leads/${btn.dataset.id}`, { method: 'DELETE' }); loadLeads(); }
+          });
+        });
+      } catch (err) { console.error(err); }
     }
     document.getElementById('leadStatusFilter')?.addEventListener('change', loadLeads);
 
-    // --- RESULTS CRUD ---
     async function loadResults() {
       const tbody = document.querySelector('#resultsTable tbody');
-      const res = await fetch('/api/admin/results');
-      const results = await res.json();
-      tbody.innerHTML = results.map(r => `
-        <tr>
-          <td>${r.registrationNumber}</td><td>${r.studentName}</td><td>${r.class}</td>
-          <td>${r.percentage}%</td><td>${r.published ? '✅' : '❌'}</td>
-          <td>
-            <button class="btn-sm btn-edit edit-result" data-id="${r._id}">✏️</button>
-            <button class="btn-sm btn-danger delete-result" data-id="${r._id}">🗑️</button>
-          </td>
-        </tr>
-      `).join('');
-      document.querySelectorAll('.edit-result').forEach(btn => btn.addEventListener('click', () => editResult(btn.dataset.id)));
-      document.querySelectorAll('.delete-result').forEach(btn => btn.addEventListener('click', () => {
-        if (confirm('Delete?')) {
-          fetch(`/api/admin/results/${btn.dataset.id}`, { method: 'DELETE' }).then(loadResults);
-        }
-      }));
+      if (!tbody) return;
+      try {
+        const res = await fetch('/api/admin/results');
+        const results = await res.json();
+        if (results.length === 0) { tbody.innerHTML = '<tr><td colspan="6">No results yet.</td></tr>'; return; }
+        tbody.innerHTML = results.map(r => `
+          <tr>
+            <td>${r.registrationNumber}</td><td>${r.studentName}</td><td>${r.class}</td>
+            <td>${r.percentage}%</td><td>${r.published ? '✅' : '❌'}</td>
+            <td>
+              <button class="btn-sm btn-edit edit-result" data-id="${r._id}">✏️</button>
+              <button class="btn-sm btn-danger delete-result" data-id="${r._id}">🗑️</button>
+            </td>
+          </tr>
+        `).join('');
+        document.querySelectorAll('.edit-result').forEach(btn => btn.addEventListener('click', () => editResult(btn.dataset.id)));
+        document.querySelectorAll('.delete-result').forEach(btn => btn.addEventListener('click', () => {
+          if (confirm('Delete?')) { fetch(`/api/admin/results/${btn.dataset.id}`, { method: 'DELETE' }).then(loadResults); }
+        }));
+      } catch (err) { console.error(err); }
     }
     document.getElementById('addResultBtn')?.addEventListener('click', () => {
       document.getElementById('resultModalTitle').textContent = 'Add Result';
@@ -752,7 +674,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('resultModalOverlay').classList.add('active');
     }
 
-    // --- GALLERY ADMIN ---
+    // Gallery Admin
     document.getElementById('galleryUploadForm')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const file = document.getElementById('galleryImageInput').files[0];
@@ -765,25 +687,26 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     async function loadGalleryAdmin() {
       const grid = document.getElementById('adminGalleryGrid');
-      const res = await fetch('/api/admin/gallery');
-      const items = await res.json();
-      grid.innerHTML = items.map(item => `
-        <div class="gallery-admin-item">
-          <img src="${item.imageUrl}" alt="${item.caption}">
-          <button class="delete-btn" data-id="${item._id}">🗑️</button>
-        </div>
-      `).join('');
-      document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          if (confirm('Delete?')) {
-            await fetch(`/api/admin/gallery/${btn.dataset.id}`, { method: 'DELETE' });
-            loadGalleryAdmin();
-          }
+      if (!grid) return;
+      try {
+        const res = await fetch('/api/admin/gallery');
+        const items = await res.json();
+        if (items.length === 0) { grid.innerHTML = '<p>No images yet.</p>'; return; }
+        grid.innerHTML = items.map(item => `
+          <div class="gallery-admin-item">
+            <img src="${item.imageUrl}" alt="${item.caption}">
+            <button class="delete-btn" data-id="${item._id}">🗑️</button>
+          </div>
+        `).join('');
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            if (confirm('Delete?')) { await fetch(`/api/admin/gallery/${btn.dataset.id}`, { method: 'DELETE' }); loadGalleryAdmin(); }
+          });
         });
-      });
+      } catch (err) { console.error(err); }
     }
 
-    // --- EVENTS ADMIN ---
+    // Events Admin
     document.getElementById('addEventBtn')?.addEventListener('click', () => {
       document.getElementById('eventModalTitle').textContent = 'Add Event';
       document.getElementById('eventId').value = '';
@@ -806,39 +729,40 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     async function loadEventsAdmin() {
       const list = document.getElementById('eventsList');
-      const res = await fetch('/api/admin/events');
-      const events = await res.json();
-      list.innerHTML = events.map(e => `
-        <div class="card" style="padding:1rem; margin-bottom:0.5rem; display:flex; justify-content:space-between;">
-          <div><strong>${e.title}</strong> - ${formatDate(e.date)}</div>
-          <div>
-            <button class="btn-sm btn-edit edit-event" data-id="${e._id}">✏️</button>
-            <button class="btn-sm btn-danger delete-event" data-id="${e._id}">🗑️</button>
-          </div>
-        </div>
-      `).join('');
-      document.querySelectorAll('.edit-event').forEach(btn => btn.addEventListener('click', async () => {
+      if (!list) return;
+      try {
         const res = await fetch('/api/admin/events');
         const events = await res.json();
-        const ev = events.find(e => e._id === btn.dataset.id);
-        document.getElementById('eventModalTitle').textContent = 'Edit Event';
-        document.getElementById('eventId').value = ev._id;
-        document.getElementById('evTitle').value = ev.title;
-        document.getElementById('evDesc').value = ev.description;
-        document.getElementById('evDate').value = new Date(ev.date).toISOString().split('T')[0];
-        document.getElementById('eventModalOverlay').classList.add('active');
-      }));
-      document.querySelectorAll('.delete-event').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          if (confirm('Delete?')) {
-            await fetch(`/api/admin/events/${btn.dataset.id}`, { method: 'DELETE' });
-            loadEventsAdmin();
-          }
+        if (events.length === 0) { list.innerHTML = '<p>No events yet.</p>'; return; }
+        list.innerHTML = events.map(e => `
+          <div class="card" style="padding:1rem; margin-bottom:0.5rem; display:flex; justify-content:space-between;">
+            <div><strong>${e.title}</strong> - ${formatDate(e.date)}</div>
+            <div>
+              <button class="btn-sm btn-edit edit-event" data-id="${e._id}">✏️</button>
+              <button class="btn-sm btn-danger delete-event" data-id="${e._id}">🗑️</button>
+            </div>
+          </div>
+        `).join('');
+        document.querySelectorAll('.edit-event').forEach(btn => btn.addEventListener('click', async () => {
+          const res = await fetch('/api/admin/events');
+          const events = await res.json();
+          const ev = events.find(e => e._id === btn.dataset.id);
+          document.getElementById('eventModalTitle').textContent = 'Edit Event';
+          document.getElementById('eventId').value = ev._id;
+          document.getElementById('evTitle').value = ev.title;
+          document.getElementById('evDesc').value = ev.description;
+          document.getElementById('evDate').value = new Date(ev.date).toISOString().split('T')[0];
+          document.getElementById('eventModalOverlay').classList.add('active');
+        }));
+        document.querySelectorAll('.delete-event').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            if (confirm('Delete?')) { await fetch(`/api/admin/events/${btn.dataset.id}`, { method: 'DELETE' }); loadEventsAdmin(); }
+          });
         });
-      });
+      } catch (err) { console.error(err); }
     }
 
-    // --- PROGRAMS ADMIN ---
+    // Programs Admin
     document.getElementById('addProgramBtn')?.addEventListener('click', () => {
       document.getElementById('programModalTitle').textContent = 'Add Program';
       document.getElementById('programId').value = '';
@@ -862,38 +786,39 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     async function loadProgramsAdmin() {
       const list = document.getElementById('programsList');
-      const res = await fetch('/api/admin/programs');
-      const programs = await res.json();
-      list.innerHTML = programs.map(p => `
-        <div class="card" style="padding:1rem; margin-bottom:0.5rem; display:flex; justify-content:space-between;">
-          <div><strong>${p.title}</strong> (${p.category})</div>
-          <div>
-            <button class="btn-sm btn-edit edit-program" data-id="${p._id}">✏️</button>
-            <button class="btn-sm btn-danger delete-program" data-id="${p._id}">🗑️</button>
-          </div>
-        </div>
-      `).join('');
-      document.querySelectorAll('.edit-program').forEach(btn => btn.addEventListener('click', async () => {
+      if (!list) return;
+      try {
         const res = await fetch('/api/admin/programs');
         const programs = await res.json();
-        const pr = programs.find(p => p._id === btn.dataset.id);
-        document.getElementById('programModalTitle').textContent = 'Edit Program';
-        document.getElementById('programId').value = pr._id;
-        document.getElementById('progTitle').value = pr.title;
-        document.getElementById('progCategory').value = pr.category;
-        document.getElementById('progDesc').value = pr.description;
-        document.getElementById('progFeatures').value = pr.features.join(', ');
-        document.getElementById('progImage').value = pr.image || '';
-        document.getElementById('programModalOverlay').classList.add('active');
-      }));
-      document.querySelectorAll('.delete-program').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          if (confirm('Delete?')) {
-            await fetch(`/api/admin/programs/${btn.dataset.id}`, { method: 'DELETE' });
-            loadProgramsAdmin();
-          }
+        if (programs.length === 0) { list.innerHTML = '<p>No programs yet.</p>'; return; }
+        list.innerHTML = programs.map(p => `
+          <div class="card" style="padding:1rem; margin-bottom:0.5rem; display:flex; justify-content:space-between;">
+            <div><strong>${p.title}</strong> (${p.category})</div>
+            <div>
+              <button class="btn-sm btn-edit edit-program" data-id="${p._id}">✏️</button>
+              <button class="btn-sm btn-danger delete-program" data-id="${p._id}">🗑️</button>
+            </div>
+          </div>
+        `).join('');
+        document.querySelectorAll('.edit-program').forEach(btn => btn.addEventListener('click', async () => {
+          const res = await fetch('/api/admin/programs');
+          const programs = await res.json();
+          const pr = programs.find(p => p._id === btn.dataset.id);
+          document.getElementById('programModalTitle').textContent = 'Edit Program';
+          document.getElementById('programId').value = pr._id;
+          document.getElementById('progTitle').value = pr.title;
+          document.getElementById('progCategory').value = pr.category;
+          document.getElementById('progDesc').value = pr.description;
+          document.getElementById('progFeatures').value = pr.features.join(', ');
+          document.getElementById('progImage').value = pr.image || '';
+          document.getElementById('programModalOverlay').classList.add('active');
+        }));
+        document.querySelectorAll('.delete-program').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            if (confirm('Delete?')) { await fetch(`/api/admin/programs/${btn.dataset.id}`, { method: 'DELETE' }); loadProgramsAdmin(); }
+          });
         });
-      });
+      } catch (err) { console.error(err); }
     }
   }
 
@@ -904,7 +829,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const lightbox = document.getElementById('lightbox');
     const lightboxImage = document.getElementById('lightboxImage');
     const lightboxCaption = document.getElementById('lightboxCaption');
-
     function openLightbox(index) {
       const item = galleryItems[index];
       lightboxImage.src = item.querySelector('img').src;
@@ -912,20 +836,14 @@ document.addEventListener('DOMContentLoaded', function () {
       lightbox.style.display = 'flex';
       currentIndex = index;
     }
-
     function closeLightbox() { lightbox.style.display = 'none'; }
     function nextImage() { openLightbox((currentIndex + 1) % galleryItems.length); }
     function prevImage() { openLightbox((currentIndex - 1 + galleryItems.length) % galleryItems.length); }
-
-    galleryItems.forEach((item, idx) => {
-      item.addEventListener('click', () => openLightbox(idx));
-    });
-
+    galleryItems.forEach((item, idx) => item.addEventListener('click', () => openLightbox(idx)));
     document.getElementById('lightboxClose')?.addEventListener('click', closeLightbox);
     document.getElementById('lightboxOverlay')?.addEventListener('click', closeLightbox);
     document.getElementById('lightboxPrev')?.addEventListener('click', prevImage);
     document.getElementById('lightboxNext')?.addEventListener('click', nextImage);
-
     document.addEventListener('keydown', (e) => {
       if (lightbox.style.display === 'flex') {
         if (e.key === 'ArrowRight') nextImage();
@@ -933,9 +851,7 @@ document.addEventListener('DOMContentLoaded', function () {
         else if (e.key === 'Escape') closeLightbox();
       }
     });
-
-    // Search filter
-    document.getElementById('gallerySearch')?.addEventListener('input', function(e) {
+    document.getElementById('gallerySearch')?.addEventListener('input', function (e) {
       const query = e.target.value.toLowerCase();
       galleryItems.forEach(item => {
         const caption = item.dataset.caption?.toLowerCase() || '';
@@ -966,7 +882,7 @@ document.addEventListener('DOMContentLoaded', function () {
               <div class="event-card card" style="padding:1.5rem;">
                 <h3>${e.title}</h3>
                 <p>${formatDate(e.date)}</p>
-                <p>${e.description.substring(0,100)}...</p>
+                <p>${e.description.substring(0, 100)}...</p>
               </div>
             `).join('');
           }
