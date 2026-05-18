@@ -3,28 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="title" content="Sankalp Digital Pathshala – AI-Powered Premium Education">
-    <meta name="description" content="India's most trusted AI-powered learning platform. Expert faculty, structured courses, and personalised mentorship. Join the future of education.">
+    <meta name="title" content="Sankalp Digital Pathshala – Premium AI‑Powered Learning">
+    <meta name="description" content="India's most trusted AI‑powered learning platform. Expert faculty, structured courses, AI‑driven analytics, and 24/7 mentorship. Join the future of education.">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Sankalp Digital Pathshala">
-    <meta property="og:description" content="Premium AI-powered education for classes 6–12, JEE, NEET, and future skills.">
+    <meta property="og:description" content="Premium AI‑powered education for classes 6–12, JEE, NEET, and future skills.">
     <meta property="og:image" content="https://www.sankalpdigitalpathshala.online/assets/og-image.jpg">
     <meta property="og:url" content="https://www.sankalpdigitalpathshala.online">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://www.sankalpdigitalpathshala.online">
-    <title>Sankalp Digital Pathshala – Premium AI-Powered Learning</title>
-    <link rel="stylesheet" href="/assets/style.css">
-    <!-- Fonts -->
+    <title>Sankalp Digital Pathshala – Premium AI‑Powered Learning</title>
+    <link rel="stylesheet" href="/assets/style.css?v=3">
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfjBJILA9Yd-tJq3EUb-Ju1u61mkFh6_89XA&s">
 </head>
 <body>
-    <!-- Premium Sticky Navbar -->
-    <nav class="navbar" role="navigation">
+    <!-- ========== PREMIUM STICKY NAVBAR ========== -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
-            <a href="/" class="logo">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfjBJILA9Yd-tJq3EUb-Ju1u61mkFh6_89XA&s" alt="Sankalp Digital Pathshala Logo" height="48">
+            <a href="/" class="logo" aria-label="Sankalp Digital Pathshala Home">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfjBJILA9Yd-tJq3EUb-Ju1u61mkFh6_89XA&s" alt="Sankalp Digital Pathshala Logo" width="48" height="48">
             </a>
             <ul class="nav-links" id="navLinks">
                 <li><a href="/" class="active">Home</a></li>
@@ -37,53 +39,62 @@
                 <li><a href="/faq">FAQ</a></li>
                 <li><a href="/contact">Contact</a></li>
             </ul>
-            <div style="display:flex; gap:0.8rem; align-items:center;">
-                <a href="/ai-assistant" class="btn-primary" style="padding:0.5rem 1.5rem;">AI Assistant</a>
-                <a href="https://wa.me/91XXXXXXXXXX" target="_blank" class="btn-whatsapp">💬 WhatsApp</a>
-                <button class="hamburger" id="hamburger">☰</button>
+            <div class="nav-actions">
+                <a href="/ai-assistant" class="btn-primary btn-nav">AI Assistant</a>
+                <a href="https://wa.me/91XXXXXXXXXX?text=Hello%20Sankalp%20Digital%20Pathshala" target="_blank" rel="noopener noreferrer" class="btn-whatsapp btn-nav">💬 WhatsApp</a>
+                <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">☰</button>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
+    <!-- ========== HERO SECTION ========== -->
+    <section class="hero" id="hero">
         <div class="container">
             <div class="hero-grid">
                 <div class="hero-content">
-                    <h1 class="hero-heading">Your Pathway to <span style="color:var(--primary);">Academic Excellence</span></h1>
-                    <p class="hero-subtitle">Expert mentorship, structured courses, and AI-powered tools – all in one premium learning platform trusted by thousands of students.</p>
+                    <h1 class="hero-heading">
+                        Your Pathway to<br>
+                        <span class="text-primary">Academic Excellence</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Expert mentorship, structured courses, and AI‑powered tools – all in one premium learning platform trusted by <strong>15,000+</strong> students across India.
+                    </p>
                     <div class="hero-buttons">
-                        <a href="/courses" class="btn-primary">Explore Courses</a>
-                        <a href="https://wa.me/91XXXXXXXXXX" target="_blank" class="btn-secondary">Join WhatsApp Community</a>
+                        <a href="/courses" class="btn-primary btn-lg">Explore Courses</a>
+                        <a href="https://wa.me/91XXXXXXXXXX?text=I%20want%20to%20know%20more%20about%20Sankalp%20Digital%20Pathshala" target="_blank" rel="noopener" class="btn-secondary btn-lg">Join WhatsApp Community</a>
                     </div>
                     <div class="trust-badges">
                         <span class="badge">🎓 Expert Faculty</span>
                         <span class="badge">📚 Updated Material</span>
                         <span class="badge">✅ Exam Focused</span>
                         <span class="badge">🔒 24/7 Support</span>
+                        <span class="badge">💡 AI‑Powered</span>
                     </div>
                 </div>
                 <div class="hero-visual">
-                    <img src="https://images.unsplash.com/photo-1523050854058-8df90910b063?w=600" alt="Premium learning environment">
+                    <img src="https://images.unsplash.com/photo-1523050854058-8df90910b063?w=600&auto=format&fit=crop" alt="Students learning in a modern classroom" width="600" height="400" loading="eager">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Why Choose Us -->
-    <section class="section-padding">
+    <!-- ========== WHY CHOOSE US ========== -->
+    <section class="why-choose section-padding" id="why-choose">
         <div class="container">
-            <h2 style="text-align:center; margin-bottom:3rem;">Why <span style="color:var(--primary);">Sankalp Digital Pathshala</span>?</h2>
+            <div class="section-header">
+                <h2>Why <span class="text-primary">Sankalp Digital Pathshala</span>?</h2>
+                <p class="section-subtitle">We combine traditional academic rigour with cutting‑edge technology to give every student an unfair advantage.</p>
+            </div>
             <div class="feature-grid">
                 <div class="feature-card">
                     <div class="card-icon">👨‍🏫</div>
                     <h3>Expert Mentorship</h3>
-                    <p>Learn from highly qualified teachers with proven track records in competitive exams.</p>
+                    <p>Learn from highly qualified teachers with 10+ years of experience in competitive exam coaching.</p>
                 </div>
                 <div class="feature-card">
                     <div class="card-icon">📖</div>
                     <h3>Structured Curriculum</h3>
-                    <p>Well‑organised courses that build concepts step‑by‑step for complete mastery.</p>
+                    <p>Well‑organised courses that build concepts step‑by‑step, ensuring complete mastery of every topic.</p>
                 </div>
                 <div class="feature-card">
                     <div class="card-icon">💰</div>
@@ -93,75 +104,359 @@
                 <div class="feature-card">
                     <div class="card-icon">📊</div>
                     <h3>Performance Driven</h3>
-                    <p>AI‑powered analytics and regular mock tests keep you on track for your goals.</p>
+                    <p>AI‑powered analytics and regular mock tests keep you on track and highlight areas for improvement.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="card-icon">🤖</div>
+                    <h3>24/7 AI Tutor</h3>
+                    <p>Instant doubt solving with our AI assistant – available round the clock, in Hindi & English.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="card-icon">🏆</div>
+                    <h3>Proven Results</h3>
+                    <p>Our students consistently rank among the top in board exams, JEE, and NEET year after year.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Stats / Trust Metrics -->
-    <section class="section-padding" style="background:white;">
+    <!-- ========== TRUST METRICS / STATS ========== -->
+    <section class="stats section-padding bg-white" id="stats">
         <div class="container">
             <div class="stats-grid">
-                <div class="stat-item"><span class="stat-number">15,000+</span><span class="stat-label">Students Enrolled</span></div>
-                <div class="stat-item"><span class="stat-number">50+</span><span class="stat-label">Courses</span></div>
-                <div class="stat-item"><span class="stat-number">200+</span><span class="stat-label">Test Series</span></div>
-                <div class="stat-item"><span class="stat-number">98%</span><span class="stat-label">Success Rate</span></div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="15000">0</span>+
+                    <span class="stat-label">Students Enrolled</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">50</span>+
+                    <span class="stat-label">Courses</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">200</span>+
+                    <span class="stat-label">Test Series</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">98</span>%
+                    <span class="stat-label">Success Rate</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">15</span>+
+                    <span class="stat-label">Years of Trust</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">500</span>+
+                    <span class="stat-label">Study Materials</span>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Premium Courses Preview -->
-    <section class="section-padding">
+    <!-- ========== FEATURED COURSES ========== -->
+    <section class="courses section-padding" id="courses">
         <div class="container">
-            <h2 style="text-align:center; margin-bottom:3rem;">Featured <span style="color:var(--primary);">Courses</span></h2>
-            <div class="course-grid" id="homeCourses"><!-- dynamic from JS --></div>
+            <div class="section-header">
+                <h2>Featured <span class="text-primary">Courses</span></h2>
+                <p class="section-subtitle">Carefully designed programs that cater to every stage of a student's academic journey.</p>
+            </div>
+            <div class="course-grid" id="homeCourses">
+                <!-- Dynamically loaded from /api/public/programs via app.js -->
+            </div>
+            <div class="text-center mt-2">
+                <a href="/courses" class="btn-primary">View All Courses</a>
+            </div>
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- ========== FACULTY HIGHLIGHTS ========== -->
+    <section class="faculty section-padding bg-white" id="faculty">
+        <div class="container">
+            <div class="section-header">
+                <h2>Meet Our <span class="text-primary">Expert Educators</span></h2>
+                <p class="section-subtitle">Learn from India’s top mentors who bring decades of teaching experience and a passion for student success.</p>
+            </div>
+            <div class="faculty-grid" id="homeFaculty">
+                <!-- Dynamically loaded from backend or static fallback -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== STUDY MATERIAL PREVIEW ========== -->
+    <section class="study-material section-padding" id="study-material">
+        <div class="container">
+            <div class="section-header">
+                <h2>Comprehensive <span class="text-primary">Study Material</span></h2>
+                <p class="section-subtitle">Access notes, PDFs, practice sets, previous year papers, and revision resources – all in one place.</p>
+            </div>
+            <div class="study-grid">
+                <div class="study-card">
+                    <div class="card-icon">📝</div>
+                    <h3>Handwritten Notes</h3>
+                    <p>Concise, topic‑wise notes by expert faculty.</p>
+                </div>
+                <div class="study-card">
+                    <div class="card-icon">📄</div>
+                    <h3>PDF Study Material</h3>
+                    <p>Well‑structured PDFs for every subject and class.</p>
+                </div>
+                <div class="study-card">
+                    <div class="card-icon">📚</div>
+                    <h3>Practice Sets</h3>
+                    <p>Chapter‑wise practice problems with solutions.</p>
+                </div>
+                <div class="study-card">
+                    <div class="card-icon">📑</div>
+                    <h3>Previous Year Papers</h3>
+                    <p>Solved board & competitive exam papers.</p>
+                </div>
+                <div class="study-card">
+                    <div class="card-icon">✍️</div>
+                    <h3>Assignments</h3>
+                    <p>Regular assignments to track progress.</p>
+                </div>
+                <div class="study-card">
+                    <div class="card-icon">🔄</div>
+                    <h3>Revision Resources</h3>
+                    <p>Quick revision notes and formula sheets.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== TEST SERIES / MOCK TESTS ========== -->
+    <section class="test-series section-padding bg-white" id="test-series">
+        <div class="container">
+            <div class="section-header">
+                <h2>Mock Tests & <span class="text-primary">Test Series</span></h2>
+                <p class="section-subtitle">Simulate real exam conditions with AI‑driven performance analytics.</p>
+            </div>
+            <div class="test-grid" id="homeTests">
+                <!-- Dynamically loaded -->
+            </div>
+            <div class="text-center mt-2">
+                <a href="/test-series" class="btn-primary">Explore Test Series</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== RESULTS / ACHIEVEMENTS ========== -->
+    <section class="results section-padding" id="results">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our <span class="text-primary">Achievements</span></h2>
+                <p class="section-subtitle">Real success stories from students who trusted Sankalp Digital Pathshala.</p>
+            </div>
+            <div class="achievement-grid">
+                <div class="achievement-card">
+                    <span class="achievement-number">500+</span>
+                    <p>JEE Advanced Selections</p>
+                </div>
+                <div class="achievement-card">
+                    <span class="achievement-number">1200+</span>
+                    <p>NEET Qualified Students</p>
+                </div>
+                <div class="achievement-card">
+                    <span class="achievement-number">95%</span>
+                    <p>Board Exam Distinction</p>
+                </div>
+                <div class="achievement-card">
+                    <span class="achievement-number">50+</span>
+                    <p>Top 100 Rank Holders</p>
+                </div>
+            </div>
+            <!-- Public result checker CTA -->
+            <div class="text-center mt-3">
+                <p>Want to check your official result? <a href="/results" class="text-primary fw-bold">Click here →</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== TESTIMONIALS ========== -->
+    <section class="testimonials section-padding bg-white" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>What Our <span class="text-primary">Students Say</span></h2>
+            </div>
+            <div class="testimonial-carousel" id="testimonialCarousel">
+                <!-- JS will populate with sliding cards -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FAQ ========== -->
+    <section class="faq section-padding" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>Frequently <span class="text-primary">Asked Questions</span></h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">How can I enroll in a course?</button>
+                    <div class="faq-answer">
+                        <p>You can directly contact us via WhatsApp or fill the contact form. Our team will guide you through the admission process.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Do you offer free trial classes?</button>
+                    <div class="faq-answer">
+                        <p>Yes! We offer 3‑day free access to our live classes and AI solver so you can experience the quality before committing.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">What subjects do you cover?</button>
+                    <div class="faq-answer">
+                        <p>We cover Mathematics, Physics, Chemistry, Biology, English, and Computer Science for all boards (CBSE/ICSE/State) and competitive exams.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Is there a mobile app?</button>
+                    <div class="faq-answer">
+                        <p>Our platform is fully responsive and works great on any device. A dedicated mobile app is coming soon!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== ABOUT PREVIEW ========== -->
+    <section class="about-preview section-padding bg-white" id="about-preview">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-content">
+                    <h2>About <span class="text-primary">Sankalp Digital Pathshala</span></h2>
+                    <p>Founded in 2010, we have been at the forefront of educational innovation. Our mission is to make premium, AI‑powered education accessible to every learner, regardless of location or background.</p>
+                    <p>We combine the wisdom of experienced teachers with the power of AI to deliver a personalised, impactful learning experience.</p>
+                    <a href="/about" class="btn-secondary">Learn More About Us</a>
+                </div>
+                <div class="about-visual">
+                    <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=500&auto=format&fit=crop" alt="Modern campus building" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== GALLERY / CAMPUS PREVIEW ========== -->
+    <section class="gallery-preview section-padding" id="gallery-preview">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our <span class="text-primary">Campus & Activities</span></h2>
+            </div>
+            <div class="gallery-grid" id="homeGallery">
+                <!-- Dynamic from /api/public/gallery -->
+            </div>
+            <div class="text-center mt-2">
+                <a href="/gallery" class="btn-secondary">View Full Gallery →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== BLOG / UPDATES ========== -->
+    <section class="blog-preview section-padding bg-white" id="blog">
+        <div class="container">
+            <div class="section-header">
+                <h2>Latest <span class="text-primary">Updates & Articles</span></h2>
+            </div>
+            <div class="blog-grid" id="homeBlog">
+                <!-- Dynamic or static placeholder -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== RESOURCE DOWNLOAD CTA ========== -->
+    <section class="download-cta section-padding bg-primary-light">
+        <div class="container text-center">
+            <h2>Download Free Study Resources</h2>
+            <p>Get our curated formula sheet and sample papers absolutely free.</p>
+            <a href="/resources" class="btn-primary btn-lg">Download Now</a>
+        </div>
+    </section>
+
+    <!-- ========== NEWSLETTER SIGNUP ========== -->
+    <section class="newsletter section-padding" id="newsletter">
+        <div class="container text-center">
+            <h2>Stay Updated</h2>
+            <p>Subscribe to our newsletter for latest courses, exam tips, and offers.</p>
+            <form class="newsletter-form" id="newsletterForm">
+                <input type="email" placeholder="your@email.com" required>
+                <button type="submit" class="btn-primary">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- ========== CONTACT CTA ========== -->
+    <section class="contact-cta section-padding bg-white" id="contact-cta">
+        <div class="container text-center">
+            <h2>Get in Touch</h2>
+            <p>Have questions? Our support team is just a message away.</p>
+            <div class="contact-buttons">
+                <a href="/contact" class="btn-primary">Contact Form</a>
+                <a href="https://wa.me/91XXXXXXXXXX" target="_blank" class="btn-whatsapp">💬 WhatsApp</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== PREMIUM FOOTER ========== -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
-                <div>
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfjBJILA9Yd-tJq3EUb-Ju1u61mkFh6_89XA&s" alt="Sankalp Logo" height="40" style="margin-bottom:1rem;">
-                    <p style="color:#CBD5E1;">Empowering learners with AI-driven premium education.</p>
+                <div class="footer-brand">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfjBJILA9Yd-tJq3EUb-Ju1u61mkFh6_89XA&s" alt="Sankalp Digital Pathshala Logo" width="48" height="48" style="margin-bottom:1rem;">
+                    <h4>Sankalp Digital Pathshala</h4>
+                    <p>Empowering learners with AI‑driven premium education since 2010.</p>
                 </div>
-                <div>
-                    <h4 style="color:white;">Quick Links</h4>
-                    <ul style="list-style:none; padding:0;">
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
                         <li><a href="/">Home</a></li>
                         <li><a href="/courses">Courses</a></li>
-                        <li><a href="/about">About Us</a></li>
-                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="/test-series">Test Series</a></li>
+                        <li><a href="/study-material">Study Material</a></li>
+                        <li><a href="/results">Results</a></li>
                     </ul>
                 </div>
-                <div>
-                    <h4 style="color:white;">Legal</h4>
-                    <ul style="list-style:none; padding:0;">
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="/faq">FAQ</a></li>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/blog">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
                         <li><a href="/privacy">Privacy Policy</a></li>
                         <li><a href="/terms">Terms & Conditions</a></li>
                         <li><a href="/disclaimer">Disclaimer</a></li>
                     </ul>
                 </div>
-                <div>
-                    <h4 style="color:white;">Connect</h4>
-                    <div style="display:flex; gap:1rem; font-size:1.5rem;">
-                        <a href="#">📘</a>
-                        <a href="#">▶️</a>
-                        <a href="#">📷</a>
+                <div class="footer-social">
+                    <h4>Connect</h4>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook">📘</a>
+                        <a href="#" aria-label="YouTube">▶️</a>
+                        <a href="#" aria-label="Instagram">📷</a>
+                        <a href="#" aria-label="LinkedIn">🔗</a>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>© 2026 Sankalp Digital Pathshala. All rights reserved.</p>
+                <p>&copy; 2026 Sankalp Digital Pathshala. All rights reserved. | <a href="/privacy">Privacy</a> | <a href="/terms">Terms</a></p>
             </div>
         </div>
     </footer>
 
-    <!-- AI Widget -->
-    <div class="ai-widget" onclick="location.href='/ai-assistant'">🤖</div>
+    <!-- ========== FLOATING AI WIDGET ========== -->
+    <div class="ai-floating-widget" id="aiWidget" onclick="location.href='/ai-assistant'" title="Chat with AI Assistant">
+        🤖
+    </div>
 
-    <script src="/assets/app.js"></script>
+    <!-- ========== FLOATING WHATSAPP BUTTON ========== -->
+    <a href="https://wa.me/91XXXXXXXXXX?text=I%20need%20help%20with%20Sankalp%20Digital%20Pathshala" target="_blank" rel="noopener" class="whatsapp-floating" title="Chat on WhatsApp">
+        💬
+    </a>
+
+    <script src="/assets/app.js?v=3"></script>
 </body>
 </html>
