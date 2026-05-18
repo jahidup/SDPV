@@ -1,5 +1,6 @@
-// server.js – SINGLE BACKEND FILE FOR SANKALP DIGITAL PATHSHALA
-// ======================== IMPORTS & CONFIG ========================
+// server.js – FINAL PRODUCTION BACKEND FOR SANKALP DIGITAL PATHSHALA
+// Uses OpenRouter for chatbot, Gemini for question solver, MongoDB Atlas, Cloudinary
+
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -8,7 +9,6 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
 const { z } = require('zod');
 const xss = require('xss');
 const multer = require('multer');
@@ -16,33 +16,34 @@ const cloudinary = require('cloudinary').v2;
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const path = require('path');
 
-// ---------- Environment variables ----------
+// ---------- ENVIRONMENT VARIABLES ----------
 const {
   MONGODB_URI,
   ADMIN_EMAIL,
   ADMIN_PASSWORD,
   JWT_SECRET,
   GEMINI_API_KEY,
+  OPENROUTER_API_KEY,
   CLOUDINARY_CLOUD_NAME,
   CLOUDINARY_API_KEY,
   CLOUDINARY_API_SECRET,
   PORT = 3000
 } = process.env;
 
-// ---------- Cloudinary config ----------
+// ---------- CLOUDINARY CONFIG ----------
 cloudinary.config({
   cloud_name: CLOUDINARY_CLOUD_NAME,
   api_key: CLOUDINARY_API_KEY,
   api_secret: CLOUDINARY_API_SECRET
 });
 
-// ---------- Gemini AI ----------
+// ---------- GEMINI AI ----------
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
-// ---------- Express app ----------
+// ---------- EXPRESS APP ----------
 const app = express();
 
-// ---------- Security middlewares ----------
+// ---------- SECURITY MIDDLEWARES ----------
 app.use(helmet({
   contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: false
@@ -52,25 +53,23 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
-// ---------- Static files ----------
+// ---------- STATIC FILES ----------
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
-// ---------- Global rate limiter ----------
+// ---------- GLOBAL RATE LIMITER ----------
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 1000,
+  max: 2000,
   message: 'Too many requests, please try again later.'
 });
 app.use(globalLimiter);
 
-// ---------- Mongoose connection (optimized for serverless) ----------
+// ---------- MONGOOSE CONNECTION (serverless optimized) ----------
 let cachedDb = null;
 async function connectDB() {
   if (cachedDb && mongoose.connection.readyState === 1) return cachedDb;
   const conn = await mongoose.connect(MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
     serverSelectionTimeoutMS: 5000,
     socketTimeoutMS: 45000
   });
@@ -81,7 +80,6 @@ async function connectDB() {
 
 // ======================== DATABASE MODELS ========================
 
-// --- Contact Inquiry ---
 const inquirySchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   email: { type: String, required: true },
@@ -94,7 +92,6 @@ const inquirySchema = new mongoose.Schema({
 inquirySchema.index({ status: 1, createdAt: -1 });
 const Inquiry = mongoose.model('Inquiry', inquirySchema);
 
-// --- AI Lead (from Sankalp Sathi) ---
 const aiLeadSchema = new mongoose.Schema({
   firstName: String,
   class: String,
@@ -111,7 +108,6 @@ const aiLeadSchema = new mongoose.Schema({
 aiLeadSchema.index({ status: 1, leadScore: -1 });
 const AILead = mongoose.model('AILead', aiLeadSchema);
 
-// --- AI Question (history) ---
 const aiQuestionSchema = new mongoose.Schema({
   type: { type: String, enum: ['text', 'image', 'pdf'], required: true },
   question: String,
@@ -120,7 +116,6 @@ const aiQuestionSchema = new mongoose.Schema({
 });
 const AIQuestion = mongoose.model('AIQuestion', aiQuestionSchema);
 
-// --- Result ---
 const resultSchema = new mongoose.Schema({
   registrationNumber: { type: String, required: true, unique: true },
   studentName: { type: String, required: true },
@@ -139,7 +134,6 @@ resultSchema.index({ registrationNumber: 1 });
 resultSchema.index({ published: 1 });
 const Result = mongoose.model('Result', resultSchema);
 
-// --- Event ---
 const eventSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
@@ -149,7 +143,6 @@ const eventSchema = new mongoose.Schema({
 });
 const Event = mongoose.model('Event', eventSchema);
 
-// --- Gallery item ---
 const gallerySchema = new mongoose.Schema({
   imageUrl: { type: String, required: true },
   caption: { type: String, default: '' },
@@ -157,7 +150,6 @@ const gallerySchema = new mongoose.Schema({
 });
 const Gallery = mongoose.model('Gallery', gallerySchema);
 
-// --- Program ---
 const programSchema = new mongoose.Schema({
   title: { type: String, required: true },
   category: { type: String, required: true },
@@ -167,17 +159,15 @@ const programSchema = new mongoose.Schema({
 });
 const Program = mongoose.model('Program', programSchema);
 
-// ======================== HELPER MIDDLEWARES ========================
+// ======================== MIDDLEWARES ========================
 
-// Admin brute-force rate limiter (login only)
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5,
+  max: 8,
   skipSuccessfulRequests: true,
   message: { error: 'Too many login attempts. Please try again after 15 minutes.' }
 });
 
-// Admin authentication middleware
 function adminAuth(req, res, next) {
   const token = req.cookies?.admin_token;
   if (!token) return res.status(401).json({ error: 'Unauthorized' });
@@ -191,7 +181,6 @@ function adminAuth(req, res, next) {
   }
 }
 
-// XSS sanitization for objects
 function sanitize(obj) {
   for (let key in obj) {
     if (typeof obj[key] === 'string') {
@@ -201,8 +190,7 @@ function sanitize(obj) {
   return obj;
 }
 
-// Prompt injection filtering (basic)
-const forbiddenPatterns = [/system:/i, /ignore previous/i, /pretend/i];
+const forbiddenPatterns = [/system:/i, /ignore previous/i, /pretend/i, /bypass/i];
 function filterPrompt(text) {
   let filtered = text;
   forbiddenPatterns.forEach(p => {
@@ -211,7 +199,6 @@ function filterPrompt(text) {
   return filtered;
 }
 
-// Multer upload (memory storage)
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 20 * 1024 * 1024 },
@@ -228,7 +215,6 @@ const upload = multer({
   }
 });
 
-// Cloudinary upload helper
 async function uploadToCloudinary(buffer, folder = 'sankalp') {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
@@ -242,7 +228,7 @@ async function uploadToCloudinary(buffer, folder = 'sankalp') {
   });
 }
 
-// ======================== VALIDATION SCHEMAS (Zod) ========================
+// ======================== VALIDATION SCHEMAS ========================
 
 const contactSchema = z.object({
   fullName: z.string().min(2).max(100),
@@ -262,9 +248,50 @@ const adminLoginSchema = z.object({
   password: z.string().min(1)
 });
 
+// ======================== SYSTEM PROMPT ========================
+
+const SYSTEM_PROMPT = `You are Sankalp Sathi, the friendly and warm AI mentor of Sankalp Digital Pathshala, the learning center run by Sankalp Shiksha Foundation.
+
+ABOUT THE FOUNDATION:
+Sankalp Shiksha Foundation's mission is "हमारा संकल्प, सामाजिक उत्थान व कायाकल्प" which means "Our Pledge: Social Upliftment and Transformation." The foundation works to close the digital divide between villages and cities.
+
+It was founded on November 18, 2020, and is headquartered in Gorakhpur, Uttar Pradesh. The learning center called Sankalp Digital Pathshala is located in Salemgarh, Tamkuhi, Kushinagar.
+
+The founders are Abhishek Kumar and Vikas Kumar, both serving as Co-Founder and Director. Abhishek Kumar holds a B.Tech from NIT and is an engineer and tech entrepreneur. Vikas Kumar holds a B.Tech in Computer Science from NIT Hamirpur and later became a technical lead in a multinational IT services firm.
+
+WHY THEY STARTED:
+First, to bridge the digital divide by providing modern learning resources like computers, internet, and AI and Robotics labs to underprivileged children in villages of Kushinagar and surrounding districts. Second, to enable rural youth to acquire job-ready skills like web development, digital marketing, and AI basics without having to leave their hometowns. Third, to drive holistic community upliftment by combining education with health, sanitation, environmental, and livelihood initiatives.
+
+JOURNEY MILESTONES:
+In 2020, it started as a COVID-19 relief effort with food, masks, and sanitizers. In 2021, they launched the first digital classroom in Salemgarh, Tamkuhi. In 2022, they introduced AI and Robotics Labs with drones and automation kits. In 2023, they rolled out Rojgaar Buddy, a skilling program for youth aged 18 to 25. In 2024, they were recognized by Doordarshan for their impact on rural digital literacy. In 2025, Rojgaar Buddy had 312 plus trainees and 40 plus placements, with 73 percent from BPL families. In 2026, they are expanding to neighboring districts and discussing partnerships with the state IT ministry for scaling labs.
+
+ROJGAAR BUDDY PROGRAM:
+The Rojgaar Buddy program trains rural youth in Web Development, Graphic Design, Excel, Digital Marketing, Communication and Personality Development. Success stories include Vishal, a 22-year-old who now earns through freelance web design, Priya who runs a small online business, and Imran who manages a part-time digital marketing project for a local startup.
+
+COMMUNITY PROGRAMS:
+The foundation runs cleanliness campaigns at Gomti river front, road safety awareness rallies, flood relief in UP and Bihar, COVID-19 ration distribution to over 400 families, festival celebrations with underprivileged children, and cricket competitions for talent identification.
+
+VISION:
+Digital education is not a luxury; it is a right. By placing future-tech labs and skilled mentors in villages, we aim to create a generation that can innovate from the heart of rural India, turning local challenges into opportunities.
+
+CONTACT DETAILS:
+Email: info@sankalppathshala.com
+Phone and WhatsApp: +91 8055698328
+To donate or support, visit sankalpshiksha.com/donate.
+
+AI ASSISTANT CREDITS:
+If anyone asks who developed this AI assistant, tell them it was built by NexGenAiTech, a modern AI and Full-Stack Development company founded by Jahid, who specializes in Artificial Intelligence, automation systems, scalable web technologies, and advanced software development. NexGenAiTech builds intelligent digital solutions for businesses, startups, educational organizations, and enterprises globally. Their website is https://nexgenaitech.online. They offer AI Chatbot Development, Custom AI Solutions, Website Design, Mobile App Development, Business Automation, CRM and ERP systems, API Integration, UI and UX Design, SEO and Digital Marketing, and more. For business inquiries, contact Jahid at +91 8055698328.
+
+YOUR RESPONSE RULES:
+Use plain paragraphs only. Never use markdown formatting like bold, italic, headings, tables, lists, or code blocks. Write naturally as if you are talking to a friend. Use simple, clear sentences. Break information into short paragraphs of two to four sentences each. Use a blank line between paragraphs.
+
+Keep a friendly, warm, mentor-like tone. Respond in the same language the user uses, whether Hindi, English, or Hinglish. Be admission-aware and academic-aware. If someone asks for help with admission or courses, gently collect their name, class, interest, phone, city, parent name, and email. After collecting, tell them our team will contact them soon.
+
+If you do not know something, say so honestly and suggest contacting the support team at info@sankalppathshala.com or +91 8055698328.`;
+
 // ======================== ROUTES ========================
 
-// ---------- Public API: AI Question Solver ----------
+// ---------- AI QUESTION SOLVER (Gemini) ----------
 app.post('/api/solve-question', upload.single('file'), async (req, res) => {
   try {
     await connectDB();
@@ -274,14 +301,13 @@ app.post('/api/solve-question', upload.single('file'), async (req, res) => {
     }
 
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
-    let prompt = 'You are a helpful academic tutor. Provide a detailed step-by-step explanation. Answer in the same language as the question.';
+    const basePrompt = 'You are a helpful academic tutor. Provide a detailed step-by-step explanation. Answer in the same language as the question.';
 
     let result;
     if (type === 'text') {
       if (!question) return res.status(400).json({ error: 'Question text required.' });
       const filteredQuestion = filterPrompt(xss(question));
-      const fullPrompt = `${prompt}\n\nQuestion: ${filteredQuestion}`;
-      result = await model.generateContent(fullPrompt);
+      result = await model.generateContent(`${basePrompt}\n\nQuestion: ${filteredQuestion}`);
     } else if (type === 'image') {
       if (!req.file) return res.status(400).json({ error: 'Image file required.' });
       const imagePart = {
@@ -290,7 +316,7 @@ app.post('/api/solve-question', upload.single('file'), async (req, res) => {
           mimeType: req.file.mimetype
         }
       };
-      result = await model.generateContent([prompt, imagePart]);
+      result = await model.generateContent([basePrompt, imagePart]);
     } else if (type === 'pdf') {
       if (!req.file) return res.status(400).json({ error: 'PDF file required.' });
       const pdfPart = {
@@ -299,13 +325,12 @@ app.post('/api/solve-question', upload.single('file'), async (req, res) => {
           mimeType: 'application/pdf'
         }
       };
-      result = await model.generateContent([prompt, pdfPart]);
+      result = await model.generateContent([basePrompt, pdfPart]);
     }
 
     const response = await result.response;
     const answer = response.text();
 
-    // Store history
     const aiQ = new AIQuestion({
       type,
       question: type === 'text' ? question : `[${type} upload]`,
@@ -315,36 +340,55 @@ app.post('/api/solve-question', upload.single('file'), async (req, res) => {
 
     res.json({ success: true, answer });
   } catch (err) {
-    console.error(err);
+    console.error('AI Solver Error:', err);
     res.status(500).json({ error: 'AI processing failed.' });
   }
 });
 
-// ---------- Public API: Sankalp Sathi Chatbot ----------
+// ---------- SANKALP SATHI CHATBOT (OpenRouter) ----------
 app.post('/api/chat', async (req, res) => {
   try {
     await connectDB();
-    let { message, sessionId } = req.body;
+    let { message } = req.body;
     if (!message) return res.status(400).json({ error: 'Message required.' });
 
     message = filterPrompt(xss(message));
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
-    const systemPrompt = `You are Sankalp Sathi, a warm, friendly academic mentor for Sankalp Digital Pathshala. Answer questions about admissions, courses, AI learning, and general academics. Keep replies concise, helpful, and human-like. Use Hinglish when appropriate. If someone asks for help with admission, gently collect: name, class, interest, phone, city, parent name, email. After collecting, say "Thanks! Our team will contact you soon."`;
+    // Dynamic import for ESM-only OpenRouter SDK
+    const { OpenRouter } = await import('@openrouter/sdk');
 
-    const fullPrompt = `${systemPrompt}\nUser: ${message}`;
-    const result = await model.generateContent(fullPrompt);
-    const response = await result.response;
-    const reply = response.text();
+    const openrouter = new OpenRouter({
+      apiKey: OPENROUTER_API_KEY
+    });
 
-    res.json({ reply, sessionId: sessionId || 'default' });
+    const stream = await openrouter.chat.send({
+      model: 'openai/gpt-oss-120b:free',
+      messages: [
+        { role: 'system', content: SYSTEM_PROMPT },
+        { role: 'user', content: message }
+      ],
+      stream: true
+    });
+
+    let reply = '';
+    for await (const chunk of stream) {
+      const content = chunk.choices[0]?.delta?.content;
+      if (content) {
+        reply += content;
+      }
+    }
+
+    res.json({ reply: reply || 'I am not sure how to respond to that. Please try asking differently.' });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Chatbot error.' });
+    console.error('Chatbot Error:', err);
+    // Fallback response
+    res.json({
+      reply: 'I am having a small technical issue right now. Please try again in a moment, or reach out to our team at info@sankalppathshala.com or call +91 8055698328. We are always happy to help!'
+    });
   }
 });
 
-// ----- Lead capture (from frontend after AI conversation) -----
+// ---------- LEAD CAPTURE ----------
 app.post('/api/lead', async (req, res) => {
   try {
     await connectDB();
@@ -360,23 +404,20 @@ app.post('/api/lead', async (req, res) => {
     const data = schema.parse(req.body);
     sanitize(data);
 
-    // Generate AI summary & lead score using Gemini
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
-    const summaryPrompt = `Based on the following lead info, generate a short summary and a lead score from 0 to 100 (where 100 is highest conversion potential). Return ONLY a JSON object: { "summary": "...", "score": number }. Info: ${JSON.stringify(data)}`;
-    const result = await model.generateContent(summaryPrompt);
-    const text = (await result.response).text();
-    let aiData = { summary: '', score: 50 };
-    try {
-      const extracted = JSON.parse(text.match(/\{.*\}/s)[0]);
-      aiData.summary = extracted.summary;
-      aiData.score = Math.min(100, Math.max(0, Number(extracted.score)));
-    } catch (e) { /* ignore */ }
+    let aiSummary = '';
+    let leadScore = 50;
 
-    const lead = new AILead({
-      ...data,
-      aiSummary: aiData.summary,
-      leadScore: aiData.score
-    });
+    try {
+      const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+      const summaryPrompt = `Based on the following lead info, generate a short summary and a lead score from 0 to 100 (where 100 is highest conversion potential). Return ONLY a JSON object: { "summary": "...", "score": number }. Info: ${JSON.stringify(data)}`;
+      const result = await model.generateContent(summaryPrompt);
+      const text = (await result.response).text();
+      const extracted = JSON.parse(text.match(/\{.*\}/s)[0]);
+      aiSummary = extracted.summary || '';
+      leadScore = Math.min(100, Math.max(0, Number(extracted.score) || 50));
+    } catch (e) { /* use defaults */ }
+
+    const lead = new AILead({ ...data, aiSummary, leadScore });
     await lead.save();
 
     res.json({ success: true, message: 'Lead captured successfully.' });
@@ -385,7 +426,7 @@ app.post('/api/lead', async (req, res) => {
   }
 });
 
-// ---------- Public API: Contact Form ----------
+// ---------- CONTACT FORM ----------
 app.post('/api/contact', async (req, res) => {
   try {
     await connectDB();
@@ -402,7 +443,7 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-// ---------- Public API: Result Checker ----------
+// ---------- PUBLIC RESULT CHECKER ----------
 app.post('/api/result/check', async (req, res) => {
   try {
     await connectDB();
@@ -426,7 +467,7 @@ app.post('/api/result/check', async (req, res) => {
   }
 });
 
-// ---------- Admin Authentication ----------
+// ---------- ADMIN AUTH ----------
 app.post('/api/admin/login', loginLimiter, async (req, res) => {
   try {
     const { email, password } = adminLoginSchema.parse(req.body);
@@ -457,7 +498,7 @@ app.get('/api/admin/check-auth', adminAuth, (req, res) => {
   res.json({ authenticated: true, email: req.admin.email });
 });
 
-// ---------- Admin Dashboard Stats ----------
+// ---------- ADMIN DASHBOARD ----------
 app.get('/api/admin/dashboard', adminAuth, async (req, res) => {
   try {
     await connectDB();
@@ -473,22 +514,14 @@ app.get('/api/admin/dashboard', adminAuth, async (req, res) => {
     const contactedInquiries = await Inquiry.countDocuments({ status: 'contacted' });
 
     res.json({
-      stats: {
-        totalChats,
-        totalSolves,
-        totalLeads,
-        totalInquiries,
-        newInquiries,
-        contactedInquiries,
-        totalResults
-      }
+      stats: { totalChats, totalSolves, totalLeads, totalInquiries, newInquiries, contactedInquiries, totalResults }
     });
   } catch (err) {
     res.status(500).json({ error: 'Dashboard error' });
   }
 });
 
-// ---------- Inquiries CRUD ----------
+// ---------- INQUIRIES CRUD ----------
 app.get('/api/admin/inquiries', adminAuth, async (req, res) => {
   await connectDB();
   const inquiries = await Inquiry.find().sort({ createdAt: -1 });
@@ -509,7 +542,7 @@ app.delete('/api/admin/inquiries/:id', adminAuth, async (req, res) => {
   res.json({ success: true });
 });
 
-// ---------- Leads CRUD ----------
+// ---------- LEADS CRUD ----------
 app.get('/api/admin/leads', adminAuth, async (req, res) => {
   await connectDB();
   const leads = await AILead.find().sort({ createdAt: -1 });
@@ -530,7 +563,7 @@ app.delete('/api/admin/leads/:id', adminAuth, async (req, res) => {
   res.json({ success: true });
 });
 
-// ---------- Results CRUD ----------
+// ---------- RESULTS CRUD ----------
 app.get('/api/admin/results', adminAuth, async (req, res) => {
   await connectDB();
   const results = await Result.find().sort({ createdAt: -1 });
@@ -573,7 +606,7 @@ app.delete('/api/admin/results/:id', adminAuth, async (req, res) => {
   res.json({ success: true });
 });
 
-// ---------- Events CRUD ----------
+// ---------- EVENTS CRUD ----------
 app.get('/api/admin/events', adminAuth, async (req, res) => {
   await connectDB();
   const events = await Event.find().sort({ date: -1 });
@@ -608,7 +641,7 @@ app.delete('/api/admin/events/:id', adminAuth, async (req, res) => {
   res.json({ success: true });
 });
 
-// ---------- Gallery CRUD ----------
+// ---------- GALLERY CRUD ----------
 app.get('/api/admin/gallery', adminAuth, async (req, res) => {
   await connectDB();
   const items = await Gallery.find().sort({ createdAt: -1 });
@@ -631,7 +664,7 @@ app.delete('/api/admin/gallery/:id', adminAuth, async (req, res) => {
   res.json({ success: true });
 });
 
-// ---------- Programs CRUD ----------
+// ---------- PROGRAMS CRUD ----------
 app.get('/api/admin/programs', adminAuth, async (req, res) => {
   await connectDB();
   const programs = await Program.find().sort({ title: 1 });
@@ -657,7 +690,7 @@ app.delete('/api/admin/programs/:id', adminAuth, async (req, res) => {
   res.json({ success: true });
 });
 
-// ---------- Public GET for frontend pages (dynamic data) ----------
+// ---------- PUBLIC DATA ----------
 app.get('/api/public/events', async (req, res) => {
   await connectDB();
   const events = await Event.find().sort({ date: 1 });
@@ -676,29 +709,24 @@ app.get('/api/public/programs', async (req, res) => {
   res.json(programs);
 });
 
-// ---------- Fallback to index.html for client-side routing ----------
+// ---------- FALLBACK ----------
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// ======================== ERROR HANDLING ========================
+// ---------- ERROR HANDLER ----------
 app.use((err, req, res, next) => {
   console.error(err);
-  if (err.message === 'Invalid file type') {
-    return res.status(400).json({ error: 'Invalid file type' });
-  }
-  if (err.code === 'LIMIT_FILE_SIZE') {
-    return res.status(413).json({ error: 'File too large' });
-  }
+  if (err.message === 'Invalid file type') return res.status(400).json({ error: 'Invalid file type' });
+  if (err.code === 'LIMIT_FILE_SIZE') return res.status(413).json({ error: 'File too large' });
   res.status(500).json({ error: 'Internal server error' });
 });
 
-// ======================== START SERVER ========================
+// ---------- START ----------
 if (require.main === module) {
   connectDB().then(() => {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   });
 }
 
-// Export for Vercel serverless
 module.exports = app;
