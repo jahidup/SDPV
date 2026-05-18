@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content="Gallery – Sankalp Digital Pathshala | Campus & Activities">
+    <meta name="description" content="Explore the vibrant life at Sankalp Digital Pathshala through our gallery. View classrooms, labs, robotics, events, and more.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Gallery – Sankalp Digital Pathshala">
+    <meta property="og:description" content="A visual journey through our premium learning environment.">
+    <meta property="og:image" content="https://www.sankalpdigitalpathshala.online/assets/og-gallery.jpg">
+    <meta property="og:url" content="https://www.sankalpdigitalpathshala.online/gallery">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.sankalpdigitalpathshala.online/gallery">
+    <title>Gallery – Sankalp Digital Pathshala</title>
+    <link rel="stylesheet" href="/assets/style.css?v=7">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfjBJILA9Yd-tJq3EUb-Ju1u61mkFh6_89XA&s">
+    <style>
+        /* Additional styles for lightbox */
+        .lightbox {
+            display: none; position: fixed; inset: 0; z-index: 2000;
+            background: rgba(0, 0, 0, 0.9); align-items: center; justify-content: center;
+        }
+        .lightbox-overlay {
+            position: absolute; inset: 0;
+        }
+        .lightbox-content {
+            position: relative; max-width: 90vw; max-height: 85vh; display: flex; flex-direction: column; align-items: center;
+        }
+        .lightbox-content img {
+            max-height: 70vh; max-width: 90vw; object-fit: contain; border-radius: 12px;
+        }
+        .lightbox-caption {
+            color: white; margin-top: 1rem; font-size: 1.1rem; text-align: center;
+        }
+        .lightbox-close {
+            position: absolute; top: -40px; right: 0;
+            background: none; border: none; color: white; font-size: 2rem; cursor: pointer;
+        }
+        .lightbox-prev, .lightbox-next {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(255,255,255,0.2); border: none; color: white; font-size: 2rem; padding: 0.5rem 1rem; cursor: pointer;
+            border-radius: 50%;
+        }
+        .lightbox-prev { left: -60px; }
+        .lightbox-next { right: -60px; }
+        @media (max-width: 768px) {
+            .lightbox-prev { left: 10px; }
+            .lightbox-next { right: 10px; }
+        }
+        /* Gallery item styling already in style.css */
+    </style>
+</head>
+<body>
+    <!-- ========== NAVBAR ========== -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="/" class="logo" aria-label="Sankalp Digital Pathshala Home">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfjBJILA9Yd-tJq3EUb-Ju1u61mkFh6_89XA&s" alt="Sankalp Digital Pathshala Logo" width="48" height="48">
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/">Home</a></li>
+                <li><a href="/courses">Courses</a></li>
+                <li><a href="/study-material">Study Material</a></li>
+                <li><a href="/test-series">Test Series</a></li>
+                <li><a href="/results">Results</a></li>
+                <li><a href="/faculty">Faculty</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/faq">FAQ</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="/ai-assistant" class="btn-primary btn-nav">AI Assistant</a>
+                <a href="https://wa.me/91XXXXXXXXXX" target="_blank" rel="noopener" class="btn-whatsapp btn-nav">💬 WhatsApp</a>
+                <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">☰</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========== PAGE HERO ========== -->
+    <section class="page-hero">
+        <div class="container text-center">
+            <h1 class="hero-heading">Our <span class="text-primary">Gallery</span></h1>
+            <p class="hero-subtitle">A glimpse into life at Sankalp Digital Pathshala – where curiosity meets innovation.</p>
+        </div>
+    </section>
+
+    <!-- ========== STATIC GALLERY SECTION ========== -->
+    <section class="section-padding bg-white">
+        <div class="container">
+            <!-- Search / Filter -->
+            <div class="filter-bar" style="max-width: 400px; margin: 0 auto 2rem;">
+                <input type="text" id="gallerySearch" placeholder="Search by caption..." class="form-control" style="border-radius: 50px;">
+            </div>
+
+            <!-- Gallery Grid (hardcoded items) -->
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Classroom -->
+                <div class="gallery-item card" data-caption="Smart Digital Classroom">
+                    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&h=400&fit=crop" alt="Smart classroom with digital board" loading="lazy">
+                    <p class="p-2" style="padding: 0.5rem; color: var(--slate); font-size: 0.9rem;">Smart Digital Classroom</p>
+                </div>
+                <!-- Robotics Lab -->
+                <div class="gallery-item card" data-caption="Robotics &amp; Innovation Lab">
+                    <img src="https://images.unsplash.com/photo-1581092921461-39b08b4b4aa4?w=600&h=400&fit=crop" alt="Students working on a robot" loading="lazy">
+                    <p class="p-2" style="padding: 0.5rem; color: var(--slate); font-size: 0.9rem;">Robotics &amp; Innovation Lab</p>
+                </div>
+                <!-- Science Lab -->
+                <div class="gallery-item card" data-caption="Physics &amp; Chemistry Lab">
+                    <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=600&h=400&fit=crop" alt="Science laboratory" loading="lazy">
+                    <p class="p-2" style="padding: 0.5rem; color: var(--slate); font-size: 0.9rem;">Physics &amp; Chemistry Lab</p>
+                </div>
+                <!-- Group Discussion -->
+                <div class="gallery-item card" data-caption="Collaborative Learning Session">
+                    <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&h=400&fit=crop" alt="Students group discussion" loading="lazy">
+                    <p class="p-2" style="padding: 0.5rem; color: var(--slate); font-size: 0.9rem;">Collaborative Learning Session</p>
+                </div>
+                <!-- Annual Day -->
+                <div class="gallery-item card" data-caption="Annual Day Celebration">
+                    <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=600&h=400&fit=crop" alt="Students performing at annual day" loading="lazy">
+                    <p class="p-2" style="padding: 0.5rem; color: var(--slate); font-size: 0.9rem;">Annual Day Celebration</p>
+                </div>
+                <!-- Computer Lab -->
+                <div class="gallery-item card" data-caption="Computer &amp; AI Lab">
+                    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&h=400&fit=crop" alt="Students on computers" loading="lazy">
+                    <p class="p-2" style="padding: 0.5rem; color: var(--slate); font-size: 0.9rem;">Computer &amp; AI Lab</p>
+                </div>
+                <!-- Sports Ground -->
+                <div class="gallery-item card" data-caption="Outdoor Sports Activities">
+                    <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&h=400&fit=crop" alt="School playground" loading="lazy">
+                    <p class="p-2" style="padding: 0.5rem; color: var(--slate); font-size: 0.9rem;">Outdoor Sports Activities</p>
+                </div>
+                <!-- Library -->
+                <div class="gallery-item card" data-caption="Well‑stocked Library">
+                    <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=600&h=400&fit=crop" alt="Library interior" loading="lazy">
+                    <p class="p-2" style="padding: 0.5rem; color: var(--slate); font-size: 0.9rem;">Well‑stocked Library</p>
+                </div>
+                <!-- Art & Craft -->
+                <div class="gallery-item card" data-caption="Art &amp; Craft Workshop">
+                    <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=600&h=400&fit=crop" alt="Art class" loading="lazy">
+                    <p class="p-2" style="padding: 0.5rem; color: var(--slate); font-size: 0.9rem;">Art &amp; Craft Workshop</p>
+                </div>
+                <!-- Event / Science Fair -->
+                <div class="gallery-item card" data-caption="Science &amp; Tech Exhibition">
+                    <img src="https://images.unsplash.com/photo-1581092335397-0e4c653f6c2a?w=600&h=400&fit=crop" alt="Science exhibition" loading="lazy">
+                    <p class="p-2" style="padding: 0.5rem; color: var(--slate); font-size: 0.9rem;">Science &amp; Tech Exhibition</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== LIGHTBOX MODAL ========== -->
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+        <div class="lightbox-overlay" id="lightboxOverlay"></div>
+        <div class="lightbox-content">
+            <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+            <button class="lightbox-prev" id="lightboxPrev" aria-label="Previous">&#10094;</button>
+            <button class="lightbox-next" id="lightboxNext" aria-label="Next">&#10095;</button>
+            <img src="" alt="" id="lightboxImage">
+            <p class="lightbox-caption" id="lightboxCaption"></p>
+        </div>
+    </div>
+
+    <!-- ========== CTA ========== -->
+    <section class="section-padding" style="background: var(--off-white);">
+        <div class="container text-center">
+            <h2>Want to Be a Part of This?</h2>
+            <p>Visit us and experience the energy first‑hand.</p>
+            <a href="/contact" class="btn-primary">Book a Campus Visit</a>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfjBJILA9Yd-tJq3EUb-Ju1u61mkFh6_89XA&s" alt="Logo" width="48" height="48">
+                    <h4>Sankalp Digital Pathshala</h4>
+                    <p>Empowering learners with AI‑driven premium education.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/courses">Courses</a></li>
+                        <li><a href="/test-series">Test Series</a></li>
+                        <li><a href="/study-material">Study Material</a></li>
+                        <li><a href="/results">Results</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="/faq">FAQ</a></li>
+                        <li><a href="/about">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/terms">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Sankalp Digital Pathshala. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating widgets -->
+    <div class="ai-floating-widget" onclick="location.href='/ai-assistant'">🤖</div>
+    <a href="https://wa.me/91XXXXXXXXXX" target="_blank" class="whatsapp-floating">💬</a>
+
+    <script src="/assets/app.js?v=7"></script>
+    <script>
+        // Lightbox and search functionality for static gallery
+        document.addEventListener('DOMContentLoaded', function() {
+            const galleryItems = document.querySelectorAll('#galleryGrid .gallery-item');
+            let currentIndex = 0;
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightboxImage');
+            const lightboxCaption = document.getElementById('lightboxCaption');
+
+            function openLightbox(index) {
+                const item = galleryItems[index];
+                lightboxImage.src = item.querySelector('img').src;
+                lightboxCaption.textContent = item.dataset.caption;
+                lightbox.style.display = 'flex';
+                currentIndex = index;
+            }
+
+            function closeLightbox() {
+                lightbox.style.display = 'none';
+            }
+
+            function nextImage() {
+                currentIndex = (currentIndex + 1) % galleryItems.length;
+                openLightbox(currentIndex);
+            }
+
+            function prevImage() {
+                currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+                openLightbox(currentIndex);
+            }
+
+            // Attach click events to each gallery item
+            galleryItems.forEach((item, idx) => {
+                item.addEventListener('click', () => openLightbox(idx));
+            });
+
+            document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+            document.getElementById('lightboxOverlay').addEventListener('click', closeLightbox);
+            document.getElementById('lightboxPrev').addEventListener('click', prevImage);
+            document.getElementById('lightboxNext').addEventListener('click', nextImage);
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (lightbox.style.display === 'flex') {
+                    if (e.key === 'ArrowRight') nextImage();
+                    else if (e.key === 'ArrowLeft') prevImage();
+                    else if (e.key === 'Escape') closeLightbox();
+                }
+            });
+
+            // Search filter
+            document.getElementById('gallerySearch').addEventListener('input', function(e) {
+                const query = e.target.value.toLowerCase();
+                galleryItems.forEach(item => {
+                    const caption = item.dataset.caption.toLowerCase();
+                    item.style.display = caption.includes(query) ? '' : 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
