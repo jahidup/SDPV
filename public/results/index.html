@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content="Results – Sankalp Digital Pathshala | Check Your Marksheet Instantly">
+    <meta name="description" content="Check your Sankalp Digital Pathshala exam results instantly. Enter Registration Number and Date of Birth – no login, no password. Official, secure, and verified.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Results – Sankalp Digital Pathshala">
+    <meta property="og:description" content="Access your official marksheet in seconds. Completely secure and private.">
+    <meta property="og:image" content="https://www.sankalpdigitalpathshala.online/assets/og-results.jpg">
+    <meta property="og:url" content="https://www.sankalpdigitalpathshala.online/results">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.sankalpdigitalpathshala.online/results">
+    <title>Results – Sankalp Digital Pathshala</title>
+    <link rel="stylesheet" href="/assets/style.css?v=3">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfjBJILA9Yd-tJq3EUb-Ju1u61mkFh6_89XA&s">
+</head>
+<body>
+    <!-- ========== NAVBAR ========== -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="/" class="logo" aria-label="Sankalp Digital Pathshala Home">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfjBJILA9Yd-tJq3EUb-Ju1u61mkFh6_89XA&s" alt="Sankalp Digital Pathshala Logo" width="48" height="48">
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/">Home</a></li>
+                <li><a href="/courses">Courses</a></li>
+                <li><a href="/study-material">Study Material</a></li>
+                <li><a href="/test-series">Test Series</a></li>
+                <li><a href="/results" class="active">Results</a></li>
+                <li><a href="/faculty">Faculty</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/faq">FAQ</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="/ai-assistant" class="btn-primary btn-nav">AI Assistant</a>
+                <a href="https://wa.me/91XXXXXXXXXX" target="_blank" rel="noopener" class="btn-whatsapp btn-nav">💬 WhatsApp</a>
+                <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">☰</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========== HERO ========== -->
+    <section class="page-hero" style="background: linear-gradient(to bottom, var(--off-white), white);">
+        <div class="container text-center">
+            <h1 class="hero-heading">Your Official Result, <span class="text-primary">One Click Away</span></h1>
+            <p class="hero-subtitle" style="max-width:700px; margin:0 auto;">No login. No password. Simply enter your Registration Number and Date of Birth to view your verified marksheet instantly.</p>
+            <div class="trust-badges mt-3" style="justify-content:center;">
+                <span class="badge">🔒 Secure</span>
+                <span class="badge">✅ Verified</span>
+                <span class="badge">⚡ Instant</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== RESULT CHECKER FORM ========== -->
+    <section class="section-padding bg-white" id="resultFormSection">
+        <div class="container" style="max-width:600px;">
+            <div class="card glass-light" style="padding:2rem;">
+                <h2 class="text-center mb-3">Check Your Result</h2>
+                <form id="resultCheckForm" class="result-form">
+                    <div class="form-group">
+                        <label for="regNumber">Registration Number</label>
+                        <input type="text" id="regNumber" placeholder="e.g., SDP26001" required autocomplete="off" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" id="dob" required class="form-control">
+                    </div>
+                    <button type="submit" class="btn-primary btn-lg w-100">View Marksheet</button>
+                </form>
+                <div class="form-error hidden mt-2 text-danger" id="formError"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== MARKSHEET DISPLAY ========== -->
+    <section class="section-padding" id="marksheetSection" style="display:none;">
+        <div class="container" style="max-width:900px;">
+            <div class="marksheet-card" style="background: white; border-radius: var(--radius-lg); border: 2px solid var(--primary); box-shadow: var(--shadow-lg); padding: 2rem;">
+                <!-- Marksheet Header -->
+                <div class="marksheet-header text-center" style="border-bottom: 2px solid var(--primary); margin-bottom: 2rem; padding-bottom: 1.5rem;">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfjBJILA9Yd-tJq3EUb-Ju1u61mkFh6_89XA&s" alt="Sankalp Logo" width="80" height="80" style="margin: 0 auto 1rem;">
+                    <h2 style="font-size: 2rem; color: var(--navy);">SANKALP DIGITAL PATHSHALA</h2>
+                    <h3 style="color: var(--primary);">ACADEMIC MARKSHEET</h3>
+                    <span class="verified-badge" style="color: #10b981; font-weight: 600; background: rgba(16,185,129,0.1); padding: 0.2rem 1rem; border-radius: 50px;">✔️ Verified &amp; Authentic</span>
+                </div>
+
+                <!-- Student Details -->
+                <div class="marksheet-details" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
+                    <div><strong>Student Name:</strong> <span id="ms-studentName"></span></div>
+                    <div><strong>Father's Name:</strong> <span id="ms-fatherName"></span></div>
+                    <div><strong>Registration No:</strong> <span id="ms-regNumber"></span></div>
+                    <div><strong>Date of Birth:</strong> <span id="ms-dob"></span></div>
+                    <div><strong>Class:</strong> <span id="ms-class"></span></div>
+                    <div><strong>Session:</strong> <span id="ms-session"></span></div>
+                    <div><strong>Issue Date:</strong> <span id="ms-issueDate"></span></div>
+                </div>
+
+                <!-- Subject Marks Table -->
+                <div class="table-responsive" style="margin-bottom: 2rem;">
+                    <table class="marksheet-table" style="width:100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: var(--primary-light);">
+                                <th style="padding: 0.8rem; text-align: left;">Subject</th>
+                                <th style="padding: 0.8rem; text-align: center;">Marks Obtained</th>
+                                <th style="padding: 0.8rem; text-align: center;">Max Marks</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ms-subjects">
+                            <!-- Dynamically populated -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Summary -->
+                <div class="marksheet-summary" style="display: flex; gap: 2rem; justify-content: center; background: var(--off-white); padding: 1rem; border-radius: var(--radius-md);">
+                    <div class="text-center">
+                        <span class="summary-label" style="color: var(--slate); font-size: 0.9rem;">Percentage</span><br>
+                        <span class="summary-value" id="ms-percentage" style="font-size: 1.8rem; font-weight: 700; color: var(--primary);"></span>
+                    </div>
+                    <div class="text-center">
+                        <span class="summary-label" style="color: var(--slate); font-size: 0.9rem;">Grade</span><br>
+                        <span class="summary-value" id="ms-grade" style="font-size: 1.8rem; font-weight: 700; color: var(--navy);"></span>
+                    </div>
+                    <div class="text-center">
+                        <span class="summary-label" style="color: var(--slate); font-size: 0.9rem;">Remarks</span><br>
+                        <span class="summary-value" id="ms-remarks" style="font-size: 1.1rem; color: var(--slate);"></span>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="marksheet-actions mt-4 text-center" style="display: flex; gap: 1rem; justify-content: center;">
+                    <button class="btn-primary" id="downloadPdfBtn">📥 Download PDF</button>
+                    <button class="btn-secondary" id="printResultBtn">🖨️ Print Result</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== HOW IT WORKS / SECURITY ========== -->
+    <section class="bg-white section-padding">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2>Why Our Result Portal is <span class="text-primary">100% Secure</span></h2>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="card-icon">🔒</div>
+                    <h3>Two‑Factor Validation</h3>
+                    <p>We verify both Registration Number and Date of Birth, ensuring only the rightful student can access the result.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="card-icon">🛡️</div>
+                    <h3>No Personal Data Storage</h3>
+                    <p>Your DOB is used only for one‑time matching; we never store or log it after the check.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="card-icon">✅</div>
+                    <h3>Certified Authenticity</h3>
+                    <p>Each marksheet displays a verified badge, confirming it’s officially published by Sankalp Digital Pathshala.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FAQ ========== -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2>Frequently <span class="text-primary">Asked Questions</span></h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">Where can I find my Registration Number?</button>
+                    <div class="faq-answer"><p>Your registration number is printed on your admit card and fee receipt. It typically starts with "SDP" followed by a 5‑digit code.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">What if my result is not showing?</button>
+                    <div class="faq-answer"><p>Ensure the registration number and date of birth match exactly with your records. If the problem persists, contact our support via WhatsApp.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Can I take a printout of my marksheet?</button>
+                    <div class="faq-answer"><p>Absolutely. Use the "Print Result" button to get a print‑ready version. You can also download it as a PDF.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Is this marksheet valid for official purposes?</button>
+                    <div class="faq-answer"><p>Yes, it carries the official branding and verified badge of Sankalp Digital Pathshala and can be used for admission and scholarship applications.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CONTACT CTA ========== -->
+    <section class="bg-primary-light text-center section-padding" style="background: var(--primary-light);">
+        <div class="container">
+            <h2>Need Help with Your Result?</h2>
+            <p>Our support team is always ready to assist you.</p>
+            <a href="/contact" class="btn-primary">Contact Support</a>
+            <a href="https://wa.me/91XXXXXXXXXX" target="_blank" class="btn-whatsapp">💬 WhatsApp</a>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfjBJILA9Yd-tJq3EUb-Ju1u61mkFh6_89XA&s" alt="Logo" width="48" height="48">
+                    <h4>Sankalp Digital Pathshala</h4>
+                    <p>Empowering learners with AI‑driven premium education.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/courses">Courses</a></li>
+                        <li><a href="/test-series">Test Series</a></li>
+                        <li><a href="/study-material">Study Material</a></li>
+                        <li><a href="/results">Results</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="/faq">FAQ</a></li>
+                        <li><a href="/about">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/terms">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Sankalp Digital Pathshala. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating widgets -->
+    <div class="ai-floating-widget" onclick="location.href='/ai-assistant'">🤖</div>
+    <a href="https://wa.me/91XXXXXXXXXX" target="_blank" class="whatsapp-floating">💬</a>
+    <script src="/assets/app.js?v=3"></script>
+</body>
+</html>
