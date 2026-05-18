@@ -509,6 +509,27 @@ app.delete('/api/admin/inquiries/:id', adminAuth, async (req, res) => {
   res.json({ success: true });
 });
 
+// ---------- Leads CRUD ----------
+app.get('/api/admin/leads', adminAuth, async (req, res) => {
+  await connectDB();
+  const leads = await AILead.find().sort({ createdAt: -1 });
+  res.json(leads);
+});
+
+app.patch('/api/admin/leads/:id', adminAuth, async (req, res) => {
+  await connectDB();
+  const { status } = req.body;
+  if (!['pending', 'contacted', 'converted'].includes(status)) return res.status(400).json({ error: 'Invalid status' });
+  const lead = await AILead.findByIdAndUpdate(req.params.id, { status }, { new: true });
+  res.json(lead);
+});
+
+app.delete('/api/admin/leads/:id', adminAuth, async (req, res) => {
+  await connectDB();
+  await AILead.findByIdAndDelete(req.params.id);
+  res.json({ success: true });
+});
+
 // ---------- Results CRUD ----------
 app.get('/api/admin/results', adminAuth, async (req, res) => {
   await connectDB();
@@ -636,27 +657,6 @@ app.delete('/api/admin/programs/:id', adminAuth, async (req, res) => {
   res.json({ success: true });
 });
 
-// ---------- Admin Leads CRUD (for dashboard) ----------
-app.get('/api/admin/leads', adminAuth, async (req, res) => {
-  await connectDB();
-  const leads = await AILead.find().sort({ createdAt: -1 });
-  res.json(leads);
-});
-
-app.patch('/api/admin/leads/:id', adminAuth, async (req, res) => {
-  await connectDB();
-  const { status } = req.body;
-  if (!['pending', 'contacted', 'converted'].includes(status)) return res.status(400).json({ error: 'Invalid status' });
-  const lead = await AILead.findByIdAndUpdate(req.params.id, { status }, { new: true });
-  res.json(lead);
-});
-
-app.delete('/api/admin/leads/:id', adminAuth, async (req, res) => {
-  await connectDB();
-  await AILead.findByIdAndDelete(req.params.id);
-  res.json({ success: true });
-});
-
 // ---------- Public GET for frontend pages (dynamic data) ----------
 app.get('/api/public/events', async (req, res) => {
   await connectDB();
@@ -676,7 +676,7 @@ app.get('/api/public/programs', async (req, res) => {
   res.json(programs);
 });
 
-// ---------- Fallback to index.html for SPA client-side routing ----------
+// ---------- Fallback to index.html for client-side routing ----------
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
