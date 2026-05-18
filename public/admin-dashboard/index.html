@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin Dashboard – Sankalp Digital Pathshala</title>
+    <link rel="stylesheet" href="/assets/style.css?v=3">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfjBJILA9Yd-tJq3EUb-Ju1u61mkFh6_89XA&s">
+    <style>
+        /* Dashboard specific overrides / additions (rest is from style.css) */
+        .dashboard-layout { display: flex; min-height: 100vh; background: var(--off-white); }
+        .sidebar {
+            width: 260px; background: var(--navy); color: white;
+            display: flex; flex-direction: column; padding: 1.5rem 0;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+        .sidebar-logo { text-align: center; padding: 0 1rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-menu { flex: 1; list-style: none; padding: 1rem 0; margin: 0; }
+        .sidebar-menu li a {
+            color: #CBD5E1; text-decoration: none; display: flex; align-items: center;
+            gap: 0.75rem; padding: 0.75rem 1.5rem; transition: var(--transition);
+            font-weight: 500;
+        }
+        .sidebar-menu li a:hover, .sidebar-menu li a.active { background: rgba(255,255,255,0.1); color: white; }
+        .sidebar-footer { padding: 1rem 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); }
+        .main-content { flex: 1; overflow-y: auto; padding: 2rem; }
+        .dashboard-tab { display: none; }
+        .dashboard-tab.active { display: block; }
+        .stat-cards-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem; margin-bottom: 2rem;
+        }
+        .stat-card-dash {
+            background: var(--white); padding: 1.5rem; border-radius: var(--radius-lg);
+            border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);
+        }
+        .stat-card-dash h3 { font-size: 0.9rem; color: var(--slate); margin-bottom: 0.5rem; }
+        .stat-card-dash .stat-value { font-size: 2rem; font-weight: 700; color: var(--primary); }
+        .table-responsive { overflow-x: auto; }
+        .data-table { width: 100%; border-collapse: collapse; background: white; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
+        .data-table th { background: var(--off-white); color: var(--navy); font-weight: 600; padding: 0.8rem; text-align: left; }
+        .data-table td { padding: 0.8rem; border-bottom: 1px solid var(--border-light); }
+        .filter-bar { display: flex; gap: 1rem; margin-bottom: 1rem; align-items: center; }
+        .filter-bar select { padding: 0.5rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-light); background: white; }
+        .btn-small { padding: 0.3rem 0.8rem; font-size: 0.8rem; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; }
+        .btn-edit { background: var(--primary-light); color: var(--primary); }
+        .btn-danger { background: rgba(239,68,68,0.1); color: #ef4444; }
+        .modal-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            align-items: center; justify-content: center; z-index: 2000;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: white; border-radius: var(--radius-lg); padding: 2rem;
+            width: 90%; max-width: 700px; max-height: 85vh; overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+        .form-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .form-row .form-group { flex: 1; min-width: 200px; }
+        .upload-zone {
+            border: 2px dashed var(--border-light); border-radius: var(--radius-md);
+            padding: 2rem; text-align: center; cursor: pointer;
+        }
+        .upload-zone:hover { border-color: var(--primary); }
+        .gallery-admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: 1rem; }
+        .gallery-admin-item { position: relative; border-radius: var(--radius-md); overflow: hidden; }
+        .gallery-admin-item img { width: 100%; height: 120px; object-fit: cover; }
+        .gallery-admin-item .delete-btn { position: absolute; top: 5px; right: 5px; background: rgba(239,68,68,0.8); color: white; border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; }
+    </style>
+</head>
+<body>
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfjBJILA9Yd-tJq3EUb-Ju1u61mkFh6_89XA&s" alt="Sankalp Logo" width="40" height="40" style="margin-bottom:0.5rem;">
+            <h4 style="color:white; margin:0;">SDP Admin</h4>
+        </div>
+        <ul class="sidebar-menu" id="sidebarMenu">
+            <li><a href="#dashboardTab" class="active" data-tab="dashboardTab">📊 Dashboard</a></li>
+            <li><a href="#leadsTab" data-tab="leadsTab">👥 Leads</a></li>
+            <li><a href="#inquiriesTab" data-tab="inquiriesTab">📬 Inquiries</a></li>
+            <li><a href="#resultsTab" data-tab="resultsTab">📋 Results</a></li>
+            <li><a href="#galleryTab" data-tab="galleryTab">🖼️ Gallery</a></li>
+            <li><a href="#eventsTab" data-tab="eventsTab">📅 Events</a></li>
+            <li><a href="#programsTab" data-tab="programsTab">🎓 Programs</a></li>
+            <li><a href="#analyticsTab" data-tab="analyticsTab">📈 Analytics</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <button id="logoutBtn" class="btn-small btn-danger" style="width:100%;">🔒 Logout</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="dashboardMain">
+        <!-- Dashboard Overview Tab -->
+        <section class="dashboard-tab active" id="dashboardTab">
+            <h2 class="mb-3">Dashboard <span class="text-primary">Overview</span></h2>
+            <div class="stat-cards-grid" id="dashboardStats"></div>
+        </section>
+
+        <!-- Leads Tab -->
+        <section class="dashboard-tab" id="leadsTab">
+            <h2 class="mb-3">Lead <span class="text-primary">CRM</span></h2>
+            <div class="filter-bar">
+                <select id="leadStatusFilter">
+                    <option value="all">All Statuses</option>
+                    <option value="pending">Pending</option>
+                    <option value="contacted">Contacted</option>
+                    <option value="converted">Converted</option>
+                </select>
+            </div>
+            <div class="table-responsive">
+                <table class="data-table" id="leadsTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th><th>Class</th><th>Interest</th><th>Phone</th>
+                            <th>Lead Score</th><th>Status</th><th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Inquiries Tab -->
+        <section class="dashboard-tab" id="inquiriesTab">
+            <h2 class="mb-3">Contact <span class="text-primary">Inquiries</span></h2>
+            <div class="filter-bar">
+                <select id="inquiryStatusFilter">
+                    <option value="all">All</option>
+                    <option value="new">New</option>
+                    <option value="contacted">Contacted</option>
+                    <option value="closed">Closed</option>
+                </select>
+            </div>
+            <div class="table-responsive">
+                <table class="data-table" id="inquiriesTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th><th>Email</th><th>Subject</th><th>Status</th>
+                            <th>Date</th><th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Results Tab -->
+        <section class="dashboard-tab" id="resultsTab">
+            <h2 class="mb-3">Result <span class="text-primary">Manager</span></h2>
+            <button id="addResultBtn" class="btn-primary mb-3">+ Add New Result</button>
+            <div class="table-responsive">
+                <table class="data-table" id="resultsTable">
+                    <thead>
+                        <tr>
+                            <th>Reg No</th><th>Student</th><th>Class</th><th>%</th>
+                            <th>Published</th><th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <!-- Result Modal -->
+            <div class="modal-overlay" id="resultModalOverlay">
+                <div class="modal">
+                    <h2 id="resultModalTitle">Add Result</h2>
+                    <form id="resultForm">
+                        <input type="hidden" id="resultId">
+                        <div class="form-row">
+                            <div class="form-group"><label>Reg No</label><input id="resRegNo" required></div>
+                            <div class="form-group"><label>Student Name</label><input id="resStudentName" required></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Father's Name</label><input id="resFatherName" required></div>
+                            <div class="form-group"><label>DOB</label><input type="date" id="resDob" required></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Class</label><input id="resClass" required></div>
+                            <div class="form-group"><label>Session</label><input id="resSession" required></div>
+                        </div>
+                        <div class="form-group"><label>Subjects (JSON)</label><textarea id="resSubjects" rows="3" required></textarea></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Percentage</label><input type="number" id="resPercentage" step="0.01" required></div>
+                            <div class="form-group"><label>Grade</label><input id="resGrade" required></div>
+                        </div>
+                        <div class="form-group"><label>Remarks</label><input id="resRemarks"></div>
+                        <div class="form-group">
+                            <label><input type="checkbox" id="resPublished"> Published</label>
+                            <label style="margin-left:1rem;">Issue Date <input type="date" id="resIssueDate"></label>
+                        </div>
+                        <button type="submit" class="btn-primary">Save</button>
+                        <button type="button" class="btn-small close-modal">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Tab -->
+        <section class="dashboard-tab" id="galleryTab">
+            <h2 class="mb-3">Gallery <span class="text-primary">Manager</span></h2>
+            <form id="galleryUploadForm" class="mb-3">
+                <div class="upload-zone" id="galleryDropZone">
+                    <p>Click or drop image here</p>
+                    <input type="file" id="galleryImageInput" accept="image/*" hidden>
+                </div>
+                <div class="form-group mt-2">
+                    <input type="text" id="galleryCaption" placeholder="Caption">
+                </div>
+                <button type="submit" class="btn-primary">Upload</button>
+            </form>
+            <div class="gallery-admin-grid" id="adminGalleryGrid"></div>
+        </section>
+
+        <!-- Events Tab -->
+        <section class="dashboard-tab" id="eventsTab">
+            <h2 class="mb-3">Events <span class="text-primary">Manager</span></h2>
+            <button id="addEventBtn" class="btn-primary mb-3">+ Add Event</button>
+            <div id="eventsList"></div>
+            <div class="modal-overlay" id="eventModalOverlay">
+                <div class="modal">
+                    <h2 id="eventModalTitle">Add Event</h2>
+                    <form id="eventForm">
+                        <input type="hidden" id="eventId">
+                        <div class="form-group"><label>Title</label><input id="evTitle" required></div>
+                        <div class="form-group"><label>Description</label><textarea id="evDesc" rows="3"></textarea></div>
+                        <div class="form-group"><label>Date</label><input type="date" id="evDate" required></div>
+                        <div class="form-group"><label>Image (optional)</label><input type="file" id="evImage" accept="image/*"></div>
+                        <button type="submit" class="btn-primary">Save</button>
+                        <button type="button" class="btn-small close-modal">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Programs Tab -->
+        <section class="dashboard-tab" id="programsTab">
+            <h2 class="mb-3">Programs <span class="text-primary">Manager</span></h2>
+            <button id="addProgramBtn" class="btn-primary mb-3">+ Add Program</button>
+            <div id="programsList"></div>
+            <div class="modal-overlay" id="programModalOverlay">
+                <div class="modal">
+                    <h2 id="programModalTitle">Add Program</h2>
+                    <form id="programForm">
+                        <input type="hidden" id="programId">
+                        <div class="form-group"><label>Title</label><input id="progTitle" required></div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="progCategory">
+                                <option>Foundation</option><option>Academic Excellence</option>
+                                <option>Senior Secondary</option><option>Competitive</option>
+                                <option>Future Skills</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>Description</label><textarea id="progDesc" rows="3"></textarea></div>
+                        <div class="form-group"><label>Features (comma separated)</label><input id="progFeatures"></div>
+                        <div class="form-group"><label>Image URL (optional)</label><input id="progImage"></div>
+                        <button type="submit" class="btn-primary">Save</button>
+                        <button type="button" class="btn-small close-modal">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Tab -->
+        <section class="dashboard-tab" id="analyticsTab">
+            <h2 class="mb-3">AI <span class="text-primary">Analytics</span></h2>
+            <div class="card" style="padding: 2rem; text-align: center;">
+                <p>Advanced analytics will be available in the next update. Stay tuned!</p>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="/assets/app.js?v=3"></script>
+</body>
+</html>
