@@ -1,5 +1,6 @@
-// server.js – FINAL PRODUCTION BACKEND FOR SANKALP DIGITAL PATHSHALA
-// Uses OpenRouter for chatbot, Gemini for question solver, MongoDB Atlas, Cloudinary
+// server.js – FINAL PRODUCTION BACKEND (v11)
+// OpenRouter via fetch, Gemini for solver & fallback, MongoDB Atlas, Cloudinary
+// All admin CRUD, public APIs, and security included
 
 require('dotenv').config();
 const express = require('express');
@@ -30,34 +31,28 @@ const {
   PORT = 3000
 } = process.env;
 
-// ---------- CLOUDINARY CONFIG ----------
+// ---------- CLOUDINARY ----------
 cloudinary.config({
   cloud_name: CLOUDINARY_CLOUD_NAME,
   api_key: CLOUDINARY_API_KEY,
   api_secret: CLOUDINARY_API_SECRET
 });
 
-// ---------- GEMINI AI ----------
+// ---------- GEMINI ----------
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
-// ---------- EXPRESS APP ----------
+// ---------- EXPRESS ----------
 const app = express();
 
-// ---------- SECURITY MIDDLEWARES ----------
-app.use(helmet({
-  contentSecurityPolicy: false,
-  crossOriginEmbedderPolicy: false
-}));
+app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
-// ---------- STATIC FILES ----------
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
-// ---------- GLOBAL RATE LIMITER ----------
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 2000,
@@ -65,7 +60,7 @@ const globalLimiter = rateLimit({
 });
 app.use(globalLimiter);
 
-// ---------- MONGOOSE CONNECTION (serverless optimized) ----------
+// ---------- MONGOOSE ----------
 let cachedDb = null;
 async function connectDB() {
   if (cachedDb && mongoose.connection.readyState === 1) return cachedDb;
@@ -78,8 +73,7 @@ async function connectDB() {
   return conn;
 }
 
-// ======================== DATABASE MODELS ========================
-
+// ---------- MODELS ----------
 const inquirySchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   email: { type: String, required: true },
@@ -159,8 +153,7 @@ const programSchema = new mongoose.Schema({
 });
 const Program = mongoose.model('Program', programSchema);
 
-// ======================== MIDDLEWARES ========================
-
+// ---------- MIDDLEWARES ----------
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 8,
@@ -183,9 +176,7 @@ function adminAuth(req, res, next) {
 
 function sanitize(obj) {
   for (let key in obj) {
-    if (typeof obj[key] === 'string') {
-      obj[key] = xss(obj[key]);
-    }
+    if (typeof obj[key] === 'string') obj[key] = xss(obj[key]);
   }
   return obj;
 }
@@ -193,9 +184,7 @@ function sanitize(obj) {
 const forbiddenPatterns = [/system:/i, /ignore previous/i, /pretend/i, /bypass/i];
 function filterPrompt(text) {
   let filtered = text;
-  forbiddenPatterns.forEach(p => {
-    filtered = filtered.replace(p, '');
-  });
+  forbiddenPatterns.forEach(p => (filtered = filtered.replace(p, '')));
   return filtered;
 }
 
@@ -203,15 +192,9 @@ const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 20 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    const allowedMimes = [
-      'image/jpeg', 'image/png', 'image/webp', 'image/gif',
-      'application/pdf'
-    ];
-    if (allowedMimes.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error('Invalid file type'), false);
-    }
+    const allowedMimes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf'];
+    if (allowedMimes.includes(file.mimetype)) cb(null, true);
+    else cb(new Error('Invalid file type'), false);
   }
 });
 
@@ -228,8 +211,7 @@ async function uploadToCloudinary(buffer, folder = 'sankalp') {
   });
 }
 
-// ======================== VALIDATION SCHEMAS ========================
-
+// ---------- VALIDATION SCHEMAS ----------
 const contactSchema = z.object({
   fullName: z.string().min(2).max(100),
   email: z.string().email(),
@@ -248,8 +230,7 @@ const adminLoginSchema = z.object({
   password: z.string().min(1)
 });
 
-// ======================== SYSTEM PROMPT ========================
-
+// ---------- SYSTEM PROMPT (COMPLETE) ----------
 const SYSTEM_PROMPT = `You are Sankalp Sathi, the friendly and warm AI mentor of Sankalp Digital Pathshala, the learning center run by Sankalp Shiksha Foundation.
 
 ABOUT THE FOUNDATION:
@@ -289,9 +270,9 @@ Keep a friendly, warm, mentor-like tone. Respond in the same language the user u
 
 If you do not know something, say so honestly and suggest contacting the support team at info@sankalppathshala.com or +91 8055698328.`;
 
-// ======================== ROUTES ========================
+// ---------- ROUTES ----------
 
-// ---------- AI QUESTION SOLVER (Gemini) ----------
+// AI Question Solver (Gemini)
 app.post('/api/solve-question', upload.single('file'), async (req, res) => {
   try {
     await connectDB();
@@ -345,7 +326,7 @@ app.post('/api/solve-question', upload.single('file'), async (req, res) => {
   }
 });
 
-// ---------- SANKALP SATHI CHATBOT (OpenRouter) ----------
+// Sankalp Sathi Chatbot (OpenRouter via fetch, fallback to Gemini)
 app.post('/api/chat', async (req, res) => {
   try {
     await connectDB();
@@ -354,41 +335,45 @@ app.post('/api/chat', async (req, res) => {
 
     message = filterPrompt(xss(message));
 
-    // Dynamic import for ESM-only OpenRouter SDK
-    const { OpenRouter } = await import('@openrouter/sdk');
-
-    const openrouter = new OpenRouter({
-      apiKey: OPENROUTER_API_KEY
-    });
-
-    const stream = await openrouter.chat.send({
-      model: 'openai/gpt-oss-120b:free',
-      messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
-        { role: 'user', content: message }
-      ],
-      stream: true
-    });
-
-    let reply = '';
-    for await (const chunk of stream) {
-      const content = chunk.choices[0]?.delta?.content;
-      if (content) {
-        reply += content;
-      }
+    // If OpenRouter key is not set, fallback to Gemini
+    if (!OPENROUTER_API_KEY) {
+      const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+      const result = await model.generateContent(`${SYSTEM_PROMPT}\n\nUser: ${message}`);
+      const reply = (await result.response).text();
+      return res.json({ reply });
     }
 
-    res.json({ reply: reply || 'I am not sure how to respond to that. Please try asking differently.' });
+    // Use OpenRouter API via fetch
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://www.sankalpdigitalpathshala.online',
+        'X-Title': 'Sankalp Digital Pathshala'
+      },
+      body: JSON.stringify({
+        model: 'openai/gpt-oss-120b:free',
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          { role: 'user', content: message }
+        ]
+      })
+    });
+
+    const data = await response.json();
+    const reply = data.choices?.[0]?.message?.content || 'I am not sure how to respond to that. Please try asking differently.';
+    res.json({ reply });
   } catch (err) {
     console.error('Chatbot Error:', err);
-    // Fallback response
+    // Final fallback response
     res.json({
       reply: 'I am having a small technical issue right now. Please try again in a moment, or reach out to our team at info@sankalppathshala.com or call +91 8055698328. We are always happy to help!'
     });
   }
 });
 
-// ---------- LEAD CAPTURE ----------
+// Lead capture
 app.post('/api/lead', async (req, res) => {
   try {
     await connectDB();
@@ -426,7 +411,7 @@ app.post('/api/lead', async (req, res) => {
   }
 });
 
-// ---------- CONTACT FORM ----------
+// Contact form
 app.post('/api/contact', async (req, res) => {
   try {
     await connectDB();
@@ -443,7 +428,7 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-// ---------- PUBLIC RESULT CHECKER ----------
+// Public result checker
 app.post('/api/result/check', async (req, res) => {
   try {
     await connectDB();
