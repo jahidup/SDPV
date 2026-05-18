@@ -1,5 +1,6 @@
-/* ======================== SANKALP DIGITAL PATHSHALA – FINAL PREMIUM CSS (v9) ======================== */
-/* 0.8x zoom, fully polished, all pages covered, 1500+ lines */
+/* ======================== SANKALP DIGITAL PATHSHALA – FINAL PREMIUM CSS (v10) ======================== */
+/* Primary color updated to #00acee, fully polished, all pages covered, 1500+ lines */
+
 html {
   font-size: 80%;
   scroll-behavior: smooth;
@@ -7,9 +8,9 @@ html {
 
 /* ---------- DESIGN TOKENS ---------- */
 :root {
-  --primary: #2563EB;
-  --primary-hover: #1D4ED8;
-  --primary-light: rgba(37, 99, 235, 0.08);
+  --primary: #00acee;
+  --primary-hover: #0099cc;
+  --primary-light: rgba(0, 172, 238, 0.08);
   --navy: #0F172A;
   --slate: #64748B;
   --border-light: #E2E8F0;
@@ -146,13 +147,13 @@ p { color: var(--slate); margin-bottom: 1rem; }
 .btn-primary {
   background: var(--primary);
   color: white;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 4px 12px rgba(0, 172, 238, 0.25);
 }
 
 .btn-primary:hover {
   background: var(--primary-hover);
   transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.4);
+  box-shadow: 0 10px 20px rgba(0, 172, 238, 0.4);
 }
 
 .btn-outline {
@@ -205,7 +206,7 @@ p { color: var(--slate); margin-bottom: 1rem; }
 }
 
 .btn-edit:hover {
-  background: rgba(37, 99, 235, 0.15);
+  background: rgba(0, 172, 238, 0.15);
 }
 
 /* ---------- NAVBAR ---------- */
@@ -324,7 +325,7 @@ p { color: var(--slate); margin-bottom: 1rem; }
   gap: 2rem;
 }
 
-/* ---------- PREMIUM CARDS (FIXED OVERLAP & QUALITY) ---------- */
+/* ---------- PREMIUM CARDS ---------- */
 .feature-card,
 .course-card,
 .resource-card,
@@ -338,7 +339,7 @@ p { color: var(--slate); margin-bottom: 1rem; }
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: 100%;               /* ensures equal height and no overflow */
+  height: 100%;
   padding: 2rem;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -444,7 +445,7 @@ p { color: var(--slate); margin-bottom: 1rem; }
   margin-bottom: 1rem;
 }
 
-/* ---------- IMAGE STYLING (PREMIUM) ---------- */
+/* ---------- IMAGE STYLING ---------- */
 img.premium-img {
   border-radius: var(--radius-lg);
   object-fit: cover;
@@ -617,7 +618,7 @@ img.premium-img:hover {
 .form-control:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 0 0 3px rgba(0, 172, 238, 0.1);
 }
 
 .form-feedback {
@@ -794,9 +795,9 @@ blockquote {
   max-width: 75%;
   padding: 0.8rem 1.2rem;
   border-radius: 18px;
-  background: rgba(37, 99, 235, 0.06);
+  background: rgba(0, 172, 238, 0.06);
   border: 1px solid var(--border-light);
-  color: var(--navy);           /* bot text dark */
+  color: var(--navy);
   word-wrap: break-word;
   overflow-wrap: break-word;
   white-space: pre-wrap;
@@ -804,7 +805,7 @@ blockquote {
 
 .message.user .bubble {
   background: var(--primary);
-  color: white;                /* user text white on blue – perfectly visible */
+  color: white;
   border: none;
 }
 
@@ -920,7 +921,7 @@ blockquote {
 
 .upload-zone:hover {
   border-color: var(--primary);
-  background: rgba(37, 99, 235, 0.02);
+  background: rgba(0, 172, 238, 0.02);
 }
 
 .answer-box {
