@@ -50,80 +50,148 @@
     <section class="page-hero" style="background: linear-gradient(to bottom, var(--off-white), white);">
         <div class="container text-center">
             <h1 class="hero-heading">Let’s Start a <span class="text-primary">Conversation</span></h1>
-            <p class="hero-subtitle" style="max-width:650px; margin:0 auto;">Whether you are a student, parent, or educator, we are here to answer your questions. Fill the form, call, or message us – our team responds within hours.</p>
+            <p class="hero-subtitle" style="max-width:650px; margin:0 auto;">Whether you are a student, parent, or educator, we are here to answer your questions. Choose how you’d like to reach us – we’re only a message away.</p>
         </div>
     </section>
 
-    <!-- ========== CONTACT SECTION ========== -->
-    <section class="section-padding bg-white">
-        <div class="container">
-            <div class="contact-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;">
-                <!-- Contact Form -->
-                <div class="card glass-light" style="padding: 2rem;">
-                    <h2>Send Us a Message</h2>
-                    <p>Our team will get back to you within 2–4 hours.</p>
-                    <form id="contactForm" class="contact-form">
-                        <div class="form-group">
-                            <label for="fullName">Full Name *</label>
-                            <input type="text" id="fullName" placeholder="Your full name" required autocomplete="name">
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email Address *</label>
-                            <input type="email" id="email" placeholder="you@example.com" required autocomplete="email">
-                        </div>
-                        <div class="form-group">
-                            <label for="mobile">Mobile Number *</label>
-                            <input type="tel" id="mobile" placeholder="+91 98765 43210" required autocomplete="tel">
-                        </div>
-                        <div class="form-group">
-                            <label for="subject">Subject *</label>
-                            <select id="subject" required>
-                                <option value="">-- Select a topic --</option>
-                                <option value="Admission Inquiry">Admission Inquiry</option>
-                                <option value="Course Details">Course Details</option>
-                                <option value="Test Series">Test Series</option>
-                                <option value="Study Material">Study Material</option>
-                                <option value="Result Related">Result / Marksheet</option>
-                                <option value="AI Tools Help">AI Tools Help</option>
-                                <option value="Collaboration">Collaboration / Partnership</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Message *</label>
-                            <textarea id="message" rows="4" placeholder="Tell us more about your query..." required></textarea>
-                        </div>
-                        <button type="submit" class="btn-primary btn-lg w-100">Submit Inquiry</button>
-                        <div class="form-feedback mt-2" id="contactFeedback" style="display:none;"></div>
-                    </form>
-                </div>
-                    <!-- Quick Support -->
-                    <div class="card glass-light" style="padding: 2rem;">
-                        <h3>Quick Support</h3>
-                        <p>Use our AI assistant for instant answers to common questions.</p>
-                        <a href="/ai-assistant" class="btn-secondary">Chat with AI</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========== MAP ========== -->
-    <section class="section-padding" style="background: var(--off-white);">
+    <!-- ========== QUICK SUPPORT SECTION ========== -->
+    <section class="section-padding bg-white" id="quick-support">
         <div class="container">
             <div class="section-header text-center">
-                <h2>Find Us on <span class="text-primary">Map</span></h2>
+                <h2>Quick <span class="text-primary">Support</span></h2>
+                <p>Pick the fastest way to get help.</p>
             </div>
-            <div style="border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md);">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3504.123456789!2d77.123456!3d28.123456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z!5e0!3m2!1sen!2sin!4v1600000000000"
-                        width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Sankalp Digital Pathshala location">
-                </iframe>
+            <div class="feature-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+                <div class="feature-card text-center">
+                    <div class="card-icon">💬</div>
+                    <h3>WhatsApp</h3>
+                    <p>Chat with us instantly on WhatsApp for urgent queries.</p>
+                    <a href="https://wa.me/91XXXXXXXXXX?text=Hello%20Sankalp%20Digital%20Pathshala" target="_blank" class="btn-secondary">Start Chat</a>
+                </div>
+                <div class="feature-card text-center">
+                    <div class="card-icon">🤖</div>
+                    <h3>AI Assistant</h3>
+                    <p>Get instant answers 24/7 from our intelligent chatbot.</p>
+                    <a href="/ai-assistant" class="btn-secondary">Chat with AI</a>
+                </div>
+                <div class="feature-card text-center">
+                    <div class="card-icon">📞</div>
+                    <h3>Call Us</h3>
+                    <p>Prefer to talk? Our helpline is open during working hours.</p>
+                    <a href="tel:+91XXXXXXXXXX" class="btn-secondary">Call Now</a>
+                </div>
+                <div class="feature-card text-center">
+                    <div class="card-icon">✉️</div>
+                    <h3>Email</h3>
+                    <p>Drop us an email and we’ll get back within 2‑4 hours.</p>
+                    <a href="mailto:info@sankalpdigitalpathshala.online" class="btn-secondary">Send Email</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SEND US A MESSAGE SECTION ========== -->
+    <section class="section-padding" style="background: var(--off-white);" id="send-message">
+        <div class="container" style="max-width: 700px;">
+            <div class="card glass-light" style="padding: 2.5rem;">
+                <div class="text-center">
+                    <h2>Send Us a <span class="text-primary">Message</span></h2>
+                    <p>Fill the form below and our team will reply within a few hours.</p>
+                </div>
+                <form id="contactForm" class="contact-form" style="margin-top: 1.5rem;">
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" placeholder="Your full name" required autocomplete="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" placeholder="you@example.com" required autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number *</label>
+                        <input type="tel" id="mobile" placeholder="+91 98765 43210" required autocomplete="tel">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject *</label>
+                        <select id="subject" required>
+                            <option value="">-- Select a topic --</option>
+                            <option value="Admission Inquiry">Admission Inquiry</option>
+                            <option value="Course Details">Course Details</option>
+                            <option value="Test Series">Test Series</option>
+                            <option value="Study Material">Study Material</option>
+                            <option value="Result Related">Result / Marksheet</option>
+                            <option value="AI Tools Help">AI Tools Help</option>
+                            <option value="Collaboration">Collaboration / Partnership</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message *</label>
+                        <textarea id="message" rows="5" placeholder="Tell us more about your query..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary btn-lg w-100">Submit Inquiry</button>
+                    <div class="form-feedback mt-2 text-center" id="contactFeedback" style="display:none;"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CONTACT INFORMATION SECTION ========== -->
+    <section class="section-padding bg-white" id="contact-information">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2>Our <span class="text-primary">Contact Information</span></h2>
+                <p>Visit us, call, or connect on social media.</p>
+            </div>
+            <div class="contact-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;">
+                <div class="card glass-light" style="padding: 2rem;">
+                    <div class="info-item" style="display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1.5rem;">
+                        <span style="font-size: 1.5rem;">📍</span>
+                        <div>
+                            <strong>Our Campus</strong>
+                            <p style="margin:0;">Sankalp Digital Pathshala,<br>Near City Centre,<br>Your City, State – PIN</p>
+                        </div>
+                    </div>
+                    <div class="info-item" style="display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1.5rem;">
+                        <span style="font-size: 1.5rem;">📞</span>
+                        <div>
+                            <strong>Call Us</strong>
+                            <p style="margin:0;"><a href="tel:+91XXXXXXXXXX">+91 XXXXX XXXXX</a></p>
+                        </div>
+                    </div>
+                    <div class="info-item" style="display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1.5rem;">
+                        <span style="font-size: 1.5rem;">💬</span>
+                        <div>
+                            <strong>WhatsApp</strong>
+                            <p style="margin:0;"><a href="https://wa.me/91XXXXXXXXXX" target="_blank">Chat with us instantly</a></p>
+                        </div>
+                    </div>
+                    <div class="info-item" style="display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1.5rem;">
+                        <span style="font-size: 1.5rem;">✉️</span>
+                        <div>
+                            <strong>Email</strong>
+                            <p style="margin:0;"><a href="mailto:info@sankalpdigitalpathshala.online">info@sankalpdigitalpathshala.online</a></p>
+                        </div>
+                    </div>
+                    <div class="info-item" style="display: flex; gap: 1rem; align-items: flex-start;">
+                        <span style="font-size: 1.5rem;">⏰</span>
+                        <div>
+                            <strong>Working Hours</strong>
+                            <p style="margin:0;">Mon – Sat: 8:00 AM – 8:00 PM<br>Sun: 9:00 AM – 2:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card glass-light" style="padding: 1rem; overflow: hidden; border-radius: var(--radius-lg);">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3504.123456789!2d77.123456!3d28.123456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z!5e0!3m2!1sen!2sin!4v1600000000000"
+                            width="100%" height="300" style="border:0; border-radius: 20px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Sankalp Digital Pathshala location">
+                    </iframe>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- ========== FAQ ========== -->
-    <section class="section-padding bg-white">
+    <section class="section-padding" style="background: var(--off-white);">
         <div class="container">
             <div class="section-header text-center">
                 <h2>Contact <span class="text-primary">FAQs</span></h2>
