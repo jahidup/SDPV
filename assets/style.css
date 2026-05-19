@@ -1,5 +1,5 @@
-/* ======================== SANKALP DIGITAL PATHSHALA – FINAL PREMIUM CSS (v10) ======================== */
-/* Primary color updated to #00acee, fully polished, all pages covered, 1500+ lines */
+/* ======================== SANKALP DIGITAL PATHSHALA – FINAL PREMIUM CSS (v13) ======================== */
+/* Primary #00acee, 0.8x zoom, all pages covered, home hero-visual styled */
 
 html {
   font-size: 80%;
@@ -267,15 +267,16 @@ p { color: var(--slate); margin-bottom: 1rem; }
   color: var(--navy);
 }
 
-/* ---------- HERO ---------- */
+/* ---------- HERO (GLOBAL & HOME SPECIFIC) ---------- */
 .page-hero {
   padding: 5rem 0 3rem;
   position: relative;
   overflow: hidden;
 }
 
+/* Home hero adjustments */
 .hero-heading {
-  margin-bottom: 0.8rem;
+  margin-bottom: 1.5rem;            /* more space below heading */
 }
 
 .hero-subtitle {
@@ -313,6 +314,25 @@ p { color: var(--slate); margin-bottom: 1rem; }
   font-weight: 500;
   color: var(--navy);
   box-shadow: var(--shadow-sm);
+}
+
+/* Hero visual image styling */
+.hero-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-visual img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.4s ease;
+}
+
+.hero-visual img:hover {
+  transform: scale(1.02);
 }
 
 /* ---------- GRID LAYOUTS ---------- */
@@ -361,7 +381,6 @@ p { color: var(--slate); margin-bottom: 1rem; }
   margin-bottom: 1rem;
 }
 
-/* Course image */
 .course-img {
   height: 180px;
   background: var(--primary-light);
@@ -406,7 +425,6 @@ p { color: var(--slate); margin-bottom: 1rem; }
   margin-bottom: 0.3rem;
 }
 
-/* Faculty card specifics */
 .faculty-card {
   text-align: center;
 }
@@ -434,7 +452,6 @@ p { color: var(--slate); margin-bottom: 1rem; }
   gap: 1rem;
 }
 
-/* Resource card specifics */
 .resource-card {
   text-align: center;
 }
@@ -838,6 +855,19 @@ blockquote {
   color: white;
 }
 
+.streaming-cursor {
+  display: inline-block;
+  animation: blink 1s step-end infinite;
+  color: var(--primary);
+  font-weight: bold;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 .typing-indicator {
   display: flex;
   gap: 0.4rem;
@@ -865,7 +895,6 @@ blockquote {
   30% { opacity: 1; }
 }
 
-/* Quick prompts */
 .prompt-chips {
   display: flex;
   flex-wrap: wrap;
@@ -887,7 +916,6 @@ blockquote {
   border-color: var(--primary);
 }
 
-/* Solver tabs & upload */
 .solver-tabs {
   display: flex;
   gap: 0.5rem;
