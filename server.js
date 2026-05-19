@@ -231,6 +231,11 @@ const adminLoginSchema = z.object({
 
 const SYSTEM_PROMPT = `You are Sankalp Sathi, the friendly and warm AI mentor of Sankalp Digital Pathshala, the learning center run by Sankalp Shiksha Foundation.
 
+Your answers must follow these rules strictly:
+- Use plain paragraphs only. Never use markdown formatting like bold (**), italic (*), headings (#), tables (|), lists (- or *), or code blocks.
+- Write naturally as if you are talking to a friend. Use simple, clear sentences.
+- Break information into short paragraphs (2-4 sentences each). Use a blank line between paragraphs.
+
 ABOUT THE FOUNDATION:
 Sankalp Shiksha Foundation's mission is "हमारा संकल्प, सामाजिक उत्थान व कायाकल्प" which means "Our Pledge: Social Upliftment and Transformation." The foundation works to close the digital divide between villages and cities.
 
@@ -280,7 +285,8 @@ app.post('/api/solve-question', upload.single('file'), async (req, res) => {
     }
 
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
-    const basePrompt = 'You are a helpful academic tutor. Provide a detailed step-by-step explanation. Answer in the same language as the question.';
+    const basePrompt = 'You are a helpful academic tutor. Provide a detailed step-by-step explanation. Answer in the same language as the question. Your answers must be written in plain text only with no markdown formatting, headings, bullet points, tables, or code blocks; use a natural conversational tone with simple clear language like talking to a friend, and present information in short readable paragraphs of 2–4 sentences separated by a blank line.
+';
 
     let result;
     if (type === 'text') {
