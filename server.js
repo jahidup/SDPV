@@ -1,6 +1,5 @@
-// server.js – FINAL PRODUCTION BACKEND (v11)
-// OpenRouter via fetch, Gemini for solver & fallback, MongoDB Atlas, Cloudinary
-// All admin CRUD, public APIs, and security included
+// server.js – FINAL PRODUCTION BACKEND (v12)
+// OpenRouter streaming, Gemini fallback, MongoDB Atlas, Cloudinary, all CRUD
 
 require('dotenv').config();
 const express = require('express');
@@ -73,7 +72,8 @@ async function connectDB() {
   return conn;
 }
 
-// ---------- MODELS ----------
+// ======================== DATABASE MODELS ========================
+
 const inquirySchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   email: { type: String, required: true },
@@ -115,17 +115,12 @@ const resultSchema = new mongoose.Schema({
   studentName: { type: String, required: true },
   fatherName: { type: String, required: true },
   dob: { type: Date, required: true },
-  class: { type: String, required: true },
-  session: { type: String, required: true },
-  subjects: [{ subject: String, marksObtained: Number, maxMarks: Number }],
-  percentage: { type: Number, required: true },
-  grade: { type: String, required: true },
+  grade: { type: String, default: '' },
   remarks: { type: String, default: '' },
   published: { type: Boolean, default: false },
-  issueDate: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now }
 });
 resultSchema.index({ registrationNumber: 1 });
-resultSchema.index({ published: 1 });
 const Result = mongoose.model('Result', resultSchema);
 
 const eventSchema = new mongoose.Schema({
@@ -153,7 +148,8 @@ const programSchema = new mongoose.Schema({
 });
 const Program = mongoose.model('Program', programSchema);
 
-// ---------- MIDDLEWARES ----------
+// ======================== MIDDLEWARES ========================
+
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 8,
@@ -211,7 +207,8 @@ async function uploadToCloudinary(buffer, folder = 'sankalp') {
   });
 }
 
-// ---------- VALIDATION SCHEMAS ----------
+// ======================== VALIDATION SCHEMAS ========================
+
 const contactSchema = z.object({
   fullName: z.string().min(2).max(100),
   email: z.string().email(),
@@ -230,16 +227,12 @@ const adminLoginSchema = z.object({
   password: z.string().min(1)
 });
 
-// ---------- SYSTEM PROMPT (COMPLETE) ----------
+// ======================== SYSTEM PROMPT ========================
+
 const SYSTEM_PROMPT = `You are Sankalp Sathi, the friendly and warm AI mentor of Sankalp Digital Pathshala, the learning center run by Sankalp Shiksha Foundation.
 
-Your answers must follow these rules strictly:
-- Use plain paragraphs only. Never use markdown formatting like bold (**), italic (*), headings (#), tables (|), lists (- or *), or code blocks.
-- Write naturally as if you are talking to a friend. Use simple, clear sentences.
-- Break information into short paragraphs (2-4 sentences each). Use a blank line between paragraphs.
-
 ABOUT THE FOUNDATION:
-Sankalp Shiksha Foundation' mission is "हमारा संकल्प, सामाजिक उत्थान व कायाकल्प" which means "Our Pledge: Social Upliftment and Transformation." The foundation works to close the digital divide between villages and cities.
+Sankalp Shiksha Foundation's mission is "हमारा संकल्प, सामाजिक उत्थान व कायाकल्प" which means "Our Pledge: Social Upliftment and Transformation." The foundation works to close the digital divide between villages and cities.
 
 It was founded on November 18, 2020, and is headquartered in Gorakhpur, Uttar Pradesh. The learning center called Sankalp Digital Pathshala is located in Salemgarh, Tamkuhi, Kushinagar.
 
@@ -275,9 +268,9 @@ Keep a friendly, warm, mentor-like tone. Respond in the same language the user u
 
 If you do not know something, say so honestly and suggest contacting the support team at info@sankalppathshala.com or +91 8055698328.`;
 
-// ---------- ROUTES ----------
+// ======================== ROUTES ========================
 
-// AI Question Solver (Gemini)
+// ---------- AI QUESTION SOLVER (Gemini) ----------
 app.post('/api/solve-question', upload.single('file'), async (req, res) => {
   try {
     await connectDB();
@@ -331,24 +324,26 @@ app.post('/api/solve-question', upload.single('file'), async (req, res) => {
   }
 });
 
-// Sankalp Sathi Chatbot (OpenRouter via fetch, fallback to Gemini)
+// ---------- STREAMING CHATBOT (OpenRouter with Gemini fallback) ----------
 app.post('/api/chat', async (req, res) => {
   try {
     await connectDB();
     let { message } = req.body;
     if (!message) return res.status(400).json({ error: 'Message required.' });
-
     message = filterPrompt(xss(message));
 
-    // If OpenRouter key is not set, fallback to Gemini
+    // If no OpenRouter key, fallback to Gemini non-streaming
     if (!OPENROUTER_API_KEY) {
       const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
       const result = await model.generateContent(`${SYSTEM_PROMPT}\n\nUser: ${message}`);
       const reply = (await result.response).text();
-      return res.json({ reply });
+      return res.send(reply);
     }
 
-    // Use OpenRouter API via fetch
+    // Set streaming headers
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Transfer-Encoding', 'chunked');
+
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -362,23 +357,62 @@ app.post('/api/chat', async (req, res) => {
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           { role: 'user', content: message }
-        ]
+        ],
+        stream: true
       })
     });
 
-    const data = await response.json();
-    const reply = data.choices?.[0]?.message?.content || 'I am not sure how to respond to that. Please try asking differently.';
-    res.json({ reply });
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('OpenRouter error:', errorText);
+      res.status(500).send('AI service temporarily unavailable.');
+      return;
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+
+    const sendChunk = async () => {
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) {
+            res.end();
+            break;
+          }
+          const chunk = decoder.decode(value, { stream: true });
+          const lines = chunk.split('\n');
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const data = line.replace('data: ', '').trim();
+              if (data === '[DONE]') {
+                res.end();
+                return;
+              }
+              try {
+                const parsed = JSON.parse(data);
+                const content = parsed.choices?.[0]?.delta?.content;
+                if (content) {
+                  res.write(content);
+                }
+              } catch (e) { /* ignore malformed chunks */ }
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Stream error:', err);
+        res.end();
+      }
+    };
+
+    sendChunk();
   } catch (err) {
     console.error('Chatbot Error:', err);
-    // Final fallback response
-    res.json({
-      reply: 'I am having a small technical issue right now. Please try again in a moment, or reach out to our team at info@sankalppathshala.com or call +91 8055698328. We are always happy to help!'
-    });
+    res.status(500).send('I am having a small technical issue. Please try again.');
   }
 });
 
-// Lead capture
+// ---------- LEAD CAPTURE ----------
 app.post('/api/lead', async (req, res) => {
   try {
     await connectDB();
@@ -409,14 +443,13 @@ app.post('/api/lead', async (req, res) => {
 
     const lead = new AILead({ ...data, aiSummary, leadScore });
     await lead.save();
-
     res.json({ success: true, message: 'Lead captured successfully.' });
   } catch (err) {
     res.status(400).json({ error: 'Invalid lead data.' });
   }
 });
 
-// Contact form
+// ---------- CONTACT FORM ----------
 app.post('/api/contact', async (req, res) => {
   try {
     await connectDB();
@@ -433,7 +466,7 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-// Public result checker
+// ---------- PUBLIC RESULT CHECKER ----------
 app.post('/api/result/check', async (req, res) => {
   try {
     await connectDB();
@@ -500,11 +533,8 @@ app.get('/api/admin/dashboard', adminAuth, async (req, res) => {
       Result.countDocuments()
     ]);
 
-    const newInquiries = await Inquiry.countDocuments({ status: 'new' });
-    const contactedInquiries = await Inquiry.countDocuments({ status: 'contacted' });
-
     res.json({
-      stats: { totalChats, totalSolves, totalLeads, totalInquiries, newInquiries, contactedInquiries, totalResults }
+      stats: { totalChats, totalSolves, totalLeads, totalInquiries, totalResults }
     });
   } catch (err) {
     res.status(500).json({ error: 'Dashboard error' });
@@ -553,7 +583,7 @@ app.delete('/api/admin/leads/:id', adminAuth, async (req, res) => {
   res.json({ success: true });
 });
 
-// ---------- RESULTS CRUD ----------
+// ---------- RESULTS CRUD (SIMPLIFIED) ----------
 app.get('/api/admin/results', adminAuth, async (req, res) => {
   await connectDB();
   const results = await Result.find().sort({ createdAt: -1 });
@@ -562,32 +592,42 @@ app.get('/api/admin/results', adminAuth, async (req, res) => {
 
 app.post('/api/admin/results', adminAuth, async (req, res) => {
   await connectDB();
-  const schema = z.object({
-    registrationNumber: z.string(),
-    studentName: z.string(),
-    fatherName: z.string(),
-    dob: z.string(),
-    class: z.string(),
-    session: z.string(),
-    subjects: z.array(z.object({ subject: z.string(), marksObtained: z.number(), maxMarks: z.number() })),
-    percentage: z.number(),
-    grade: z.string(),
-    remarks: z.string().optional(),
-    published: z.boolean().optional(),
-    issueDate: z.string().optional()
-  });
-  const data = schema.parse(req.body);
-  data.dob = new Date(data.dob);
-  if (data.issueDate) data.issueDate = new Date(data.issueDate);
-  const result = new Result(data);
-  await result.save();
-  res.json(result);
+  const { registrationNumber, studentName, fatherName, dob, grade, remarks, published } = req.body;
+  if (!registrationNumber || !studentName || !fatherName || !dob) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+  try {
+    const result = new Result({
+      registrationNumber,
+      studentName,
+      fatherName,
+      dob: new Date(dob),
+      grade: grade || '',
+      remarks: remarks || '',
+      published: published || false
+    });
+    await result.save();
+    res.json(result);
+  } catch (err) {
+    if (err.code === 11000) return res.status(400).json({ error: 'Duplicate registration number' });
+    res.status(500).json({ error: 'Server error' });
+  }
 });
 
 app.put('/api/admin/results/:id', adminAuth, async (req, res) => {
   await connectDB();
-  const result = await Result.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-  res.json(result);
+  const { registrationNumber, studentName, fatherName, dob, grade, remarks, published } = req.body;
+  try {
+    const result = await Result.findByIdAndUpdate(
+      req.params.id,
+      { registrationNumber, studentName, fatherName, dob: new Date(dob), grade, remarks, published },
+      { new: true, runValidators: true }
+    );
+    res.json(result);
+  } catch (err) {
+    if (err.code === 11000) return res.status(400).json({ error: 'Duplicate registration number' });
+    res.status(500).json({ error: 'Server error' });
+  }
 });
 
 app.delete('/api/admin/results/:id', adminAuth, async (req, res) => {
