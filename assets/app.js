@@ -1,4 +1,4 @@
-/* ======================== app.js – FINAL FIXED VERSION (v10) ======================== */
+/* ======================== app.js – FINAL PREMIUM STREAMING CHAT (v11) ======================== */
 document.addEventListener('DOMContentLoaded', function () {
   // ---------- UTILS ----------
   const API_BASE = '';
@@ -27,10 +27,9 @@ document.addEventListener('DOMContentLoaded', function () {
     return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
   }
 
-  // ---------- MOBILE NAV (FIXED – works on every page) ----------
+  // ---------- MOBILE NAV (FIXED) ----------
   const hamburger = document.getElementById('hamburger');
   const navLinks = document.getElementById('navLinks');
-
   if (hamburger && navLinks) {
     hamburger.addEventListener('click', function (e) {
       e.stopPropagation();
@@ -38,7 +37,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Close nav when clicking outside
   document.addEventListener('click', function (e) {
     if (navLinks && !e.target.closest('.navbar')) {
       navLinks.classList.remove('active');
@@ -109,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }).catch(() => {});
   }
 
-  // Counter animation
+  // Counter animation for stats
   const statNumbers = document.querySelectorAll('.stat-number[data-count]');
   if (statNumbers.length) {
     const observer = new IntersectionObserver((entries) => {
@@ -201,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // ---------- AI SOLVER ----------
+  // ---------- AI SOLVER (text, image, PDF) ----------
   const solverTabs = document.querySelectorAll('.solver-tab-btn');
   const inputText = document.getElementById('input-text');
   const inputImage = document.getElementById('input-image');
@@ -298,50 +296,104 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // ---------- SANKALP SATHI CHATBOT ----------
+  // ---------- STREAMING CHATBOT (ChatGPT‑style) ----------
   const chatMessages = document.getElementById('chatMessages');
   const chatInput = document.getElementById('chatInput');
   const sendBtn = document.getElementById('sendMessageBtn');
   const typingIndicator = document.getElementById('typingIndicator');
+
   if (chatMessages && chatInput && sendBtn) {
-    function addMessage(text, sender) {
+    let isStreaming = false;
+
+    function createStreamingBubble() {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'message bot';
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      const cursor = document.createElement('span');
+      cursor.className = 'streaming-cursor';
+      cursor.textContent = '▋';
+      bubble.appendChild(cursor);
+      messageDiv.appendChild(bubble);
+      chatMessages.appendChild(messageDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      return { messageDiv, bubble, cursor };
+    }
+
+    function addUserMessage(text) {
       const div = document.createElement('div');
-      div.className = `message ${sender}`;
+      div.className = 'message user';
       div.innerHTML = `<div class="bubble"><p>${sanitize(text)}</p></div>`;
       chatMessages.appendChild(div);
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    function showTyping() { typingIndicator?.classList.remove('hidden'); }
-    function hideTyping() { typingIndicator?.classList.add('hidden'); }
-
     async function sendMessage() {
       const msg = chatInput.value.trim();
-      if (!msg) return;
-      addMessage(msg, 'user');
+      if (!msg || isStreaming) return;
+      addUserMessage(msg);
       chatInput.value = '';
-      showTyping();
+      isStreaming = true;
+      typingIndicator?.classList.add('hidden');
+
+      const { bubble, cursor } = createStreamingBubble();
+
       try {
-        const res = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg }) });
-        const data = await res.json();
-        hideTyping();
-        addMessage(data.reply || 'Sorry, I did not understand that.', 'bot');
-        if (data.reply && (data.reply.includes('share your details') || data.reply.includes('contact you'))) {
-          setTimeout(() => document.getElementById('leadCaptureCard')?.classList.remove('hidden'), 2000);
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg })
+        });
+
+        if (!response.ok) throw new Error('Server error');
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let fullText = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const chunk = decoder.decode(value, { stream: true });
+          fullText += chunk;
+
+          bubble.innerHTML = formatChatText(fullText);
+          bubble.appendChild(cursor);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
         }
       } catch (err) {
-        hideTyping();
-        addMessage('Sorry, I faced a network issue. Please try again.', 'bot');
+        bubble.innerHTML = 'Sorry, I faced an issue. Please try again.';
+      } finally {
+        cursor.remove();
+        if (bubble.innerHTML.trim() === '') bubble.innerHTML = 'I received an empty response.';
+        isStreaming = false;
+        chatInput.focus();
       }
     }
 
-    sendBtn.addEventListener('click', sendMessage);
-    chatInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') sendMessage(); });
+    function formatChatText(text) {
+      return text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/`(.*?)`/g, '<code>$1</code>')
+        .replace(/\n/g, '<br>');
+    }
 
-    document.querySelectorAll('.prompt-chip').forEach(chip => {
-      chip.addEventListener('click', () => { chatInput.value = chip.textContent; sendMessage(); });
+    sendBtn.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !isStreaming) sendMessage();
     });
 
+    document.querySelectorAll('.prompt-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        if (!isStreaming) {
+          chatInput.value = chip.textContent;
+          sendMessage();
+        }
+      });
+    });
+
+    // Lead capture form
     const leadForm = document.getElementById('leadCaptureForm');
     if (leadForm) {
       leadForm.addEventListener('submit', async (e) => {
@@ -399,13 +451,13 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('ms-fatherName').textContent = result.fatherName;
     document.getElementById('ms-regNumber').textContent = result.registrationNumber;
     document.getElementById('ms-dob').textContent = new Date(result.dob).toLocaleDateString('en-IN');
-    document.getElementById('ms-class').textContent = result.class;
-    document.getElementById('ms-session').textContent = result.session;
-    document.getElementById('ms-issueDate').textContent = formatDate(result.issueDate);
+    document.getElementById('ms-class').textContent = result.class || '';
+    document.getElementById('ms-session').textContent = result.session || '';
+    document.getElementById('ms-issueDate').textContent = formatDate(result.issueDate || result.createdAt);
     const subjectsTbody = document.getElementById('ms-subjects');
-    subjectsTbody.innerHTML = result.subjects.map(s => `<tr><td>${s.subject}</td><td>${s.marksObtained}</td><td>${s.maxMarks}</td></tr>`).join('');
-    document.getElementById('ms-percentage').textContent = result.percentage + '%';
-    document.getElementById('ms-grade').textContent = result.grade;
+    subjectsTbody.innerHTML = (result.subjects || []).map(s => `<tr><td>${s.subject}</td><td>${s.marksObtained}</td><td>${s.maxMarks}</td></tr>`).join('');
+    document.getElementById('ms-percentage').textContent = (result.percentage || '') + '%';
+    document.getElementById('ms-grade').textContent = result.grade || '';
     document.getElementById('ms-remarks').textContent = result.remarks || '—';
     document.getElementById('marksheetSection').style.display = 'block';
     document.getElementById('downloadPdfBtn').onclick = () => window.print();
@@ -517,6 +569,7 @@ document.addEventListener('DOMContentLoaded', function () {
       } catch (err) { console.error(err); }
     }
 
+    // --- INQUIRIES ---
     async function loadInquiries() {
       const tbody = document.querySelector('#inquiriesTable tbody');
       if (!tbody) return;
@@ -525,10 +578,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const res = await fetch('/api/admin/inquiries');
         let inquiries = await res.json();
         if (filter !== 'all') inquiries = inquiries.filter(i => i.status === filter);
-        if (inquiries.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="6">No inquiries found.</td></tr>';
-          return;
-        }
+        if (inquiries.length === 0) { tbody.innerHTML = '<tr><td colspan="6">No inquiries found.</td></tr>'; return; }
         tbody.innerHTML = inquiries.map(i => `
           <tr>
             <td>${i.fullName}</td><td>${i.email}</td><td>${i.subject}</td>
@@ -550,14 +600,13 @@ document.addEventListener('DOMContentLoaded', function () {
           });
         });
         document.querySelectorAll('.delete-inquiry').forEach(btn => {
-          btn.addEventListener('click', async () => {
-            if (confirm('Delete?')) { await fetch(`/api/admin/inquiries/${btn.dataset.id}`, { method: 'DELETE' }); loadInquiries(); }
-          });
+          btn.addEventListener('click', async () => { if (confirm('Delete?')) { await fetch(`/api/admin/inquiries/${btn.dataset.id}`, { method: 'DELETE' }); loadInquiries(); } });
         });
       } catch (err) { console.error(err); }
     }
     document.getElementById('inquiryStatusFilter')?.addEventListener('change', loadInquiries);
 
+    // --- LEADS ---
     async function loadLeads() {
       const tbody = document.querySelector('#leadsTable tbody');
       if (!tbody) return;
@@ -589,14 +638,13 @@ document.addEventListener('DOMContentLoaded', function () {
           });
         });
         document.querySelectorAll('.delete-lead').forEach(btn => {
-          btn.addEventListener('click', async () => {
-            if (confirm('Delete?')) { await fetch(`/api/admin/leads/${btn.dataset.id}`, { method: 'DELETE' }); loadLeads(); }
-          });
+          btn.addEventListener('click', async () => { if (confirm('Delete?')) { await fetch(`/api/admin/leads/${btn.dataset.id}`, { method: 'DELETE' }); loadLeads(); } });
         });
       } catch (err) { console.error(err); }
     }
     document.getElementById('leadStatusFilter')?.addEventListener('change', loadLeads);
 
+    // --- RESULTS CRUD (SIMPLIFIED) ---
     async function loadResults() {
       const tbody = document.querySelector('#resultsTable tbody');
       if (!tbody) return;
@@ -606,8 +654,11 @@ document.addEventListener('DOMContentLoaded', function () {
         if (results.length === 0) { tbody.innerHTML = '<tr><td colspan="6">No results yet.</td></tr>'; return; }
         tbody.innerHTML = results.map(r => `
           <tr>
-            <td>${r.registrationNumber}</td><td>${r.studentName}</td><td>${r.class}</td>
-            <td>${r.percentage}%</td><td>${r.published ? '✅' : '❌'}</td>
+            <td>${r.registrationNumber}</td>
+            <td>${r.studentName}</td>
+            <td>${r.fatherName}</td>
+            <td>${new Date(r.dob).toLocaleDateString('en-IN')}</td>
+            <td>${r.grade || '—'}</td>
             <td>
               <button class="btn-sm btn-edit edit-result" data-id="${r._id}">✏️</button>
               <button class="btn-sm btn-danger delete-result" data-id="${r._id}">🗑️</button>
@@ -620,38 +671,40 @@ document.addEventListener('DOMContentLoaded', function () {
         }));
       } catch (err) { console.error(err); }
     }
+
     document.getElementById('addResultBtn')?.addEventListener('click', () => {
       document.getElementById('resultModalTitle').textContent = 'Add Result';
       document.getElementById('resultId').value = '';
       document.getElementById('resultForm').reset();
       document.getElementById('resultModalOverlay').classList.add('active');
     });
+
     document.getElementById('resultForm')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const id = document.getElementById('resultId').value;
       const data = {
-        registrationNumber: document.getElementById('resRegNo').value,
-        studentName: document.getElementById('resStudentName').value,
-        fatherName: document.getElementById('resFatherName').value,
+        registrationNumber: document.getElementById('resRegNo').value.trim(),
+        studentName: document.getElementById('resStudentName').value.trim(),
+        fatherName: document.getElementById('resFatherName').value.trim(),
         dob: document.getElementById('resDob').value,
-        class: document.getElementById('resClass').value,
-        session: document.getElementById('resSession').value,
-        subjects: JSON.parse(document.getElementById('resSubjects').value),
-        percentage: parseFloat(document.getElementById('resPercentage').value),
-        grade: document.getElementById('resGrade').value,
-        remarks: document.getElementById('resRemarks').value,
-        published: document.getElementById('resPublished').checked,
-        issueDate: document.getElementById('resIssueDate').value || new Date().toISOString().split('T')[0]
+        grade: document.getElementById('resGrade').value.trim(),
+        remarks: document.getElementById('resRemarks').value.trim(),
+        published: document.getElementById('resPublished').checked
       };
-      const method = id ? 'PUT' : 'POST';
       const url = id ? `/api/admin/results/${id}` : '/api/admin/results';
-      await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-      document.getElementById('resultModalOverlay').classList.remove('active');
-      loadResults();
+      const method = id ? 'PUT' : 'POST';
+      try {
+        const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+        if (res.ok) {
+          document.getElementById('resultModalOverlay').classList.remove('active');
+          loadResults();
+        } else {
+          const err = await res.json();
+          alert('Error: ' + (err.error || 'Save failed'));
+        }
+      } catch (err) { alert('Network error'); }
     });
-    document.querySelectorAll('.close-modal').forEach(btn => btn.addEventListener('click', () => {
-      document.querySelectorAll('.modal-overlay').forEach(o => o.classList.remove('active'));
-    }));
+
     async function editResult(id) {
       const res = await fetch('/api/admin/results');
       const results = await res.json();
@@ -663,18 +716,17 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('resStudentName').value = r.studentName;
       document.getElementById('resFatherName').value = r.fatherName;
       document.getElementById('resDob').value = new Date(r.dob).toISOString().split('T')[0];
-      document.getElementById('resClass').value = r.class;
-      document.getElementById('resSession').value = r.session;
-      document.getElementById('resSubjects').value = JSON.stringify(r.subjects);
-      document.getElementById('resPercentage').value = r.percentage;
-      document.getElementById('resGrade').value = r.grade;
+      document.getElementById('resGrade').value = r.grade || '';
       document.getElementById('resRemarks').value = r.remarks || '';
       document.getElementById('resPublished').checked = r.published;
-      document.getElementById('resIssueDate').value = new Date(r.issueDate).toISOString().split('T')[0];
       document.getElementById('resultModalOverlay').classList.add('active');
     }
 
-    // Gallery Admin
+    document.querySelectorAll('.close-modal').forEach(btn => btn.addEventListener('click', () => {
+      document.querySelectorAll('.modal-overlay').forEach(o => o.classList.remove('active'));
+    }));
+
+    // --- GALLERY ADMIN ---
     document.getElementById('galleryUploadForm')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const file = document.getElementById('galleryImageInput').files[0];
@@ -685,6 +737,7 @@ document.addEventListener('DOMContentLoaded', function () {
       await fetch('/api/admin/gallery', { method: 'POST', body: formData });
       loadGalleryAdmin();
     });
+
     async function loadGalleryAdmin() {
       const grid = document.getElementById('adminGalleryGrid');
       if (!grid) return;
@@ -699,20 +752,19 @@ document.addEventListener('DOMContentLoaded', function () {
           </div>
         `).join('');
         document.querySelectorAll('.delete-btn').forEach(btn => {
-          btn.addEventListener('click', async () => {
-            if (confirm('Delete?')) { await fetch(`/api/admin/gallery/${btn.dataset.id}`, { method: 'DELETE' }); loadGalleryAdmin(); }
-          });
+          btn.addEventListener('click', async () => { if (confirm('Delete?')) { await fetch(`/api/admin/gallery/${btn.dataset.id}`, { method: 'DELETE' }); loadGalleryAdmin(); } });
         });
       } catch (err) { console.error(err); }
     }
 
-    // Events Admin
+    // --- EVENTS ADMIN ---
     document.getElementById('addEventBtn')?.addEventListener('click', () => {
       document.getElementById('eventModalTitle').textContent = 'Add Event';
       document.getElementById('eventId').value = '';
       document.getElementById('eventForm').reset();
       document.getElementById('eventModalOverlay').classList.add('active');
     });
+
     document.getElementById('eventForm')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const id = document.getElementById('eventId').value;
@@ -727,6 +779,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('eventModalOverlay').classList.remove('active');
       loadEventsAdmin();
     });
+
     async function loadEventsAdmin() {
       const list = document.getElementById('eventsList');
       if (!list) return;
@@ -755,20 +808,19 @@ document.addEventListener('DOMContentLoaded', function () {
           document.getElementById('eventModalOverlay').classList.add('active');
         }));
         document.querySelectorAll('.delete-event').forEach(btn => {
-          btn.addEventListener('click', async () => {
-            if (confirm('Delete?')) { await fetch(`/api/admin/events/${btn.dataset.id}`, { method: 'DELETE' }); loadEventsAdmin(); }
-          });
+          btn.addEventListener('click', async () => { if (confirm('Delete?')) { await fetch(`/api/admin/events/${btn.dataset.id}`, { method: 'DELETE' }); loadEventsAdmin(); } });
         });
       } catch (err) { console.error(err); }
     }
 
-    // Programs Admin
+    // --- PROGRAMS ADMIN ---
     document.getElementById('addProgramBtn')?.addEventListener('click', () => {
       document.getElementById('programModalTitle').textContent = 'Add Program';
       document.getElementById('programId').value = '';
       document.getElementById('programForm').reset();
       document.getElementById('programModalOverlay').classList.add('active');
     });
+
     document.getElementById('programForm')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const id = document.getElementById('programId').value;
@@ -784,6 +836,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('programModalOverlay').classList.remove('active');
       loadProgramsAdmin();
     });
+
     async function loadProgramsAdmin() {
       const list = document.getElementById('programsList');
       if (!list) return;
@@ -814,9 +867,7 @@ document.addEventListener('DOMContentLoaded', function () {
           document.getElementById('programModalOverlay').classList.add('active');
         }));
         document.querySelectorAll('.delete-program').forEach(btn => {
-          btn.addEventListener('click', async () => {
-            if (confirm('Delete?')) { await fetch(`/api/admin/programs/${btn.dataset.id}`, { method: 'DELETE' }); loadProgramsAdmin(); }
-          });
+          btn.addEventListener('click', async () => { if (confirm('Delete?')) { await fetch(`/api/admin/programs/${btn.dataset.id}`, { method: 'DELETE' }); loadProgramsAdmin(); } });
         });
       } catch (err) { console.error(err); }
     }
