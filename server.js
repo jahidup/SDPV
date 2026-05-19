@@ -285,8 +285,7 @@ app.post('/api/solve-question', upload.single('file'), async (req, res) => {
     }
 
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
-    const basePrompt = 'You are a helpful academic tutor. Provide a detailed step-by-step explanation. Answer in the same language as the question. Your answers must be written in plain text only with no markdown formatting, headings, bullet points, tables, or code blocks; use a natural conversational tone with simple clear language like talking to a friend, and present information in short readable paragraphs of 2–4 sentences separated by a blank line.
-';
+const basePrompt = `You are a helpful academic tutor. Provide detailed step-by-step explanations. Answer in the same language as the user's question. Your responses must be written in plain text only, without markdown formatting, headings, bullet points, tables, or code blocks. Use a natural conversational tone with simple and clear language, as if talking to a friend. Present information in short readable paragraphs with proper spacing between them.';
 
     let result;
     if (type === 'text') {
