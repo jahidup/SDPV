@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="title" content="Enroll Now – Sankalp Digital Pathshala | Start Your Journey">
-    <meta name="description" content="Enroll in premium classroom programs at Sankalp Digital Pathshala. Fill a simple form, choose your offline batch, and start learning with expert faculty, smart classrooms, and AI‑powered tools.">
+    <meta name="title" content="Enroll Now – Sankalp Digital Pathshala | Start Your Premium Offline Journey">
+    <meta name="description" content="Secure your seat in our expert‑led classroom programs. Fill the enrollment form, choose your batch, and begin your path to academic excellence with smart classrooms, premium study materials, and AI‑powered support.">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Enroll Now – Sankalp Digital Pathshala">
-    <meta property="og:description" content="Take the first step towards academic excellence. Simple and secure enrollment for our offline courses.">
+    <meta property="og:description" content="Simple and secure enrollment for premium offline coaching. Confirm your seat and schedule a campus visit.">
     <meta property="og:image" content="https://www.sankalpdigitalpathshala.online/assets/og-enroll.jpg">
     <meta property="og:url" content="https://www.sankalpdigitalpathshala.online/enroll">
     <meta name="twitter:card" content="summary_large_image">
@@ -19,6 +19,53 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfjBJILA9Yd-tJq3EUb-Ju1u61mkFh6_89XA&s">
+    <style>
+        /* Additional enhancement styles */
+        .campus-address-box {
+            background: linear-gradient(135deg, var(--primary-light), white);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            display: block;
+            color: var(--navy);
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.65rem 0.75rem;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0,172,238,0.1);
+        }
+        .enroll-highlight {
+            background: var(--off-white);
+            border-left: 4px solid var(--primary);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        }
+    </style>
 </head>
 <body>
     <!-- ========== NAVBAR (Consistent) ========== -->
@@ -50,28 +97,34 @@
     <section class="page-hero" style="background: linear-gradient(to bottom, var(--off-white), white);">
         <div class="container text-center">
             <h1 class="hero-heading">Enroll in <span class="text-primary">Your Dream Classroom Program</span></h1>
-            <p class="hero-subtitle" style="max-width:700px; margin:0 auto;">Take the first step towards academic excellence. Fill the form below and our team will confirm your seat and schedule a campus visit within hours.</p>
+            <p class="hero-subtitle" style="max-width:800px; margin:0 auto;">Join our premium offline coaching institute and experience expert faculty, smart classrooms, personalized mentorship, and AI‑powered academic support. Fill the form below to secure your seat – our team will contact you within 2‑4 hours.</p>
+            <div class="trust-badges mt-3" style="justify-content:center;">
+                <span class="badge">🎓 50+ Expert Faculty</span>
+                <span class="badge">🏫 Smart Classrooms</span>
+                <span class="badge">📚 Premium Study Material</span>
+                <span class="badge">🤖 24/7 AI Support</span>
+            </div>
         </div>
     </section>
 
     <!-- ========== ENROLLMENT PROCESS STEPS ========== -->
     <section class="section-padding bg-white">
         <div class="container">
-            <div class="steps-grid">
-                <div class="step-card text-center">
+            <div class="steps-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                <div class="step-card text-center" style="padding: 2rem; border: 1px solid var(--border-light); border-radius: var(--radius-lg); background: var(--off-white);">
                     <div class="step-number" style="font-size:2.5rem; font-weight:800; color:var(--primary);">1</div>
-                    <h3>Choose Your Course</h3>
-                    <p>Select the classroom program that fits your goals from our wide range of offerings.</p>
+                    <h3>Choose Your Program</h3>
+                    <p>Select the perfect classroom batch for your class and goals – foundation, board prep, JEE, NEET, or future skills.</p>
                 </div>
-                <div class="step-card text-center">
+                <div class="step-card text-center" style="padding: 2rem; border: 1px solid var(--border-light); border-radius: var(--radius-lg); background: var(--off-white);">
                     <div class="step-number" style="font-size:2.5rem; font-weight:800; color:var(--primary);">2</div>
-                    <h3>Fill Enrollment Form</h3>
-                    <p>Provide basic details so we can personalise your learning experience.</p>
+                    <h3>Submit Your Details</h3>
+                    <p>Fill the simple form with accurate information so we can personalise your learning path and schedule a counseling call.</p>
                 </div>
-                <div class="step-card text-center">
+                <div class="step-card text-center" style="padding: 2rem; border: 1px solid var(--border-light); border-radius: var(--radius-lg); background: var(--off-white);">
                     <div class="step-number" style="font-size:2.5rem; font-weight:800; color:var(--primary);">3</div>
-                    <h3>Visit &amp; Start</h3>
-                    <p>Our team will contact you, confirm your seat, and invite you to the campus for onboarding.</p>
+                    <h3>Visit Campus & Start</h3>
+                    <p>We'll confirm your seat, invite you for a campus tour, and hand over your welcome kit with printed study materials.</p>
                 </div>
             </div>
         </div>
@@ -81,12 +134,16 @@
     <section class="section-padding" style="background: var(--off-white);">
         <div class="container" style="max-width: 900px;">
             <div class="card glass-light" style="padding: 2.5rem;">
-                <h2 class="text-center mb-4">Enrollment Form</h2>
+                <h2 class="text-center mb-4">Secure Your Seat – Enrollment Form</h2>
+                <p class="text-center mb-4">All fields marked * are required. Your information is kept confidential and never shared.</p>
+                <div class="enroll-highlight">
+                    <p style="margin:0;"><strong>📍 Campus Address:</strong> Sankalp Digital Pathshala, Salemgarh, Tamkuhi, Kushinagar, Uttar Pradesh. <strong>📞 Call/WhatsApp:</strong> <a href="tel:+919453961105" class="text-primary">+91 9453961105</a></p>
+                </div>
                 <form id="enrollForm">
                     <!-- Student Details -->
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="studentName">Full Name *</label>
+                            <label for="studentName">Student Full Name *</label>
                             <input type="text" id="studentName" placeholder="Your full name" required autocomplete="name">
                         </div>
                         <div class="form-group">
@@ -117,34 +174,50 @@
                             <input type="text" id="parentName" placeholder="Parent name">
                         </div>
                         <div class="form-group">
+                            <label for="parentMobile">Parent Mobile</label>
+                            <input type="tel" id="parentMobile" placeholder="Parent mobile number">
+                        </div>
+                    </div>
+                    <!-- Address & School -->
+                    <div class="form-row">
+                        <div class="form-group">
                             <label for="city">City</label>
                             <input type="text" id="city" placeholder="Your city">
                         </div>
+                        <div class="form-group">
+                            <label for="school">School / Institution</label>
+                            <input type="text" id="school" placeholder="Current school name">
+                        </div>
                     </div>
-                    <!-- Course Selection -->
+                    <!-- Course Selection (Enhanced) -->
                     <div class="form-group">
                         <label for="courseSelect">Select Course *</label>
                         <select id="courseSelect" required>
                             <option value="">-- Choose a program --</option>
-                            <optgroup label="Foundation (Class 6-8)">
-                                <option>Maths Foundation - Class 6</option>
-                                <option>Science Explorer - Class 7</option>
-                                <option>Computer & AI Basics - Class 8</option>
+                            <optgroup label="Foundation (Class 6‑8)">
+                                <option>Complete Class 6 Foundation (All Subjects)</option>
+                                <option>Complete Class 7 Foundation (All Subjects)</option>
+                                <option>Complete Class 8 Foundation (All Subjects)</option>
                             </optgroup>
-                            <optgroup label="Academic Excellence (Class 9-10)">
-                                <option>Complete CBSE Pack - Class 9</option>
-                                <option>Board Booster Program - Class 10</option>
-                                <option>English Excellence - Class 9-10</option>
+                            <optgroup label="Academic Excellence (Class 9‑10)">
+                                <option>Class 9 Complete CBSE Pack (Maths, Science, English, SST)</option>
+                                <option>Class 10 Board Booster Program (All Subjects)</option>
+                                <option>English Excellence for Classes 9‑10</option>
                             </optgroup>
-                            <optgroup label="Senior Secondary (Class 11-12)">
-                                <option>PCM (Physics, Chemistry, Maths)</option>
-                                <option>PCB (Physics, Chemistry, Biology)</option>
-                                <option>Commerce & Humanities</option>
+                            <optgroup label="Senior Secondary (Class 11‑12)">
+                                <option>Class 11 PCM (Physics, Chemistry, Maths)</option>
+                                <option>Class 11 PCB (Physics, Chemistry, Biology)</option>
+                                <option>Class 11 Commerce</option>
+                                <option>Class 11 Humanities</option>
+                                <option>Class 12 PCM</option>
+                                <option>Class 12 PCB</option>
+                                <option>Class 12 Commerce</option>
+                                <option>Class 12 Humanities</option>
                             </optgroup>
                             <optgroup label="Competitive Exams">
-                                <option>JEE Main + Advanced</option>
-                                <option>NEET Biology Focus</option>
-                                <option>45-Day JEE/NEET Crash</option>
+                                <option>JEE Main + Advanced (2‑Year Classroom Program)</option>
+                                <option>NEET UG (2‑Year Classroom Program)</option>
+                                <option>45‑Day JEE/NEET Crash Course</option>
                             </optgroup>
                             <optgroup label="Future Skills">
                                 <option>AI & Machine Learning for Kids</option>
@@ -153,22 +226,34 @@
                             </optgroup>
                         </select>
                     </div>
+                    <!-- Preferred Batch Timing -->
+                    <div class="form-group">
+                        <label for="batchTiming">Preferred Batch Timing</label>
+                        <select id="batchTiming">
+                            <option value="">Any suitable</option>
+                            <option>Morning (7:00 AM - 10:00 AM)</option>
+                            <option>Afternoon (2:00 PM - 5:00 PM)</option>
+                            <option>Evening (5:00 PM - 8:00 PM)</option>
+                        </select>
+                    </div>
                     <!-- Additional Message -->
                     <div class="form-group">
-                        <label for="enrollMessage">Any Message (optional)</label>
-                        <textarea id="enrollMessage" rows="3" placeholder="Tell us about any specific requirements..."></textarea>
+                        <label for="enrollMessage">Any Specific Query or Requirement (optional)</label>
+                        <textarea id="enrollMessage" rows="3" placeholder="Tell us about your goals, preferred subjects, or any special needs..."></textarea>
                     </div>
                     <!-- Consent -->
                     <div class="form-group">
                         <label style="display: flex; align-items: center; gap: 0.5rem; font-weight: 400;">
-                            <input type="checkbox" id="consent" required> I agree to the <a href="/terms" target="_blank" style="color:var(--primary); text-decoration: underline;">Terms & Conditions</a> and <a href="/privacy" target="_blank" style="color:var(--primary); text-decoration: underline;">Privacy Policy</a>.
+                            <input type="checkbox" id="consent" required> I have read and agree to the <a href="/terms" target="_blank" style="color:var(--primary); text-decoration: underline;">Terms & Conditions</a> and <a href="/privacy" target="_blank" style="color:var(--primary); text-decoration: underline;">Privacy Policy</a>. *
                         </label>
                     </div>
                     <!-- Submit -->
-                    <button type="submit" class="btn-primary btn-lg w-100">Submit Enrollment</button>
+                    <button type="submit" class="btn-primary btn-lg w-100" style="width:100%;">Submit Enrollment</button>
                     <div class="form-feedback mt-3 text-center" id="enrollFeedback" style="display:none;"></div>
                 </form>
-                <p class="text-center mt-3">Prefer WhatsApp? <a href="https://wa.me/919453961105?text=I%20want%20to%20enroll%20in%20a%20course" target="_blank" class="text-primary">Message us instantly →</a></p>
+                <div class="text-center mt-3">
+                    <p>Prefer a quick chat? <a href="https://wa.me/919453961105?text=I%20want%20to%20enroll%20in%20a%20course" target="_blank" class="text-primary">Message us on WhatsApp →</a></p>
+                </div>
             </div>
         </div>
     </section>
@@ -180,18 +265,23 @@
             <div class="feature-grid mt-4">
                 <div class="feature-card">
                     <div class="card-icon">🔒</div>
-                    <h3>Secure Process</h3>
-                    <p>Your data is encrypted and never shared. We respect your privacy.</p>
+                    <h3>Secure Enrollment</h3>
+                    <p>Your data is encrypted and used solely for academic counseling. We never share with third parties.</p>
                 </div>
                 <div class="feature-card">
                     <div class="card-icon">⚡</div>
                     <h3>Instant Confirmation</h3>
-                    <p>Receive a confirmation call/WhatsApp within 2-4 hours of submission.</p>
+                    <p>You'll receive a WhatsApp/call within 2‑4 hours of submission. No waiting in queues.</p>
                 </div>
                 <div class="feature-card">
                     <div class="card-icon">🎓</div>
                     <h3>No Hidden Fees</h3>
-                    <p>Transparent pricing. Pay only after you're satisfied with the counselling.</p>
+                    <p>Transparent fee structure. Pay only after personalized counseling and a campus tour.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="card-icon">🏫</div>
+                    <h3>Campus Visit Guaranteed</h3>
+                    <p>Our team will schedule a visit so you can experience our smart classrooms and meet the faculty before you decide.</p>
                 </div>
             </div>
         </div>
@@ -205,16 +295,20 @@
             </div>
             <div class="faq-list">
                 <div class="faq-item">
-                    <button class="faq-question">Is there any registration fee?</button>
-                    <div class="faq-answer"><p>No, filling the enrollment form is completely free. You only pay the course fee after you decide to join.</p></div>
+                    <button class="faq-question">Is there any registration or form fee?</button>
+                    <div class="faq-answer"><p>No, the enrollment form is completely free. You only pay the course fee after you are satisfied with the counseling and decide to join.</p></div>
                 </div>
                 <div class="faq-item">
-                    <button class="faq-question">Can I change my course later?</button>
-                    <div class="faq-answer"><p>Absolutely! You can switch to a different batch or program within the first week of starting at no extra cost.</p></div>
+                    <button class="faq-question">Can I change my batch or stream after enrollment?</button>
+                    <div class="faq-answer"><p>Yes, you can switch to a different batch or even a different program within the first 7 days of starting, at no extra cost.</p></div>
                 </div>
                 <div class="faq-item">
-                    <button class="faq-question">How will I receive confirmation?</button>
-                    <div class="faq-answer"><p>We'll contact you via WhatsApp and email. You can also directly call us or visit the campus if you haven't heard back in 4 hours.</p></div>
+                    <button class="faq-question">What happens after I submit the form?</button>
+                    <div class="faq-answer"><p>Our academic counselor will call you within 2‑4 hours to understand your needs, suggest the best batch, and schedule a campus visit. After the visit, you can confirm your seat by paying the token amount.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Do I need to bring any documents?</button>
+                    <div class="faq-answer"><p>For the campus visit, just bring your curiosity! For final admission, we require a photograph, previous class marksheet, and ID proof (Aadhar/Passport).</p></div>
                 </div>
             </div>
         </div>
@@ -266,6 +360,19 @@
     <a href="https://wa.me/919453961105" target="_blank" class="whatsapp-floating">💬</a>
 
     <script>
+        // Hamburger menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.getElementById('navLinks');
+            if (hamburger && navLinks) {
+                hamburger.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
+            }
+        });
+    </script>
+
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const enrollForm = document.getElementById('enrollForm');
             if (enrollForm) {
@@ -276,13 +383,13 @@
                     feedback.textContent = 'Submitting your enrollment...';
                     feedback.style.color = 'var(--slate)';
                     
-                    // Build enrollment data (similar to contact but with course info)
+                    // Build enrollment data with enhanced fields
                     const data = {
                         fullName: document.getElementById('studentName').value.trim(),
                         email: document.getElementById('studentEmail').value.trim(),
                         mobile: document.getElementById('studentMobile').value.trim(),
                         subject: `Enrollment: ${document.getElementById('courseSelect').value}`,
-                        message: `Class: ${document.getElementById('studentClass').value}\nParent: ${document.getElementById('parentName').value || 'N/A'}\nCity: ${document.getElementById('city').value || 'N/A'}\nAdditional: ${document.getElementById('enrollMessage').value || 'None'}`
+                        message: `Class: ${document.getElementById('studentClass').value}\nParent Name: ${document.getElementById('parentName').value || 'N/A'}\nParent Mobile: ${document.getElementById('parentMobile').value || 'N/A'}\nCity: ${document.getElementById('city').value || 'N/A'}\nSchool: ${document.getElementById('school').value || 'N/A'}\nBatch Preference: ${document.getElementById('batchTiming').value || 'Any'}\nAdditional Message: ${document.getElementById('enrollMessage').value || 'None'}`
                     };
 
                     try {
@@ -293,7 +400,7 @@
                         });
                         const result = await res.json();
                         if (result.success) {
-                            feedback.textContent = 'Enrollment submitted successfully! Our team will contact you within 2-4 hours to confirm your seat and campus visit.';
+                            feedback.textContent = 'Enrollment submitted successfully! Our counselor will contact you within 2-4 hours to discuss your batch and campus visit.';
                             feedback.style.color = '#10b981';
                             enrollForm.reset();
                         } else {
