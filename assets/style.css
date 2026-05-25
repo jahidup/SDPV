@@ -1,5 +1,5 @@
-/* ======================== SANKALP DIGITAL PATHSHALA – FINAL PREMIUM CSS (v14) ======================== */
-/* Primary #00acee, 0.8x zoom, all pages covered, hero slider, centered headings */
+/* ======================== SANKALP DIGITAL PATHSHALA – FINAL PREMIUM CSS (v13) ======================== */
+/* Primary #00acee, 0.8x zoom, all pages covered, home hero-visual styled */
 
 html {
   font-size: 80%;
@@ -268,76 +268,37 @@ p { color: var(--slate); margin-bottom: 1rem; }
 }
 
 /* ---------- HERO (GLOBAL & HOME SPECIFIC) ---------- */
-.hero {
+.page-hero {
+  padding: 5rem 0 3rem;
   position: relative;
   overflow: hidden;
-  min-height: 90vh;
-  display: flex;
-  align-items: center;
-  background: var(--navy); /* fallback */
 }
 
-/* Hero Background Slider */
-.hero-slider {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  z-index: 0;
-  overflow: hidden;
-}
-
-.hero-slider .slide {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-size: cover;
-  background-position: center;
-  opacity: 0;
-  transition: opacity 1.5s ease-in-out;
-}
-
-.hero-slider .slide.active {
-  opacity: 1;
-}
-
-/* Dark overlay for readability */
-.hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.65);
-  z-index: 0;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 1;
-}
-
+/* Home hero adjustments */
 .hero-heading {
-  margin-bottom: 1.5rem;
-  color: white;  /* forced white on dark overlay */
+  margin-bottom: 1.5rem;            /* more space below heading */
 }
 
 .hero-subtitle {
-  font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.9);
-  max-width: 700px;
-  margin: 0 auto 2rem;
+  font-size: 1.1rem;
+  color: var(--slate);
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .hero-buttons {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+  margin-top: 1.5rem;
   justify-content: center;
-  margin-bottom: 1.5rem;
 }
 
 .trust-badges {
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
+  margin-top: 1rem;
   justify-content: center;
 }
 
@@ -346,13 +307,32 @@ p { color: var(--slate); margin-bottom: 1rem; }
   align-items: center;
   gap: 0.35rem;
   padding: 0.35rem 1.2rem;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: var(--white);
+  border: 1px solid var(--border-light);
   border-radius: 50px;
   font-size: 0.85rem;
   font-weight: 500;
-  color: white;
-  box-shadow: none;
+  color: var(--navy);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Hero visual image styling */
+.hero-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-visual img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.4s ease;
+}
+
+.hero-visual img:hover {
+  transform: scale(1.02);
 }
 
 /* ---------- GRID LAYOUTS ---------- */
@@ -401,7 +381,6 @@ p { color: var(--slate); margin-bottom: 1rem; }
   margin-bottom: 1rem;
 }
 
-/* Course image */
 .course-img {
   height: 180px;
   background: var(--primary-light);
@@ -446,7 +425,6 @@ p { color: var(--slate); margin-bottom: 1rem; }
   margin-bottom: 0.3rem;
 }
 
-/* Faculty card specifics */
 .faculty-card {
   text-align: center;
 }
@@ -474,7 +452,6 @@ p { color: var(--slate); margin-bottom: 1rem; }
   gap: 1rem;
 }
 
-/* Resource card specifics */
 .resource-card {
   text-align: center;
 }
@@ -748,8 +725,6 @@ blockquote {
   border: 2px solid var(--primary);
   box-shadow: var(--shadow-lg);
   padding: 2.5rem;
-  position: relative;
-  overflow: hidden;
 }
 
 .marksheet-header {
