@@ -15,7 +15,6 @@
     <link rel="canonical" href="https://www.sankalpdigitalpathshala.online">
     <title>Sankalp Digital Pathshala – Premium Offline Coaching with AI‑Powered Support</title>
     <link rel="stylesheet" href="/assets/style.css?v=3">
-    <!-- Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
@@ -118,8 +117,26 @@
             text-align: center;
         }
 
-        /* Responsive */
+        /* ============ HAMBURGER MENU FIX ============ */
         @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                z-index: 100;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .nav-links li {
+                padding: 0.75rem 1.5rem;
+                border-bottom: 1px solid #eee;
+            }
             .hero-content h1 {
                 font-size: 2.2rem;
             }
@@ -154,7 +171,6 @@
 
     <!-- ========== HERO SECTION (background slider) ========== -->
     <section class="hero" id="hero">
-        <!-- Three sliding background images -->
         <div class="hero-bg-slider">
             <div class="slide"></div>
             <div class="slide"></div>
@@ -286,7 +302,7 @@
         </div>
     </section>
 
-    <!-- ========== STUDY MATERIAL PREVIEW ========== -->
+    <!-- ========== STUDY MATERIAL PREVIEW (centered) ========== -->
     <section class="study-material section-padding" id="study-material">
         <div class="container">
             <div class="section-header">
