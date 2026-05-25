@@ -20,6 +20,111 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfjBJILA9Yd-tJq3EUb-Ju1u61mkFh6_89XA&s">
+    <style>
+        /* ============ HERO SLIDER ============ */
+        .hero {
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            color: #fff;
+        }
+        .hero-bg-slider {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+        .slide {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            animation: slideFade 15s infinite;
+        }
+        .slide:nth-child(1) {
+            background-image: url('https://media.licdn.com/dms/image/v2/D5622AQF_pog6ck9JZg/feedshare-shrink_800/feedshare-shrink_800/0/1729510623862?e=2147483647&v=beta&t=1gEnLfaPFUlBo2gddpS-TfK2q_5O7Q9eJyxFgZeAKKU');
+        }
+        .slide:nth-child(2) {
+            background-image: url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1200&q=80');
+            animation-delay: 5s;
+        }
+        .slide:nth-child(3) {
+            background-image: url('https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1200&q=80');
+            animation-delay: 10s;
+        }
+        @keyframes slideFade {
+            0% { opacity: 0; }
+            5% { opacity: 1; }
+            25% { opacity: 1; }
+            33.33% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.45) 100%);
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 0 1rem;
+        }
+        .hero-content h1 {
+            color: #fff;
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+        .hero-content h1 .text-primary {
+            color: #00bcd4;
+        }
+        .hero-content .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: rgba(255,255,255,0.9);
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        .trust-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        .trust-badges .badge {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(4px);
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* ============ SECTION HEADERS CENTERED ============ */
+        .section-header {
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- ========== PREMIUM STICKY NAVBAR ========== -->
@@ -47,33 +152,33 @@
         </div>
     </nav>
 
-    <!-- ========== HERO SECTION ========== -->
+    <!-- ========== HERO SECTION (background slider) ========== -->
     <section class="hero" id="hero">
-        <div class="container">
-            <div class="hero-grid">
-                <div class="hero-content">
-                    <h1 class="hero-heading">
-                        Your Pathway to<br>
-                        <span class="text-primary">Academic Excellence</span>
-                    </h1>
-                    <p class="hero-subtitle">
-                        Expert classroom mentorship, structured programs, and AI‑powered support – all at our premium offline coaching institute trusted by <strong>1,500+</strong> students across India.
-                    </p>
-                    <div class="hero-buttons">
-                        <a href="/courses" class="btn-primary btn-lg">Explore Courses</a>
-                        <a href="https://wa.me/919453961105?text=I%20want%20to%20know%20more%20about%20Sankalp%20Digital%20Pathshala" target="_blank" rel="noopener" class="btn-secondary btn-lg">Join WhatsApp Community</a>
-                    </div>
-                    <div class="trust-badges">
-                        <span class="badge">🎓 Expert Faculty</span>
-                        <span class="badge">🏫 Smart Classrooms</span>
-                        <span class="badge">✅ Exam Focused</span>
-                        <span class="badge">📚 Premium Study Material</span>
-                        <span class="badge">🤖 AI‑Powered Support</span>
-                    </div>
-                </div>
-                <div class="hero-visual">
-                    <img src="https://media.licdn.com/dms/image/v2/D5622AQF_pog6ck9JZg/feedshare-shrink_800/feedshare-shrink_800/0/1729510623862?e=2147483647&v=beta&t=1gEnLfaPFUlBo2gddpS-TfK2q_5O7Q9eJyxFgZeAKKU" alt="Students learning in a modern classroom" width="600" height="400" loading="eager">
-                </div>
+        <!-- Three sliding background images -->
+        <div class="hero-bg-slider">
+            <div class="slide"></div>
+            <div class="slide"></div>
+            <div class="slide"></div>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>
+                Your Pathway to<br>
+                <span class="text-primary">Academic Excellence</span>
+            </h1>
+            <p class="hero-subtitle">
+                Expert classroom mentorship, structured programs, and AI‑powered support – all at our premium offline coaching institute trusted by <strong>1,500+</strong> students across India.
+            </p>
+            <div class="hero-buttons">
+                <a href="/courses" class="btn-primary btn-lg">Explore Courses</a>
+                <a href="https://wa.me/919453961105?text=I%20want%20to%20know%20more%20about%20Sankalp%20Digital%20Pathshala" target="_blank" rel="noopener" class="btn-secondary btn-lg">Join WhatsApp Community</a>
+            </div>
+            <div class="trust-badges">
+                <span class="badge">🎓 Expert Faculty</span>
+                <span class="badge">🏫 Smart Classrooms</span>
+                <span class="badge">✅ Exam Focused</span>
+                <span class="badge">📚 Premium Study Material</span>
+                <span class="badge">🤖 AI‑Powered Support</span>
             </div>
         </div>
     </section>
@@ -441,6 +546,18 @@
         💬
     </a>
 
+    <!-- Hamburger menu fix -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.getElementById('navLinks');
+            if (hamburger && navLinks) {
+                hamburger.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
+            }
+        });
+    </script>
     <script src="/assets/app.js?v=3"></script>
 </body>
 </html>
